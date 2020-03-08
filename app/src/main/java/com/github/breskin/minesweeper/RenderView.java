@@ -3,9 +3,11 @@ package com.github.breskin.minesweeper;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -14,27 +16,77 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
 
     public static int VIEW_WIDTH, VIEW_HEIGHT, FRAME_TIME;
 
-    private static Context CONTEXT;
+    public enum ViewType { None, Home, Game }
+
+    public static Context CONTEXT;
 
     private Thread gameThread;
     private boolean threadRunning;
+
+    private ViewType currentView;
+
+    private Transition transition;
+
+    private HomeView homeView;
+    private GameView gameView;
 
     public RenderView(Context context) {
         super(context);
         CONTEXT = context;
 
+        currentView = ViewType.None;
+
+        homeView = new HomeView(this);
+        gameView = new GameView(this);
+
         getHolder().addCallback(this);
     }
 
     private void render(Canvas canvas) {
+        switch (currentView) {
+            case Home: homeView.update(); break;
+            case Game: gameView.update(); break;
+        }
 
+        switch (currentView) {
+            case Home: homeView.render(canvas); break;
+            case Game: gameView.render(canvas); break;
+        }
+
+        if (transition != null) {
+            transition.update();
+
+            if (transition != null) transition.render(canvas);
+        }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event)  {
+        if (transition != null && !transition.passTouchEvents()) return true;
 
+        switch (currentView) {
+            case Home: if (homeView.onTouchEvent(event)) return true;
+            case Game: if (gameView.onTouchEvent(event)) return true;
+        }
 
         return true;
+    }
+
+    public void switchView(Transition t) {
+        transition = t;
+        transition.setTransitionFinishedCallback(new Transition.TransitionFinishedCallback() {
+            @Override
+            public void onFinished() {
+                transition = null;
+            }
+        });
+
+        transition.setViewChangeCallback(new Transition.ViewChangeCallback() {
+            @Override
+            public void onViewChange() {
+                currentView = transition.getTargetView();
+            }
+        });
     }
 
     @Override
@@ -43,6 +95,10 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
 
         while (threadRunning) {
             if (getHolder().getSurface().isValid()) {
+                if (currentView == ViewType.None) {
+                    currentView = ViewType.Home;
+                }
+
                 long time = System.nanoTime() / 1000000;
 
                 canvas = getHolder().lockHardwareCanvas();
