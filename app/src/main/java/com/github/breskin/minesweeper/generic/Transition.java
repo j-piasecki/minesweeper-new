@@ -1,6 +1,8 @@
-package com.github.breskin.minesweeper;
+package com.github.breskin.minesweeper.generic;
 
 import android.graphics.Canvas;
+
+import com.github.breskin.minesweeper.RenderView;
 
 public class Transition {
 

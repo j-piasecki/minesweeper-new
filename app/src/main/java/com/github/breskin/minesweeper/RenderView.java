@@ -3,14 +3,14 @@ package com.github.breskin.minesweeper;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.PointF;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import com.github.breskin.minesweeper.generic.Transition;
 
 public class RenderView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
 

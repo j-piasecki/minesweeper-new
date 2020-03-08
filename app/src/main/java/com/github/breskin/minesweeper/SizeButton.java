@@ -6,6 +6,8 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 
+import com.github.breskin.minesweeper.generic.Button;
+
 public class SizeButton extends Button {
 
     private Paint paint;

@@ -4,8 +4,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.util.Log;
 import android.view.MotionEvent;
+
+import com.github.breskin.minesweeper.generic.Button;
+import com.github.breskin.minesweeper.generic.View;
 
 public class HomeView extends View {
 
@@ -63,7 +65,7 @@ public class HomeView extends View {
         return false;
     }
 
-    public static class Transition extends com.github.breskin.minesweeper.Transition {
+    public static class Transition extends com.github.breskin.minesweeper.generic.Transition {
 
         private Paint paint;
         private PointF origin;
