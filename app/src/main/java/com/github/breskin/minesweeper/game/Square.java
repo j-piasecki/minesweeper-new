@@ -12,31 +12,36 @@ public class Square {
 
     private static Paint paint = new Paint();
 
-    private float x, y;
-    private int targetX, targetY;
+    private float visibleX, visibleY;
+    private int x, y, targetX, targetY;
     private int type;
-    private boolean revealed;
+    private boolean revealed, flagged;
 
     public Square(int x, int y) {
-        this.x = this.targetX = x;
-        this.y = this.targetY = y;
+        this.visibleX = this.targetX = this.x = x;
+        this.visibleY = this.targetY = this.y = y;
 
         this.revealed = false;
+        this.flagged = false;
     }
 
     public void update() {
-        this.x += (targetX - x) * 0.1f;
-        this.y += (targetY - y) * 0.1f;
+        this.visibleX += (targetX - visibleX) * 0.1f;
+        this.visibleY += (targetY - visibleY) * 0.1f;
     }
 
     public void render(GameLogic logic, Canvas canvas) {
-        PointF position = logic.getCamera().calculateOnScreenPosition(new PointF(x, y));
+        PointF position = logic.getCamera().calculateOnScreenPosition(new PointF(visibleX, visibleY));
         float size = logic.getCamera().getBlockSize();
 
-        if (revealed) {
+        if (revealed || flagged) {
             paint.setColor(Color.rgb(96, 96, 96));
             canvas.drawRoundRect(new RectF(position.x + size * 0.05f, position.y + size * 0.05f, position.x + size * 0.9f, position.y + size * 0.9f), size * 0.1f, size * 0.1f, paint);
 
+            if (flagged) {
+                paint.setColor(Color.RED);
+                canvas.drawCircle(position.x + size * 0.5f, position.y + size * 0.5f, size * 0.3f, paint);
+            }
         } else {
             paint.setColor(Color.rgb(64, 64, 64));
             canvas.drawRoundRect(new RectF(position.x + size * 0.05f, position.y + size * 0.05f, position.x + size * 0.9f, position.y + size * 0.9f), size * 0.1f, size * 0.1f, paint);
@@ -44,13 +49,39 @@ public class Square {
         }
     }
 
-    public void reveal() {
+    public void reveal(GameLogic logic) {
+        if (flagged) {
+            return;
+        }
+
         this.revealed = true;
+
+        if (x > 0) {
+            if (logic.getMinefield().getSquare(x - 1, y).getType() != Square.TYPE_MINE) logic.getMinefield().getSquare(x - 1, y).reveal(logic);
+            if (y > 0 && logic.getMinefield().getSquare(x - 1, y - 1).getType() != Square.TYPE_MINE) logic.getMinefield().getSquare(x - 1, y - 1).reveal(logic);
+            if (y < logic.getMinefield().getHeight() - 1 && logic.getMinefield().getSquare(x - 1, y + 1).getType() != Square.TYPE_MINE) logic.getMinefield().getSquare(x - 1, y + 1).reveal(logic);
+        }
+
+        if (x < logic.getMinefield().getWidth() - 1) {
+            if (logic.getMinefield().getSquare(x + 1, y).getType() != Square.TYPE_MINE) logic.getMinefield().getSquare(x + 1, y).reveal(logic);
+            if (y > 0 && logic.getMinefield().getSquare(x + 1, y - 1).getType() != Square.TYPE_MINE) logic.getMinefield().getSquare(x + 1, y - 1).reveal(logic);
+            if (y < logic.getMinefield().getHeight() - 1 && logic.getMinefield().getSquare(x + 1, y + 1).getType() != Square.TYPE_MINE) logic.getMinefield().getSquare(x + 1, y + 1).reveal(logic);
+        }
+
+        if (y > 0)
+            if (logic.getMinefield().getSquare(x, y - 1).getType() != Square.TYPE_MINE) logic.getMinefield().getSquare(x, y - 1).reveal(logic);
+
+        if (y < logic.getMinefield().getHeight() - 1)
+            if (logic.getMinefield().getSquare(x, y + 1).getType() != Square.TYPE_MINE) logic.getMinefield().getSquare(x, y + 1).reveal(logic);
     }
 
-    public void setPosition(float x, float y) {
-        this.x = x;
-        this.y = y;
+    public void flag() {
+        this.flagged = !this.flagged;
+    }
+
+    public void setVisiblePosition(float x, float y) {
+        this.visibleX = x;
+        this.visibleY = y;
     }
 
     public int getType() {

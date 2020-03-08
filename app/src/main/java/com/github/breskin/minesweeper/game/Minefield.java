@@ -32,16 +32,32 @@ public class Minefield {
         }
     }
 
-    public void reveal(int x, int y) {
+    public void reveal(GameLogic logic, int x, int y) {
         if (!minesPlaced) {
             placeMines(x, y);
         }
 
-        field[x][y].reveal();
+        field[x][y].reveal(logic);
     }
 
     public void mark(int x, int y) {
         Log.w("A", "mark at: " + x + " " + y);
+    }
+
+    public Square getSquare(int x, int y) {
+        if (x >= 0 && x < width && y >= 0 && y < height) {
+            return field[x][y];
+        }
+
+        return null;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public void placeMines(int freeX, int freeY) {
@@ -110,7 +126,7 @@ public class Minefield {
             for (int y = 0; y < height; y++) {
                 field[x][y] = new Square(x, y);
 
-                field[x][y].setPosition((x - width * 0.5f) * 4 + width * 0.5f, (y - height) * 2);
+                field[x][y].setVisiblePosition((x - width * 0.5f) * 4 + width * 0.5f, (y - height) * 2);
             }
         }
     }

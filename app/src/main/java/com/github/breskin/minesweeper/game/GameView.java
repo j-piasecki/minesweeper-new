@@ -69,7 +69,7 @@ public class GameView extends View {
             case MotionEvent.ACTION_UP:
                 if (Math.abs(touchDownPoint.x - x) < RenderView.VIEW_WIDTH * 0.01f && Math.abs(touchDownPoint.y - y) < RenderView.VIEW_WIDTH * 0.01f && touchPressed) {
                     PointF position = gameLogic.getCamera().calculatePositionFromScreen(touchDownPoint);
-                    gameLogic.getMinefield().reveal((int) position.x, (int) position.y);
+                    gameLogic.getMinefield().reveal(gameLogic, (int) position.x, (int) position.y);
 
                     touchPressed = false;
                 }
