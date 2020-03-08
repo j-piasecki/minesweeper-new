@@ -10,7 +10,9 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.github.breskin.minesweeper.game.GameView;
 import com.github.breskin.minesweeper.generic.Transition;
+import com.github.breskin.minesweeper.home.HomeView;
 
 public class RenderView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
 
@@ -58,6 +60,10 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
 
             if (transition != null) transition.render(canvas);
         }
+    }
+
+    public GameView getGameView() {
+        return gameView;
     }
 
     @Override

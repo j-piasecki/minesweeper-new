@@ -1,4 +1,4 @@
-package com.github.breskin.minesweeper;
+package com.github.breskin.minesweeper.home;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.view.MotionEvent;
 
+import com.github.breskin.minesweeper.RenderView;
 import com.github.breskin.minesweeper.generic.Button;
 import com.github.breskin.minesweeper.generic.View;
 
@@ -33,6 +34,8 @@ public class HomeView extends View {
                 Transition transition = new HomeView.Transition(RenderView.ViewType.Game);
                 transition.setOrigin(new PointF(test2.getPosition().x + test2.getSize().y / 2, test2.getPosition().y + test2.getSize().y / 2));
                 renderView.switchView(transition);
+
+                renderView.getGameView().getGameLogic().init(20, 20, 15);
             }
         });
     }

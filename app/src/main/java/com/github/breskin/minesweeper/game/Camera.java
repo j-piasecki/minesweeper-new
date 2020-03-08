@@ -1,9 +1,11 @@
-package com.github.breskin.minesweeper;
+package com.github.breskin.minesweeper.game;
 
 import android.graphics.PointF;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
+
+import com.github.breskin.minesweeper.RenderView;
 
 public class Camera {
 
@@ -67,6 +69,18 @@ public class Camera {
 
     public void scale(float change) {
         targetScale *= change;
+    }
+
+    public void reset() {
+        position.x = position.y = 0;
+        scale = targetScale = 1;
+        touchDownPoint.x = touchDownPoint.y = 0;
+        lastTouchPoint.x = lastTouchPoint.y = 0;
+        translationChange.x = translationChange.y = 0;
+        scaleFocus.x = scaleFocus.y = 0;
+        velocity.x = velocity.y = 0;
+
+        touchDown = scaling = false;
     }
 
     public void update() {

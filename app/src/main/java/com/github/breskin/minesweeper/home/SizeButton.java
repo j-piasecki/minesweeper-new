@@ -1,4 +1,4 @@
-package com.github.breskin.minesweeper;
+package com.github.breskin.minesweeper.home;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 
+import com.github.breskin.minesweeper.RenderView;
 import com.github.breskin.minesweeper.generic.Button;
 
 public class SizeButton extends Button {
