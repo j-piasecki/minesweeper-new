@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.util.Log;
 
 public class Square {
 
@@ -16,7 +17,7 @@ public class Square {
     private float visibleX, visibleY;
     private int x, y, targetX, targetY;
     private int type;
-    private boolean revealed, flagged;
+    private boolean revealed, flagged, tintedRed, tintedGreen;
 
     public Square(int x, int y) {
         this.visibleX = this.targetX = this.x = x;
@@ -36,8 +37,13 @@ public class Square {
         float size = logic.getCamera().getBlockSize();
 
         if (revealed) {
-            paint.setColor(Color.rgb(96, 96, 96));
-            canvas.drawRoundRect(new RectF(position.x + size * 0.05f, position.y + size * 0.05f, position.x + size * 0.9f, position.y + size * 0.9f), size * 0.1f, size * 0.1f, paint);
+            if (tintedRed)
+                paint.setColor(Color.rgb(192, 0, 0));
+            else if (tintedGreen)
+                paint.setColor(Color.rgb(0, 192, 0));
+            else
+                paint.setColor(Color.rgb(96, 96, 96));
+            canvas.drawRoundRect(new RectF(position.x + size * 0.04f, position.y + size * 0.04f, position.x + size * 0.92f, position.y + size * 0.92f), size * 0.1f, size * 0.1f, paint);
 
             if (type > 0) {
                 paint.setTextSize(size * 0.75f);
@@ -59,7 +65,7 @@ public class Square {
             }
         } else {
             paint.setColor(Color.rgb(64, 64, 64));
-            canvas.drawRoundRect(new RectF(position.x + size * 0.05f, position.y + size * 0.05f, position.x + size * 0.9f, position.y + size * 0.9f), size * 0.1f, size * 0.1f, paint);
+            canvas.drawRoundRect(new RectF(position.x + size * 0.04f, position.y + size * 0.04f, position.x + size * 0.92f, position.y + size * 0.92f), size * 0.1f, size * 0.1f, paint);
 
             if (flagged) {
                 drawFlag(logic, canvas, position);
@@ -120,46 +126,86 @@ public class Square {
         canvas.restore();
     }
 
+    public int getAdjacentFlagsCount(GameLogic logic) {
+        int flags = 0;
+
+        for (int x = this.x - 1; x <= this.x + 1; x++) {
+            for (int y = this.y - 1; y <= this.y + 1; y++) {
+                if (x == this.x && y == this.y)
+                    continue;
+
+                Square square = logic.getMinefield().getSquare(x, y);
+
+                if (square != null && (square.flagged || (square.revealed && square.type == TYPE_MINE)))
+                    flags++;
+            }
+        }
+
+        return flags;
+    }
+
+
     public void reveal(GameLogic logic) {
-        if (flagged || revealed) {
+        if (logic.isGamePaused() || flagged) {
+            return;
+        }
+
+        if (revealed) {
+            revealAdjacent(logic);
             return;
         }
 
         this.revealed = true;
 
-        logic.getParticleSystem().createInPoint(logic, new PointF(visibleX + 0.5f, visibleY + 0.5f), logic.getCamera().getBlockSize() * 0.7f, 8, 48, 48, 48);
+        if (type == TYPE_MINE) {
+            if (tintedRed)
+                logic.getParticleSystem().createInPoint(logic, new PointF(visibleX + 0.5f, visibleY + 0.5f), logic.getCamera().getBlockSize() * 0.7f, 8, 192, 0, 0);
+            else
+                logic.getParticleSystem().createInPoint(logic, new PointF(visibleX + 0.5f, visibleY + 0.5f), logic.getCamera().getBlockSize() * 0.7f, 8, 0, 192, 0);
+        } else {
+            logic.getParticleSystem().createInPoint(logic, new PointF(visibleX + 0.5f, visibleY + 0.5f), logic.getCamera().getBlockSize() * 0.7f, 8, 48, 48, 48);
+        }
 
         if (type == TYPE_EMPTY) {
-            if (x > 0) {
-                if (logic.getMinefield().getSquare(x - 1, y).getType() != Square.TYPE_MINE)
-                    logic.getMinefield().getSquare(x - 1, y).reveal(logic);
-                if (y > 0 && logic.getMinefield().getSquare(x - 1, y - 1).getType() != Square.TYPE_MINE)
-                    logic.getMinefield().getSquare(x - 1, y - 1).reveal(logic);
-                if (y < logic.getMinefield().getHeight() - 1 && logic.getMinefield().getSquare(x - 1, y + 1).getType() != Square.TYPE_MINE)
-                    logic.getMinefield().getSquare(x - 1, y + 1).reveal(logic);
+            for (int x = this.x - 1; x <= this.x + 1; x++) {
+                for (int y = this.y - 1; y <= this.y + 1; y++) {
+                    if (x == this.x && y == this.y)
+                        continue;
+
+                    Square square = logic.getMinefield().getSquare(x, y);
+
+                    if (square != null && !square.revealed)
+                        square.reveal(logic);
+                }
             }
-
-            if (x < logic.getMinefield().getWidth() - 1) {
-                if (logic.getMinefield().getSquare(x + 1, y).getType() != Square.TYPE_MINE)
-                    logic.getMinefield().getSquare(x + 1, y).reveal(logic);
-                if (y > 0 && logic.getMinefield().getSquare(x + 1, y - 1).getType() != Square.TYPE_MINE)
-                    logic.getMinefield().getSquare(x + 1, y - 1).reveal(logic);
-                if (y < logic.getMinefield().getHeight() - 1 && logic.getMinefield().getSquare(x + 1, y + 1).getType() != Square.TYPE_MINE)
-                    logic.getMinefield().getSquare(x + 1, y + 1).reveal(logic);
-            }
-
-            if (y > 0)
-                if (logic.getMinefield().getSquare(x, y - 1).getType() != Square.TYPE_MINE)
-                    logic.getMinefield().getSquare(x, y - 1).reveal(logic);
-
-            if (y < logic.getMinefield().getHeight() - 1)
-                if (logic.getMinefield().getSquare(x, y + 1).getType() != Square.TYPE_MINE)
-                    logic.getMinefield().getSquare(x, y + 1).reveal(logic);
         }
     }
 
-    public void flag() {
+    private void revealAdjacent(GameLogic logic) {
+        if (getAdjacentFlagsCount(logic) == type) {
+            for (int x = this.x - 1; x <= this.x + 1; x++) {
+                for (int y = this.y - 1; y <= this.y + 1; y++) {
+                    if (x == this.x && y == this.y)
+                        continue;
+
+                    Square square = logic.getMinefield().getSquare(x, y);
+
+                    if (square != null && !square.revealed)
+                        logic.getMinefield().reveal(logic, square.x, square.y);
+                }
+            }
+        }
+    }
+
+    public void flag(GameLogic logic) {
+        if (logic.isGamePaused()) return;
+
         this.flagged = !this.flagged;
+
+        if (flagged)
+            logic.increaseFlaggedMines();
+        else
+            logic.decreaseFlaggedMines();
     }
 
     public void setVisiblePosition(float x, float y) {
@@ -173,5 +219,21 @@ public class Square {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public void setTintedRed() {
+        this.tintedRed = true;
+    }
+
+    public void setTintedGreen() {
+        this.tintedGreen = true;
+    }
+
+    public boolean isRevealed() {
+        return revealed;
+    }
+
+    public boolean isFlagged() {
+        return flagged;
     }
 }

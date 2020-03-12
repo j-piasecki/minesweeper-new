@@ -33,19 +33,45 @@ public class Minefield {
     }
 
     public void reveal(GameLogic logic, int x, int y) {
+        reveal(logic, x, y, true);
+    }
+
+    public void reveal(GameLogic logic, int x, int y, boolean userGenerated) {
+        if (logic.isGamePaused() || x < 0 || y < 0 || x >= width || y >= height) return;
+
         if (!minesPlaced) {
             placeMines(x, y);
         }
 
-        field[x][y].reveal(logic);
+        if (field[x][y].getType() == Square.TYPE_MINE && !field[x][y].isFlagged() && !field[x][y].isRevealed()) {
+            if (userGenerated) {
+                field[x][y].setTintedRed();
+                logic.increaseFlaggedMines();
+
+                field[x][y].reveal(logic);
+
+                logic.onGameLost();
+            }
+            else {
+                field[x][y].setTintedGreen();
+                field[x][y].reveal(logic);
+            }
+        } else {
+            field[x][y].reveal(logic);
+        }
     }
 
-    public void flag(int x, int y) {
+    public boolean flag(GameLogic logic, int x, int y) {
+        if (logic.isGamePaused()) return false;
+
         Square square = getSquare(x, y);
 
-        if (square != null) {
-            square.flag();
+        if (square != null && !square.isRevealed()) {
+            square.flag(logic);
+            return true;
         }
+
+        return false;
     }
 
     public Square getSquare(int x, int y) {
@@ -56,12 +82,27 @@ public class Minefield {
         return null;
     }
 
+    public boolean isGameWon() {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (field[x][y].getType() != Square.TYPE_MINE && !field[x][y].isRevealed())
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
     public int getWidth() {
         return width;
     }
 
     public int getHeight() {
         return height;
+    }
+
+    public int getMinesCount() {
+        return minesCount;
     }
 
     public void placeMines(int freeX, int freeY) {

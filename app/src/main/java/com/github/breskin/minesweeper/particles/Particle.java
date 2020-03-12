@@ -35,7 +35,7 @@ public class Particle {
         this.g = cg - change; if (this.g < 0) this.g = 0; if (this.g > 255) this.g = 255;
         this.b = cb - change; if (this.b < 0) this.b = 0; if (this.b > 255) this.b = 255;
 
-        velocity = new PointF(RenderView.VIEW_WIDTH * 0.007f * (random.nextFloat() - 0.5f) / logic.getCamera().getBlockSize(), RenderView.VIEW_HEIGHT * 0.007f * (random.nextFloat() - 0.5f) / logic.getCamera().getBlockSize());
+        velocity = new PointF(0.125f * (random.nextFloat() - 0.5f), 0.15f * (random.nextFloat() - 0.5f));
 
         if (target != null) {
             velocity.x *= 3;

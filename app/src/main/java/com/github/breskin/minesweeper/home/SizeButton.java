@@ -49,15 +49,15 @@ public class SizeButton extends Button {
 
     @Override
     protected boolean isPointInside(PointF point) {
-        float length = RenderView.VIEW_WIDTH * 0.14f;
+        float length = RenderView.SIZE * 0.14f;
 
         return (point.x > getPosition().x && point.x < getPosition().x + length * 2 && point.y > getPosition().y && point.y < getPosition().y + length * 2) ||
                 (point.x > getPosition().x + length && point.x < getPosition().x + size.x + length * 2 && point.y > getPosition().y + length * 0.6f && point.y < getPosition().y + length * 1.4f);
     }
 
     private void init() {
-        float length = RenderView.VIEW_WIDTH * 0.14f;
-        this.size = new PointF(RenderView.VIEW_WIDTH * 0.6f - length * 0.6f, RenderView.VIEW_WIDTH * 0.28f);
+        float length = RenderView.SIZE * 0.14f;
+        this.size = new PointF(RenderView.SIZE * 0.6f - length * 0.6f, RenderView.SIZE * 0.28f);
 
 
         foreground = new Path();
@@ -69,9 +69,9 @@ public class SizeButton extends Button {
 
         background = new Path();
         background.moveTo(length, length * 0.6f);
-        background.lineTo(length + RenderView.VIEW_WIDTH * 0.6f, length * 0.6f);
-        background.lineTo(length + RenderView.VIEW_WIDTH * 0.6f + length * 0.4f, length);
-        background.lineTo(length + RenderView.VIEW_WIDTH * 0.6f, length * 1.4f);
+        background.lineTo(length + RenderView.SIZE * 0.6f, length * 0.6f);
+        background.lineTo(length + RenderView.SIZE * 0.6f + length * 0.4f, length);
+        background.lineTo(length + RenderView.SIZE * 0.6f, length * 1.4f);
         background.lineTo(length, length * 1.4f);
         background.close();
     }

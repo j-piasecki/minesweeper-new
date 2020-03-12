@@ -30,9 +30,8 @@ public class GameView extends View {
 
         if (touchPressed && System.currentTimeMillis() - touchDownTime > 175) {
             PointF position = gameLogic.getCamera().calculatePositionFromScreen(touchDownPoint);
-            gameLogic.getMinefield().flag((int) position.x, (int) position.y);
-
-            touchPressed = false;
+            if (gameLogic.getMinefield().flag(gameLogic, (int) position.x, (int) position.y))
+                touchPressed = false;
         }
     }
 

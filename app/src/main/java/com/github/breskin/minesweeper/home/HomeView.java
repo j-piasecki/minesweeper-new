@@ -12,30 +12,44 @@ import com.github.breskin.minesweeper.generic.View;
 
 public class HomeView extends View {
 
-    private SizeButton test, test2;
+    private SizeButton smallButton, mediumButton, largeButton;
 
     public HomeView(final RenderView renderView) {
         super(renderView);
 
-        test = new SizeButton("test");
-        test.setCallback(new Button.ClickCallback() {
-            @Override
-            public void onClick() {
-                Transition transition = new HomeView.Transition(RenderView.ViewType.Home);
-                transition.setOrigin(new PointF(test.getPosition().x + test.getSize().y / 2, test.getPosition().y + test.getSize().y / 2));
-                renderView.switchView(transition);
-            }
-        });
-
-        test2 = new SizeButton("Niestandardowa");
-        test2.setCallback(new Button.ClickCallback() {
+        smallButton = new SizeButton("_t_Small");
+        smallButton.setCallback(new Button.ClickCallback() {
             @Override
             public void onClick() {
                 Transition transition = new HomeView.Transition(RenderView.ViewType.Game);
-                transition.setOrigin(new PointF(test2.getPosition().x + test2.getSize().y / 2, test2.getPosition().y + test2.getSize().y / 2));
+                transition.setOrigin(new PointF(mediumButton.getPosition().x + mediumButton.getSize().y / 2, mediumButton.getPosition().y + mediumButton.getSize().y / 2));
                 renderView.switchView(transition);
 
-                renderView.getGameView().getGameLogic().init(20, 20, 40);
+                renderView.getGameView().getGameLogic().init(10, 15, 25);
+            }
+        });
+
+        mediumButton = new SizeButton("_t_Medium");
+        mediumButton.setCallback(new Button.ClickCallback() {
+            @Override
+            public void onClick() {
+                Transition transition = new HomeView.Transition(RenderView.ViewType.Game);
+                transition.setOrigin(new PointF(mediumButton.getPosition().x + mediumButton.getSize().y / 2, mediumButton.getPosition().y + mediumButton.getSize().y / 2));
+                renderView.switchView(transition);
+
+                renderView.getGameView().getGameLogic().init(20, 30, 100);
+            }
+        });
+
+        largeButton = new SizeButton("_t_Large");
+        largeButton.setCallback(new Button.ClickCallback() {
+            @Override
+            public void onClick() {
+                Transition transition = new HomeView.Transition(RenderView.ViewType.Game);
+                transition.setOrigin(new PointF(mediumButton.getPosition().x + mediumButton.getSize().y / 2, mediumButton.getPosition().y + mediumButton.getSize().y / 2));
+                renderView.switchView(transition);
+
+                renderView.getGameView().getGameLogic().init(30, 45, 300);
             }
         });
     }
@@ -44,26 +58,30 @@ public class HomeView extends View {
     public void update() {
         super.update();
 
-        test.update();
-        test.setPosition(new PointF(test.getSize().y * 0.1f, test.getSize().y));
+        smallButton.update();
+        smallButton.setPosition(new PointF(smallButton.getSize().y * 0.1f, RenderView.VIEW_HEIGHT * 0.3f));
 
-        test2.update();
-        test2.setPosition(new PointF(test.getSize().y * 0.5f, test.getSize().y * 1.75f));
+        mediumButton.update();
+        mediumButton.setPosition(new PointF(smallButton.getSize().y * 0.5f, RenderView.VIEW_HEIGHT * 0.3f + smallButton.getSize().y * 0.75f));
+
+        largeButton.update();
+        largeButton.setPosition(new PointF(smallButton.getSize().y * 0.1f, RenderView.VIEW_HEIGHT * 0.3f + smallButton.getSize().y * 1.5f));
     }
 
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
 
-        test.render(canvas);
-
-        test2.render(canvas);
+        smallButton.render(canvas);
+        mediumButton.render(canvas);
+        largeButton.render(canvas);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (test.onTouchEvent(event)) return true;
-        if (test2.onTouchEvent(event)) return true;
+        if (smallButton.onTouchEvent(event)) return true;
+        if (mediumButton.onTouchEvent(event)) return true;
+        if (largeButton.onTouchEvent(event)) return true;
 
         return false;
     }

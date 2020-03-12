@@ -17,7 +17,7 @@ public class Camera {
     private float scale, targetScale;
 
     private PointF touchDownPoint, lastTouchPoint, translationChange, scaleFocus, velocity;
-    private boolean touchDown, scaling;
+    private boolean touchDown, scaling, move;
 
     public Camera() {
         this.gestureDetector = new ScaleGestureDetector(RenderView.CONTEXT, new GestureListener());
@@ -47,7 +47,7 @@ public class Camera {
     }
 
     public float getBlockSize() {
-        return RenderView.VIEW_WIDTH * BLOCK_SIZE_MULTIPLIER * scale;
+        return RenderView.SIZE * BLOCK_SIZE_MULTIPLIER * scale;
     }
 
     public PointF calculateOnScreenPosition(PointF pos) {
@@ -85,10 +85,13 @@ public class Camera {
 
     public void update() {
         if (touchDown) {
-            velocity.x = translationChange.x;
-            velocity.y = translationChange.y;
+            if (move) {
+                velocity.x = translationChange.x;
+                velocity.y = translationChange.y;
 
-            move(translationChange.x, translationChange.y);
+                move(translationChange.x, translationChange.y);
+            }
+
             translationChange.x = translationChange.y = 0;
         } else if (!scaling) {
             move(velocity.x, velocity.y);
@@ -105,6 +108,9 @@ public class Camera {
 
         position.x += (previous.x - current.x);
         position.y += (previous.y - current.y);
+
+        if (Math.abs(velocity.x) < 0.01) velocity.x = 0;
+        if (Math.abs(velocity.y) < 0.01) velocity.y = 0;
     }
 
     public boolean onTouchEvent(MotionEvent event) {
@@ -121,6 +127,7 @@ public class Camera {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     touchDown = true;
+                    move = false;
 
                     touchDownPoint.x = x;
                     touchDownPoint.y = y;
@@ -130,6 +137,9 @@ public class Camera {
                     if (touchDown) {
                         translationChange.x = x - lastTouchPoint.x;
                         translationChange.y = y - lastTouchPoint.y;
+
+                        if (!move && (Math.abs(x - touchDownPoint.x) > RenderView.SIZE * 0.01 || Math.abs(y - touchDownPoint.y) > RenderView.SIZE * 0.01))
+                            move = true;
                     }
                     break;
 
@@ -152,7 +162,8 @@ public class Camera {
             velocity.x = detector.getFocusX() - scaleFocus.x;
             velocity.y = detector.getFocusY() - scaleFocus.y;
 
-            move(velocity.x, velocity.y);
+            translationChange.x = velocity.x;
+            translationChange.y = velocity.y;
             scale(detector.getScaleFactor());
 
             scaleFocus.x = detector.getFocusX();

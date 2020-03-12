@@ -17,7 +17,7 @@ import com.github.breskin.minesweeper.particles.ParticleSystem;
 
 public class RenderView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
 
-    public static int VIEW_WIDTH, VIEW_HEIGHT, FRAME_TIME;
+    public static int VIEW_WIDTH, VIEW_HEIGHT, FRAME_TIME, SIZE;
 
     public enum ViewType { None, Home, Game }
 
@@ -182,6 +182,8 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
         VIEW_HEIGHT = h;
 
         getHolder().setFixedSize(VIEW_WIDTH, VIEW_HEIGHT);
+
+        SIZE = Math.min(VIEW_WIDTH, VIEW_HEIGHT);
     }
 
     public static void vibrate(int time) {
