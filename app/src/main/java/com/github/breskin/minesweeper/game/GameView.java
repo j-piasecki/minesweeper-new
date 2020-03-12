@@ -1,10 +1,7 @@
 package com.github.breskin.minesweeper.game;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.PointF;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import com.github.breskin.minesweeper.RenderView;
@@ -33,7 +30,7 @@ public class GameView extends View {
 
         if (touchPressed && System.currentTimeMillis() - touchDownTime > 175) {
             PointF position = gameLogic.getCamera().calculatePositionFromScreen(touchDownPoint);
-            gameLogic.getMinefield().mark((int) position.x, (int) position.y);
+            gameLogic.getMinefield().flag((int) position.x, (int) position.y);
 
             touchPressed = false;
         }

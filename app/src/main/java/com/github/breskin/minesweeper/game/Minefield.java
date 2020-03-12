@@ -40,8 +40,12 @@ public class Minefield {
         field[x][y].reveal(logic);
     }
 
-    public void mark(int x, int y) {
-        Log.w("A", "mark at: " + x + " " + y);
+    public void flag(int x, int y) {
+        Square square = getSquare(x, y);
+
+        if (square != null) {
+            square.flag();
+        }
     }
 
     public Square getSquare(int x, int y) {

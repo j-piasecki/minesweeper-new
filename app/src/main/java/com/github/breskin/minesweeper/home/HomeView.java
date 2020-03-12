@@ -35,7 +35,7 @@ public class HomeView extends View {
                 transition.setOrigin(new PointF(test2.getPosition().x + test2.getSize().y / 2, test2.getPosition().y + test2.getSize().y / 2));
                 renderView.switchView(transition);
 
-                renderView.getGameView().getGameLogic().init(20, 20, 15);
+                renderView.getGameView().getGameLogic().init(20, 20, 40);
             }
         });
     }
