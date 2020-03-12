@@ -127,6 +127,8 @@ public class Square {
 
         this.revealed = true;
 
+        logic.getParticleSystem().createInPoint(logic, new PointF(visibleX + 0.5f, visibleY + 0.5f), logic.getCamera().getBlockSize() * 0.7f, 8, 48, 48, 48);
+
         if (type == TYPE_EMPTY) {
             if (x > 0) {
                 if (logic.getMinefield().getSquare(x - 1, y).getType() != Square.TYPE_MINE)

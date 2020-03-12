@@ -23,7 +23,7 @@ public class Camera {
         this.gestureDetector = new ScaleGestureDetector(RenderView.CONTEXT, new GestureListener());
 
         this.position = new PointF();
-        this.scale = this.targetScale = 1;
+        this.scale = this.targetScale = 0.8f;
 
         this.touchDownPoint = new PointF();
         this.lastTouchPoint = new PointF();
@@ -73,7 +73,7 @@ public class Camera {
 
     public void reset() {
         position.x = position.y = 0;
-        scale = targetScale = 1;
+        scale = targetScale = 0.8f;
         touchDownPoint.x = touchDownPoint.y = 0;
         lastTouchPoint.x = lastTouchPoint.y = 0;
         translationChange.x = translationChange.y = 0;

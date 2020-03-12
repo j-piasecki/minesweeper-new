@@ -18,7 +18,7 @@ public class GameView extends View {
     public GameView(RenderView renderView) {
         super(renderView);
 
-        gameLogic = new GameLogic();
+        gameLogic = new GameLogic(renderView);
         touchDownPoint = new PointF();
     }
 

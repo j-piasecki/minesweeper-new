@@ -13,6 +13,7 @@ import android.view.SurfaceView;
 import com.github.breskin.minesweeper.game.GameView;
 import com.github.breskin.minesweeper.generic.Transition;
 import com.github.breskin.minesweeper.home.HomeView;
+import com.github.breskin.minesweeper.particles.ParticleSystem;
 
 public class RenderView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
 
@@ -28,6 +29,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
     private ViewType currentView;
 
     private Transition transition;
+    private ParticleSystem particleSystem;
 
     private HomeView homeView;
     private GameView gameView;
@@ -37,6 +39,8 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
         CONTEXT = context;
 
         currentView = ViewType.None;
+
+        particleSystem = new ParticleSystem();
 
         homeView = new HomeView(this);
         gameView = new GameView(this);
@@ -55,11 +59,18 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
             case Game: gameView.render(canvas); break;
         }
 
+        particleSystem.update(gameView.getGameLogic());
+        particleSystem.render(gameView.getGameLogic(), canvas);
+
         if (transition != null) {
             transition.update();
 
             if (transition != null) transition.render(canvas);
         }
+    }
+
+    public ParticleSystem getParticleSystem() {
+        return particleSystem;
     }
 
     public GameView getGameView() {
