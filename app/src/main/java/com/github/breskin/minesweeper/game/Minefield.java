@@ -1,7 +1,10 @@
 package com.github.breskin.minesweeper.game;
 
 import android.graphics.Canvas;
+import android.graphics.PointF;
 import android.util.Log;
+
+import com.github.breskin.minesweeper.RenderView;
 
 import java.util.Random;
 
@@ -25,8 +28,16 @@ public class Minefield {
     }
 
     public void render(GameLogic logic, Canvas canvas) {
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
+        PointF topLeft = logic.getCamera().calculatePositionFromScreen(new PointF(0, 0));
+        PointF bottomRight = logic.getCamera().calculatePositionFromScreen(new PointF(RenderView.VIEW_WIDTH, RenderView.VIEW_HEIGHT));
+
+        int startX = (int)Math.floor(topLeft.x - 1); if (startX < 0) startX = 0;
+        int startY = (int)Math.floor(topLeft.y - 1); if (startY < 0) startY = 0;
+        int endX = (int)Math.ceil(bottomRight.x + 1); if (endX > logic.getMinefield().getWidth()) endX = logic.getMinefield().getWidth();
+        int endY = (int)Math.ceil(bottomRight.y + 1); if (endY > logic.getMinefield().getHeight()) endY = logic.getMinefield().getHeight();
+
+        for (int x = startX; x < endX; x++) {
+            for (int y = startY; y < endY; y++) {
                 field[x][y].render(logic, canvas);
             }
         }

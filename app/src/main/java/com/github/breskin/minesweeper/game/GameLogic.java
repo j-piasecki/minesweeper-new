@@ -3,6 +3,7 @@ package com.github.breskin.minesweeper.game;
 import android.util.Log;
 
 import com.github.breskin.minesweeper.RenderView;
+import com.github.breskin.minesweeper.generic.View;
 import com.github.breskin.minesweeper.particles.ParticleSystem;
 
 public class GameLogic {
@@ -15,6 +16,8 @@ public class GameLogic {
     private int flaggedMines;
     private boolean gameWon;
     private boolean gameLost;
+
+    private int gameDuration;
 
     public GameLogic(RenderView renderView) {
         this.renderView = renderView;
@@ -30,6 +33,10 @@ public class GameLogic {
         if (!isGameFinished() && flaggedMines == minefield.getMinesCount() && minefield.isGameWon()) {
             onGameWon();
         }
+
+        if (!isGamePaused()) {
+            gameDuration += RenderView.FRAME_TIME;
+        }
     }
 
     public Camera getCamera() {
@@ -44,6 +51,7 @@ public class GameLogic {
         minefield.init(width, height, mines);
 
         flaggedMines = 0;
+        gameDuration = 0;
         gameLost = gameWon = false;
 
         camera.reset();
@@ -73,6 +81,10 @@ public class GameLogic {
 
     public int getFlaggedMines() {
         return flaggedMines;
+    }
+
+    public int getGameDuration() {
+        return gameDuration;
     }
 
     public boolean isGameWon() {

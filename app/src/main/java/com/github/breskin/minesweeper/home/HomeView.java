@@ -25,7 +25,7 @@ public class HomeView extends View {
                 transition.setOrigin(new PointF(mediumButton.getPosition().x + mediumButton.getSize().y / 2, mediumButton.getPosition().y + mediumButton.getSize().y / 2));
                 renderView.switchView(transition);
 
-                renderView.getGameView().getGameLogic().init(10, 15, 25);
+                renderView.getGameView().getGameLogic().init(10, 16, 25);
             }
         });
 
@@ -37,7 +37,7 @@ public class HomeView extends View {
                 transition.setOrigin(new PointF(mediumButton.getPosition().x + mediumButton.getSize().y / 2, mediumButton.getPosition().y + mediumButton.getSize().y / 2));
                 renderView.switchView(transition);
 
-                renderView.getGameView().getGameLogic().init(20, 30, 100);
+                renderView.getGameView().getGameLogic().init(14, 20, 40);
             }
         });
 
@@ -49,7 +49,7 @@ public class HomeView extends View {
                 transition.setOrigin(new PointF(mediumButton.getPosition().x + mediumButton.getSize().y / 2, mediumButton.getPosition().y + mediumButton.getSize().y / 2));
                 renderView.switchView(transition);
 
-                renderView.getGameView().getGameLogic().init(30, 45, 300);
+                renderView.getGameView().getGameLogic().init(16, 26, 70);
             }
         });
     }

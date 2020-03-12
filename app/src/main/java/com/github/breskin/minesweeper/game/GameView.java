@@ -11,12 +11,16 @@ public class GameView extends View {
 
     private GameLogic gameLogic;
 
+    private InfoHub infoHub;
+
     private PointF touchDownPoint;
     private long touchDownTime;
     private boolean touchPressed;
 
     public GameView(RenderView renderView) {
         super(renderView);
+
+        infoHub = new InfoHub();
 
         gameLogic = new GameLogic(renderView);
         touchDownPoint = new PointF();
@@ -27,6 +31,7 @@ public class GameView extends View {
         super.update();
 
         gameLogic.update();
+        infoHub.update();
 
         if (touchPressed && System.currentTimeMillis() - touchDownTime > 175) {
             PointF position = gameLogic.getCamera().calculatePositionFromScreen(touchDownPoint);
@@ -38,10 +43,13 @@ public class GameView extends View {
     @Override
     public void render(Canvas canvas) {
         gameLogic.getMinefield().render(gameLogic, canvas);
+        infoHub.render(gameLogic, canvas);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (infoHub.onTouchEvent(event)) return true;
+
         gameLogic.getCamera().onTouchEvent(event);
 
         float x = event.getX();

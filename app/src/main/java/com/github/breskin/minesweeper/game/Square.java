@@ -8,6 +8,8 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.Log;
 
+import com.github.breskin.minesweeper.RenderView;
+
 public class Square {
 
     public static final int TYPE_MINE = -1, TYPE_EMPTY = 0, TYPE_1 = 1, TYPE_2 = 2, TYPE_3 = 3, TYPE_4 = 4, TYPE_5 = 5, TYPE_6 = 6, TYPE_7 = 7, TYPE_8 = 8;
@@ -59,7 +61,7 @@ public class Square {
                     case TYPE_8: paint.setColor(Color.rgb(200, 200, 200)); break;
                 }
 
-                canvas.drawText(type+"",position.x + (size - paint.measureText(type+"")) / 2, (int)(position.y + paint.getTextSize()), paint);
+                canvas.drawText(String.valueOf(type),position.x + (size - paint.measureText(String.valueOf(type))) / 2, (int)(position.y + paint.getTextSize()), paint);
             } else if (type == TYPE_MINE) {
                 drawMine(logic, canvas, position);
             }
@@ -201,6 +203,7 @@ public class Square {
         if (logic.isGamePaused()) return;
 
         this.flagged = !this.flagged;
+        RenderView.vibrate(25);
 
         if (flagged)
             logic.increaseFlaggedMines();
