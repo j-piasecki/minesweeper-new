@@ -102,6 +102,9 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
             @Override
             public void onViewChange() {
                 currentView = transition.getTargetView();
+
+                if (currentView == ViewType.Game)
+                    gameView.reset();
             }
         });
     }

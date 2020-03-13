@@ -84,7 +84,7 @@ public class Camera {
     }
 
     public void update() {
-        if (touchDown) {
+        if (touchDown || scaling) {
             if (move) {
                 velocity.x = translationChange.x;
                 velocity.y = translationChange.y;
@@ -93,7 +93,7 @@ public class Camera {
             }
 
             translationChange.x = translationChange.y = 0;
-        } else if (!scaling) {
+        } else {
             move(velocity.x, velocity.y);
 
             velocity.x *= 0.88;
@@ -168,6 +168,8 @@ public class Camera {
 
             scaleFocus.x = detector.getFocusX();
             scaleFocus.y = detector.getFocusY();
+
+            move = true;
 
             return true;
         }

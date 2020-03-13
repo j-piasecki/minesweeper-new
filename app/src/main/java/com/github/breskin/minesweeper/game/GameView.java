@@ -83,6 +83,10 @@ public class GameView extends View {
         return false;
     }
 
+    public void reset() {
+        infoHub.reset();
+    }
+
     public GameLogic getGameLogic() {
         return gameLogic;
     }
