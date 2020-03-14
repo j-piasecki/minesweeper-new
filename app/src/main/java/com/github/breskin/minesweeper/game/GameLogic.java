@@ -2,6 +2,7 @@ package com.github.breskin.minesweeper.game;
 
 import android.util.Log;
 
+import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
 import com.github.breskin.minesweeper.generic.View;
 import com.github.breskin.minesweeper.particles.ParticleSystem;
@@ -17,6 +18,7 @@ public class GameLogic {
     private int flaggedMines;
     private boolean gameWon;
     private boolean gameLost;
+    private boolean secondLifeUsed = false;
 
     private int gameDuration;
 
@@ -53,7 +55,7 @@ public class GameLogic {
 
         flaggedMines = 0;
         gameDuration = 0;
-        gameLost = gameWon = false;
+        gameLost = gameWon = secondLifeUsed = false;
 
         camera.reset();
         camera.getPosition().x = width * 0.5f - 0.5f;
@@ -72,6 +74,13 @@ public class GameLogic {
 
         if (callback != null)
             callback.onGameWon();
+    }
+
+    public void useSecondLife() {
+        gameLost = false;
+        secondLifeUsed = true;
+
+        DataManager.onSecondLifeUsed();
     }
 
     public ParticleSystem getParticleSystem() {
@@ -104,6 +113,10 @@ public class GameLogic {
 
     public boolean isGameFinished() {
         return isGameLost() || isGameWon();
+    }
+
+    public boolean hasSecondLife() {
+        return !secondLifeUsed && DataManager.SECOND_LIFES_COUNT > 0;
     }
 
     public boolean isGamePaused() {

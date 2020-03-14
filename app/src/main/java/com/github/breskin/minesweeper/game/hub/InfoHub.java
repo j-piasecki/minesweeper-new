@@ -11,7 +11,7 @@ import com.github.breskin.minesweeper.game.GameLogic;
 
 public class InfoHub {
 
-    enum View { None, GameLost, GameWon }
+    enum View { None, GameLost, GameWon, SecondChance }
 
     private Paint paint;
     private GameLogic gameLogic;
@@ -22,6 +22,7 @@ public class InfoHub {
 
     private HubGameWonView gameWonView;
     private HubGameLostView gameLostView;
+    private HubSecondChanceView secondChanceView;
 
     public InfoHub(GameLogic logic) {
         paint = new Paint();
@@ -33,6 +34,7 @@ public class InfoHub {
 
         gameWonView = new HubGameWonView(this);
         gameLostView = new HubGameLostView(this);
+        secondChanceView = new HubSecondChanceView(this);
     }
 
     public void update(GameLogic logic) {
@@ -58,6 +60,11 @@ public class InfoHub {
             gameLostView.update(new PointF(RenderView.VIEW_WIDTH * viewSwitchProgress, RenderView.VIEW_HEIGHT - offset));
         else if (targetView == View.GameLost)
             gameLostView.update(new PointF(RenderView.VIEW_WIDTH * (viewSwitchProgress - 1), RenderView.VIEW_HEIGHT - offset));
+
+        if (currentView == View.SecondChance)
+            secondChanceView.update(new PointF(RenderView.VIEW_WIDTH * viewSwitchProgress, RenderView.VIEW_HEIGHT - offset));
+        else if (targetView == View.SecondChance)
+            secondChanceView.update(new PointF(RenderView.VIEW_WIDTH * (viewSwitchProgress - 1), RenderView.VIEW_HEIGHT - offset));
     }
 
     public void render(GameLogic logic, Canvas canvas) {
@@ -73,17 +80,22 @@ public class InfoHub {
 
         if (currentView == View.GameWon || targetView == View.GameWon) gameWonView.render(canvas);
         if (currentView == View.GameLost || targetView == View.GameLost) gameLostView.render(canvas);
+        if (currentView == View.SecondChance || targetView == View.SecondChance) secondChanceView.render(canvas);
     }
 
     public boolean onTouchEvent(MotionEvent event) {
         if ((currentView == View.GameWon || targetView == View.GameWon) && gameWonView.onTouchEvent(event)) return true;
         if ((currentView == View.GameLost || targetView == View.GameLost) && gameLostView.onTouchEvent(event)) return true;
+        if ((currentView == View.SecondChance || targetView == View.SecondChance) && secondChanceView.onTouchEvent(event)) return true;
 
         return false;
     }
 
     public void onGameLost() {
-        setView(View.GameLost);
+        if (gameLogic.hasSecondLife())
+            setView(View.SecondChance);
+        else
+            setView(View.GameLost);
     }
 
     public void onGameWon() {
@@ -114,6 +126,7 @@ public class InfoHub {
         switch (view) {
             case GameWon: return gameWonView.getHeight();
             case GameLost: return gameLostView.getHeight();
+            case SecondChance: return secondChanceView.getHeight();
             default: return 0;
         }
     }

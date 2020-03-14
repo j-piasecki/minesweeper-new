@@ -5,6 +5,11 @@
     <string name="game_size_large">Large</string>
     <string name="hub_button_ok">OK</string>
     <string name="hub_button_replay">Play again</string>
+    <string name="hub_button_yes">Yes</string>
+    <string name="hub_button_no">No</string>
     <string name="hub_game_won_message">You won!</string>
     <string name="hub_game_lost_message">You lost!</string>
+    <string name="hub_second_life_available">You can use a second life (%1$d left)</string>
+    <string name="hub_second_life_once_reminder">Remember that you can use it only once per game.</string>
+    <string name="daily_second_lives">You got %1$d second lives.\nCome back tomorrow for more!</string>
 </resources>

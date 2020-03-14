@@ -6,9 +6,12 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.breskin.minesweeper.game.GameView;
 import com.github.breskin.minesweeper.generic.Transition;
@@ -48,6 +51,12 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
         gameView = new GameView(this);
 
         getHolder().addCallback(this);
+
+        if (DataManager.FIRST_LAUNCH_TODAY) {
+            Toast toast = Toast.makeText(context, context.getString(R.string.daily_second_lives, DataManager.SECOND_LIFES_DAILY_BONUS), Toast.LENGTH_SHORT);
+            ((TextView)(toast.getView().findViewById(android.R.id.message))).setGravity(Gravity.CENTER);
+            toast.show();
+        }
     }
 
     private void render(Canvas canvas) {
