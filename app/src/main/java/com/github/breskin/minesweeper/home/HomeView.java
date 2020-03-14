@@ -12,12 +12,12 @@ import com.github.breskin.minesweeper.generic.View;
 
 public class HomeView extends View {
 
-    private SizeButton smallButton, mediumButton, largeButton;
+    private FieldSizeButton smallButton, mediumButton, largeButton;
 
     public HomeView(final RenderView renderView) {
         super(renderView);
 
-        smallButton = new SizeButton("_t_Small");
+        smallButton = new FieldSizeButton("_t_Small");
         smallButton.setCallback(new Button.ClickCallback() {
             @Override
             public void onClick() {
@@ -29,7 +29,7 @@ public class HomeView extends View {
             }
         });
 
-        mediumButton = new SizeButton("_t_Medium");
+        mediumButton = new FieldSizeButton("_t_Medium");
         mediumButton.setCallback(new Button.ClickCallback() {
             @Override
             public void onClick() {
@@ -41,7 +41,7 @@ public class HomeView extends View {
             }
         });
 
-        largeButton = new SizeButton("_t_Large");
+        largeButton = new FieldSizeButton("_t_Large");
         largeButton.setCallback(new Button.ClickCallback() {
             @Override
             public void onClick() {

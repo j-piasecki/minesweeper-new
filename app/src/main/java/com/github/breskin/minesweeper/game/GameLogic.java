@@ -9,6 +9,7 @@ import com.github.breskin.minesweeper.particles.ParticleSystem;
 public class GameLogic {
 
     private RenderView renderView;
+    private Callback callback;
 
     private Camera camera;
     private Minefield minefield;
@@ -61,10 +62,16 @@ public class GameLogic {
 
     public void onGameLost() {
         gameLost = true;
+
+        if (callback != null)
+            callback.onGameLost();
     }
 
     public void onGameWon() {
         gameWon = true;
+
+        if (callback != null)
+            callback.onGameWon();
     }
 
     public ParticleSystem getParticleSystem() {
@@ -101,5 +108,15 @@ public class GameLogic {
 
     public boolean isGamePaused() {
         return isGameFinished();
+    }
+
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
+    public interface Callback {
+        void onGameLost();
+        void onGameWon();
     }
 }

@@ -5,6 +5,7 @@ import android.graphics.PointF;
 import android.view.MotionEvent;
 
 import com.github.breskin.minesweeper.RenderView;
+import com.github.breskin.minesweeper.game.hub.InfoHub;
 import com.github.breskin.minesweeper.generic.View;
 
 public class GameView extends View {
@@ -20,10 +21,22 @@ public class GameView extends View {
     public GameView(RenderView renderView) {
         super(renderView);
 
-        infoHub = new InfoHub();
-
         gameLogic = new GameLogic(renderView);
         touchDownPoint = new PointF();
+
+        infoHub = new InfoHub(gameLogic);
+
+        gameLogic.setCallback(new GameLogic.Callback() {
+            @Override
+            public void onGameLost() {
+                infoHub.onGameLost();
+            }
+
+            @Override
+            public void onGameWon() {
+                infoHub.onGameWon();
+            }
+        });
     }
 
     @Override
@@ -31,7 +44,7 @@ public class GameView extends View {
         super.update();
 
         gameLogic.update();
-        infoHub.update();
+        infoHub.update(gameLogic);
 
         if (touchPressed && System.currentTimeMillis() - touchDownTime > 175) {
             PointF position = gameLogic.getCamera().calculatePositionFromScreen(touchDownPoint);

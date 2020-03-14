@@ -9,14 +9,14 @@ import android.graphics.PointF;
 import com.github.breskin.minesweeper.RenderView;
 import com.github.breskin.minesweeper.generic.Button;
 
-public class SizeButton extends Button {
+public class FieldSizeButton extends Button {
 
     private Paint paint;
     private Path foreground, background;
     private PointF size;
     private String text;
 
-    public SizeButton(String text) {
+    public FieldSizeButton(String text) {
         super();
 
         this.text = text;
