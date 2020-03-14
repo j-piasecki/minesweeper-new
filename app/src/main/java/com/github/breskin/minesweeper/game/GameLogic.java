@@ -31,7 +31,7 @@ public class GameLogic {
         camera.update();
         minefield.update();
 
-        if (!isGameFinished() && flaggedMines == minefield.getMinesCount() && minefield.isGameWon()) {
+        if (!isGameFinished() && minefield.isGameWon()) {
             onGameWon();
         }
 
@@ -110,6 +110,10 @@ public class GameLogic {
         return isGameFinished();
     }
 
+
+    public RenderView getRenderView() {
+        return renderView;
+    }
 
     public void setCallback(Callback callback) {
         this.callback = callback;

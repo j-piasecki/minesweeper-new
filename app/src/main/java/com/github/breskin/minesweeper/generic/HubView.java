@@ -17,6 +17,7 @@ public class HubView {
     public HubView(InfoHub parent) {
         this.parent = parent;
 
+        this.position = new PointF();
         this.paint = new Paint();
         this.paint.setAntiAlias(true);
     }
@@ -26,7 +27,7 @@ public class HubView {
     }
 
     public void render(Canvas canvas) {
-        if (position != null && (position.x > RenderView.VIEW_WIDTH * 0.96f || position.y > RenderView.VIEW_HEIGHT * 0.99f)) return;
+        if (position.x > RenderView.VIEW_WIDTH * 0.96f || position.y > RenderView.VIEW_HEIGHT * 0.99f) return;
 
         drawContent(canvas);
     }

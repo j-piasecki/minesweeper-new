@@ -10,6 +10,7 @@ public class Transition {
 
     protected ViewChangeCallback viewChangeCallback;
     protected TransitionFinishedCallback transitionFinishedCallback;
+    protected ViewExitCallback viewExitCallback;
 
     public Transition(RenderView.ViewType target) {
         this.targetView = target;
@@ -35,6 +36,10 @@ public class Transition {
         this.viewChangeCallback = viewChangeCallback;
     }
 
+    public void setViewExitCallback(ViewExitCallback viewExitCallback) {
+        this.viewExitCallback = viewExitCallback;
+    }
+
     public boolean passTouchEvents() {
         return false;
     }
@@ -45,5 +50,9 @@ public class Transition {
 
     public interface TransitionFinishedCallback {
         void onFinished();
+    }
+
+    public interface ViewExitCallback {
+        void onExit();
     }
 }

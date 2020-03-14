@@ -124,6 +124,10 @@ public class InfoHub {
         this.currentView = this.targetView = View.None;
     }
 
+    public GameLogic getGameLogic() {
+        return gameLogic;
+    }
+
     private String getTimeString(int t) {
         int time = t / 1000;
         int minutes = time / 60;

@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Minesweeper</string>
+    <string name="game_size_small">Small</string>
+    <string name="game_size_medium">Medium</string>
+    <string name="game_size_large">Large</string>
+    <string name="hub_button_ok">OK</string>
+    <string name="hub_button_replay">Play again</string>
+    <string name="hub_game_won_message">You won!</string>
+    <string name="hub_game_lost_message">You lost!</string>
 </resources>

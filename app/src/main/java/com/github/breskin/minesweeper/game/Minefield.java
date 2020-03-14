@@ -22,7 +22,8 @@ public class Minefield {
     public void update() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                field[x][y].update();
+                if (field[x][y] != null)
+                    field[x][y].update();
             }
         }
     }
@@ -38,7 +39,8 @@ public class Minefield {
 
         for (int x = startX; x < endX; x++) {
             for (int y = startY; y < endY; y++) {
-                field[x][y].render(logic, canvas);
+                if (field[x][y] != null)
+                    field[x][y].render(logic, canvas);
             }
         }
     }

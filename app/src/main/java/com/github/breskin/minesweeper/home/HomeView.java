@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.view.MotionEvent;
 
+import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
 import com.github.breskin.minesweeper.generic.Button;
 import com.github.breskin.minesweeper.generic.View;
@@ -17,7 +18,7 @@ public class HomeView extends View {
     public HomeView(final RenderView renderView) {
         super(renderView);
 
-        smallButton = new FieldSizeButton("_t_Small");
+        smallButton = new FieldSizeButton(DataManager.FIELD_SIZE_SMALL);
         smallButton.setCallback(new Button.ClickCallback() {
             @Override
             public void onClick() {
@@ -29,7 +30,7 @@ public class HomeView extends View {
             }
         });
 
-        mediumButton = new FieldSizeButton("_t_Medium");
+        mediumButton = new FieldSizeButton(DataManager.FIELD_SIZE_MEDIUM);
         mediumButton.setCallback(new Button.ClickCallback() {
             @Override
             public void onClick() {
@@ -41,7 +42,7 @@ public class HomeView extends View {
             }
         });
 
-        largeButton = new FieldSizeButton("_t_Large");
+        largeButton = new FieldSizeButton(DataManager.FIELD_SIZE_LARGE);
         largeButton.setCallback(new Button.ClickCallback() {
             @Override
             public void onClick() {
@@ -109,6 +110,9 @@ public class HomeView extends View {
             if (!viewChanged && progress > 0.5) {
                 viewChangeCallback.onViewChange();
                 viewChanged = true;
+
+                if (viewExitCallback != null)
+                    viewExitCallback.onExit();
             }
 
             if (progress > 0.95)
@@ -123,8 +127,8 @@ public class HomeView extends View {
             canvas.translate(origin.x, origin.y);
             canvas.rotate(-45);
 
-            canvas.drawRect(-RenderView.VIEW_WIDTH * 2f * progress, (progress > 0.5) ? RenderView.VIEW_HEIGHT * 2f * (progress - 0.5f) : 0, RenderView.VIEW_WIDTH * 2f * progress, RenderView.VIEW_HEIGHT * 2f * progress,  paint);
-            canvas.drawRect(-RenderView.VIEW_WIDTH * 2f * progress, -RenderView.VIEW_HEIGHT * 2f * progress, RenderView.VIEW_WIDTH * 2f * progress, (progress > 0.5) ? -RenderView.VIEW_HEIGHT * 2f * (progress - 0.5f) : 0,  paint);
+            canvas.drawRect(-RenderView.VIEW_WIDTH * 2.5f * progress, (progress > 0.5) ? RenderView.VIEW_HEIGHT * 2f * (progress - 0.5f) : 0, RenderView.VIEW_WIDTH * 2.5f * progress, RenderView.VIEW_HEIGHT * 2f * progress,  paint);
+            canvas.drawRect(-RenderView.VIEW_WIDTH * 2.5f * progress, -RenderView.VIEW_HEIGHT * 2f * progress, RenderView.VIEW_WIDTH * 2.5f * progress, (progress > 0.5) ? -RenderView.VIEW_HEIGHT * 2f * (progress - 0.5f) : 0,  paint);
 
             canvas.restore();
         }

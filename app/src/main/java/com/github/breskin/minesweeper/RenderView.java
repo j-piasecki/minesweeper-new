@@ -36,6 +36,8 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
 
     public RenderView(Context context) {
         super(context);
+        DataManager.load(context);
+
         CONTEXT = context;
 
         currentView = ViewType.None;
@@ -143,6 +145,13 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
     }
 
     public boolean onBackPressed() {
+        if (currentView == ViewType.Game) {
+            Transition transition = new HomeView.Transition(ViewType.Home);
+            switchView(transition);
+
+            return true;
+        }
+
         return false;
     }
 
