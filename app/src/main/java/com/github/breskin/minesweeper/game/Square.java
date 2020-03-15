@@ -148,7 +148,7 @@ public class Square {
 
 
     public void reveal(GameLogic logic) {
-        if (logic.isGamePaused() || flagged) {
+        if (flagged) {
             return;
         }
 
@@ -200,15 +200,11 @@ public class Square {
     }
 
     public void flag(GameLogic logic) {
+        this.flagged = !this.flagged;
+
         if (logic.isGamePaused()) return;
 
-        this.flagged = !this.flagged;
         RenderView.vibrate(25);
-
-        if (flagged)
-            logic.increaseFlaggedMines();
-        else
-            logic.decreaseFlaggedMines();
     }
 
     public void setVisiblePosition(float x, float y) {

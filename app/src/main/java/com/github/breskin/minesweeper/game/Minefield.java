@@ -10,21 +10,29 @@ import java.util.Random;
 
 public class Minefield {
 
+    private static final int WIN_ANIMATION_FRAMES_DELAY = 2;
+
     private Square[][] field;
     private int width, height, minesCount;
     private long seed;
     private boolean minesPlaced = false;
+    private boolean winAnimation = false;
+    private int animationDelay = 0;
 
     public Minefield() {
 
     }
 
-    public void update() {
+    public void update(GameLogic logic) {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if (field[x][y] != null)
                     field[x][y].update();
             }
+        }
+
+        if (winAnimation) {
+            updateWinAnimation(logic);
         }
     }
 
@@ -81,6 +89,11 @@ public class Minefield {
 
         if (square != null && !square.isRevealed()) {
             square.flag(logic);
+
+            if (square.isFlagged())
+                logic.increaseFlaggedMines();
+            else
+                logic.decreaseFlaggedMines();
             return true;
         }
 
@@ -104,6 +117,36 @@ public class Minefield {
         }
 
         return true;
+    }
+
+    public void updateWinAnimation(GameLogic logic) {
+        if (animationDelay > 0) {
+            animationDelay--;
+            return;
+        } else {
+            animationDelay = WIN_ANIMATION_FRAMES_DELAY;
+        }
+
+        for (int y = 0; y < height; y++) {
+            boolean stop = false;
+
+            for (int x = 0; x < width; x++) {
+                if (field[x][y].getType() == Square.TYPE_MINE && !field[x][y].isRevealed()) {
+                    if (field[x][y].isFlagged()) field[x][y].flag(logic);
+                    field[x][y].setTintedGreen();
+                    field[x][y].reveal(logic);
+
+                    stop = true;
+                }
+            }
+
+            if (stop)
+                break;
+        }
+    }
+
+    public void startWinAnimation() {
+        winAnimation = true;
     }
 
     public int getWidth() {
@@ -179,6 +222,8 @@ public class Minefield {
         this.seed = seed;
 
         minesPlaced = false;
+        winAnimation = false;
+        animationDelay = 0;
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {

@@ -54,5 +54,7 @@ public class DataManager {
 
     public static void onSecondLifeUsed() {
         SECOND_LIFES_COUNT--;
+
+        preferences.edit().putInt(SECOND_LIFES_STRING, SECOND_LIFES_COUNT).apply();
     }
 }

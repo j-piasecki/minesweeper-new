@@ -31,7 +31,7 @@ public class GameLogic {
 
     public void update() {
         camera.update();
-        minefield.update();
+        minefield.update(this);
 
         if (!isGameFinished() && minefield.isGameWon()) {
             onGameWon();
@@ -71,6 +71,8 @@ public class GameLogic {
 
     public void onGameWon() {
         gameWon = true;
+
+        minefield.startWinAnimation();
 
         if (callback != null)
             callback.onGameWon();
