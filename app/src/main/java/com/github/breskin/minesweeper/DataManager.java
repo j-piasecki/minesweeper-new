@@ -9,8 +9,8 @@ public class DataManager {
 
     private static SharedPreferences preferences;
 
-    public static String FIELD_SIZE_SMALL, FIELD_SIZE_MEDIUM, FIELD_SIZE_LARGE, HUB_BUTTON_OK, HUB_BUTTON_REPLAY, HUB_GAME_LOST, HUB_GAME_WON, HUB_BUTTON_NO, HUB_BUTTON_YES, HUB_SECOND_LIFE_AVAILABLE,
-            HUB_SECOND_LIFE_ONCE_REMINDER;
+    public static String FIELD_SIZE_SMALL, FIELD_SIZE_MEDIUM, FIELD_SIZE_LARGE, FIELD_SIZE_CUSTOM, HUB_BUTTON_OK, HUB_BUTTON_REPLAY, HUB_GAME_LOST, HUB_GAME_WON, HUB_BUTTON_NO, HUB_BUTTON_YES,
+            HUB_SECOND_LIFE_AVAILABLE, HUB_SECOND_LIFE_ONCE_REMINDER, CUSTOM_VIEW_WIDTH, CUSTOM_VIEW_HEIGHT, CUSTOM_VIEW_MINES, CUSTOM_VIEW_HEADER, CUSTOM_VIEW_START;
 
     private static String SECOND_LIFES_STRING = "second-chance-count";
 
@@ -23,6 +23,7 @@ public class DataManager {
         FIELD_SIZE_SMALL = context.getString(R.string.game_size_small);
         FIELD_SIZE_MEDIUM = context.getString(R.string.game_size_medium);
         FIELD_SIZE_LARGE = context.getString(R.string.game_size_large);
+        FIELD_SIZE_CUSTOM = context.getString(R.string.game_size_custom);
         HUB_BUTTON_OK = context.getString(R.string.hub_button_ok);
         HUB_BUTTON_NO = context.getString(R.string.hub_button_no);
         HUB_BUTTON_YES = context.getString(R.string.hub_button_yes);
@@ -31,6 +32,11 @@ public class DataManager {
         HUB_GAME_WON = context.getString(R.string.hub_game_won_message);
         HUB_SECOND_LIFE_AVAILABLE = context.getString(R.string.hub_second_life_available);
         HUB_SECOND_LIFE_ONCE_REMINDER = context.getString(R.string.hub_second_life_once_reminder);
+        CUSTOM_VIEW_WIDTH = context.getString(R.string.custom_view_width);
+        CUSTOM_VIEW_HEIGHT = context.getString(R.string.custom_view_height);
+        CUSTOM_VIEW_MINES = context.getString(R.string.custom_view_mines);
+        CUSTOM_VIEW_HEADER = context.getString(R.string.custom_view_header);
+        CUSTOM_VIEW_START = context.getString(R.string.custom_view_start);
 
         preferences = context.getSharedPreferences("data", Context.MODE_PRIVATE);
         SECOND_LIFES_COUNT = preferences.getInt(SECOND_LIFES_STRING, 0);

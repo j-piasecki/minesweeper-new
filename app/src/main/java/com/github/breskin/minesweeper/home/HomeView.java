@@ -13,7 +13,7 @@ import com.github.breskin.minesweeper.generic.View;
 
 public class HomeView extends View {
 
-    private FieldSizeButton smallButton, mediumButton, largeButton;
+    private FieldSizeButton smallButton, mediumButton, largeButton, customButton;
 
     public HomeView(final RenderView renderView) {
         super(renderView);
@@ -23,7 +23,7 @@ public class HomeView extends View {
             @Override
             public void onClick() {
                 Transition transition = new HomeView.Transition(RenderView.ViewType.Game);
-                transition.setOrigin(new PointF(mediumButton.getPosition().x + mediumButton.getSize().y / 2, mediumButton.getPosition().y + mediumButton.getSize().y / 2));
+                transition.setOrigin(new PointF(mediumButton.getPosition().x + smallButton.getSize().y / 2, smallButton.getPosition().y + smallButton.getSize().y / 2));
                 renderView.switchView(transition);
 
                 renderView.getGameView().getGameLogic().init(10, 16, 25);
@@ -47,10 +47,20 @@ public class HomeView extends View {
             @Override
             public void onClick() {
                 Transition transition = new HomeView.Transition(RenderView.ViewType.Game);
-                transition.setOrigin(new PointF(mediumButton.getPosition().x + mediumButton.getSize().y / 2, mediumButton.getPosition().y + mediumButton.getSize().y / 2));
+                transition.setOrigin(new PointF(largeButton.getPosition().x + largeButton.getSize().y / 2, largeButton.getPosition().y + largeButton.getSize().y / 2));
                 renderView.switchView(transition);
 
                 renderView.getGameView().getGameLogic().init(16, 26, 70);
+            }
+        });
+
+        customButton = new FieldSizeButton(DataManager.FIELD_SIZE_CUSTOM);
+        customButton.setCallback(new Button.ClickCallback() {
+            @Override
+            public void onClick() {
+                Transition transition = new HomeView.Transition(RenderView.ViewType.CustomField);
+                transition.setOrigin(new PointF(customButton.getPosition().x + customButton.getSize().y / 2, customButton.getPosition().y + customButton.getSize().y / 2));
+                renderView.switchView(transition);
             }
         });
     }
@@ -63,10 +73,13 @@ public class HomeView extends View {
         smallButton.setPosition(new PointF(smallButton.getSize().y * 0.1f, RenderView.VIEW_HEIGHT * 0.3f));
 
         mediumButton.update();
-        mediumButton.setPosition(new PointF(smallButton.getSize().y * 0.5f, RenderView.VIEW_HEIGHT * 0.3f + smallButton.getSize().y * 0.75f));
+        mediumButton.setPosition(new PointF(smallButton.getSize().y * 0.5f, smallButton.getPosition().y + smallButton.getSize().y * 0.75f));
 
         largeButton.update();
-        largeButton.setPosition(new PointF(smallButton.getSize().y * 0.1f, RenderView.VIEW_HEIGHT * 0.3f + smallButton.getSize().y * 1.5f));
+        largeButton.setPosition(new PointF(smallButton.getSize().y * 0.1f, mediumButton.getPosition().y + smallButton.getSize().y * 0.75f));
+
+        customButton.update();
+        customButton.setPosition(new PointF(smallButton.getSize().y * 0.5f, largeButton.getPosition().y + smallButton.getSize().y * 0.75f));
     }
 
     @Override
@@ -76,6 +89,7 @@ public class HomeView extends View {
         smallButton.render(canvas);
         mediumButton.render(canvas);
         largeButton.render(canvas);
+        customButton.render(canvas);
     }
 
     @Override
@@ -83,6 +97,7 @@ public class HomeView extends View {
         if (smallButton.onTouchEvent(event)) return true;
         if (mediumButton.onTouchEvent(event)) return true;
         if (largeButton.onTouchEvent(event)) return true;
+        if (customButton.onTouchEvent(event)) return true;
 
         return false;
     }
@@ -127,8 +142,8 @@ public class HomeView extends View {
             canvas.translate(origin.x, origin.y);
             canvas.rotate(-45);
 
-            canvas.drawRect(-RenderView.VIEW_WIDTH * 2.5f * progress, (progress > 0.5) ? RenderView.VIEW_HEIGHT * 2f * (progress * 1.05f - 0.5f) : 0, RenderView.VIEW_WIDTH * 2.5f * progress, RenderView.VIEW_HEIGHT * 2f * progress,  paint);
-            canvas.drawRect(-RenderView.VIEW_WIDTH * 2.5f * progress, -RenderView.VIEW_HEIGHT * 2f * progress, RenderView.VIEW_WIDTH * 2.5f * progress, (progress > 0.5) ? -RenderView.VIEW_HEIGHT * 2f * (progress * 1.05f - 0.5f) : 0,  paint);
+            canvas.drawRect(-RenderView.VIEW_WIDTH * 2.5f * progress, (progress > 0.5) ? RenderView.VIEW_HEIGHT * 2f * (progress - 0.5f) * 1.05f : 0, RenderView.VIEW_WIDTH * 2.5f * progress, RenderView.VIEW_HEIGHT * 2f * progress,  paint);
+            canvas.drawRect(-RenderView.VIEW_WIDTH * 2.5f * progress, -RenderView.VIEW_HEIGHT * 2f * progress, RenderView.VIEW_WIDTH * 2.5f * progress, (progress > 0.5) ? -RenderView.VIEW_HEIGHT * 2f * (progress - 0.5f) * 1.05f: 0,  paint);
 
             canvas.restore();
         }

@@ -3,6 +3,7 @@
     <string name="game_size_small">Small</string>
     <string name="game_size_medium">Medium</string>
     <string name="game_size_large">Large</string>
+    <string name="game_size_custom">Custom</string>
     <string name="hub_button_ok">OK</string>
     <string name="hub_button_replay">Play again</string>
     <string name="hub_button_yes">Yes</string>
@@ -12,4 +13,9 @@
     <string name="hub_second_life_available">You can use a second life (%1$d left)</string>
     <string name="hub_second_life_once_reminder">Remember that you can use it only once per game.</string>
     <string name="daily_second_lives">You got %1$d second lives.\nCome back tomorrow for more!</string>
+    <string name="custom_view_width">Width</string>
+    <string name="custom_view_height">Height</string>
+    <string name="custom_view_mines">Number of mines</string>
+    <string name="custom_view_header">Custom size</string>
+    <string name="custom_view_start">Start</string>
 </resources>

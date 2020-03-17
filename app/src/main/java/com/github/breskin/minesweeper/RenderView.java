@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.github.breskin.minesweeper.game.GameView;
 import com.github.breskin.minesweeper.generic.Transition;
+import com.github.breskin.minesweeper.home.CustomFieldView;
 import com.github.breskin.minesweeper.home.HomeView;
 import com.github.breskin.minesweeper.particles.ParticleSystem;
 
@@ -22,7 +23,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
 
     public static int VIEW_WIDTH, VIEW_HEIGHT, FRAME_TIME, SIZE;
 
-    public enum ViewType { None, Home, Game }
+    public enum ViewType { None, Home, Game, CustomField }
 
     public static Context CONTEXT;
 
@@ -36,6 +37,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
 
     private HomeView homeView;
     private GameView gameView;
+    private CustomFieldView customFieldView;
 
     public RenderView(Context context) {
         super(context);
@@ -49,6 +51,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
 
         homeView = new HomeView(this);
         gameView = new GameView(this);
+        customFieldView = new CustomFieldView(this);
 
         getHolder().addCallback(this);
 
@@ -63,11 +66,13 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
         switch (currentView) {
             case Home: homeView.update(); break;
             case Game: gameView.update(); break;
+            case CustomField: customFieldView.update(); break;
         }
 
         switch (currentView) {
             case Home: homeView.render(canvas); break;
             case Game: gameView.render(canvas); break;
+            case CustomField: customFieldView.render(canvas); break;
         }
 
         particleSystem.update(gameView.getGameLogic());
@@ -93,8 +98,9 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
         if (transition != null && !transition.passTouchEvents()) return true;
 
         switch (currentView) {
-            case Home: if (homeView.onTouchEvent(event)) return true;
-            case Game: if (gameView.onTouchEvent(event)) return true;
+            case Home: if (homeView.onTouchEvent(event)) return true; break;
+            case Game: if (gameView.onTouchEvent(event)) return true; break;
+            case CustomField: if (customFieldView.onTouchEvent(event)) return true; break;
         }
 
         return true;
@@ -154,7 +160,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
     }
 
     public boolean onBackPressed() {
-        if (currentView == ViewType.Game) {
+        if (currentView == ViewType.Game || currentView == ViewType.CustomField) {
             Transition transition = new HomeView.Transition(ViewType.Home);
             switchView(transition);
 
