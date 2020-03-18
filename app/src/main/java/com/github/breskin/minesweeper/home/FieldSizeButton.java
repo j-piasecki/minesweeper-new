@@ -21,6 +21,8 @@ public class FieldSizeButton extends Button {
 
         this.text = text;
         this.paint = new Paint();
+
+        this.size = new PointF(RenderView.SIZE * 0.6f - RenderView.SIZE * 0.14f * 0.6f, RenderView.SIZE * 0.28f);
     }
 
     @Override
@@ -58,7 +60,6 @@ public class FieldSizeButton extends Button {
     private void init() {
         float length = RenderView.SIZE * 0.14f;
         this.size = new PointF(RenderView.SIZE * 0.6f - length * 0.6f, RenderView.SIZE * 0.28f);
-
 
         foreground = new Path();
         foreground.moveTo(length, 0);
