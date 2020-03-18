@@ -12,10 +12,10 @@ public class DataManager {
     public static String FIELD_SIZE_SMALL, FIELD_SIZE_MEDIUM, FIELD_SIZE_LARGE, FIELD_SIZE_CUSTOM, HUB_BUTTON_OK, HUB_BUTTON_REPLAY, HUB_GAME_LOST, HUB_GAME_WON, HUB_BUTTON_NO, HUB_BUTTON_YES,
             HUB_SECOND_LIFE_AVAILABLE, HUB_SECOND_LIFE_ONCE_REMINDER, CUSTOM_VIEW_WIDTH, CUSTOM_VIEW_HEIGHT, CUSTOM_VIEW_MINES, CUSTOM_VIEW_HEADER, CUSTOM_VIEW_START;
 
-    private static String SECOND_LIFES_STRING = "second-chance-count";
+    private static String SECOND_LIVES_STRING = "second-chance-count";
 
-    public static final int SECOND_LIFES_DAILY_BONUS = 3;
-    public static int SECOND_LIFES_COUNT = 0;
+    public static final int SECOND_LIVES_DAILY_BONUS = 3;
+    public static int SECOND_LIVES_COUNT = 0;
 
     public static boolean FIRST_LAUNCH = false, FIRST_LAUNCH_TODAY = false;
 
@@ -39,7 +39,7 @@ public class DataManager {
         CUSTOM_VIEW_START = context.getString(R.string.custom_view_start);
 
         preferences = context.getSharedPreferences("data", Context.MODE_PRIVATE);
-        SECOND_LIFES_COUNT = preferences.getInt(SECOND_LIFES_STRING, 0);
+        SECOND_LIVES_COUNT = preferences.getInt(SECOND_LIVES_STRING, 0);
 
         String lastDayPlayed = preferences.getString("last-day-played", "none");
 
@@ -49,18 +49,18 @@ public class DataManager {
         if (!lastDayPlayed.equals(Calendar.getInstance().get(Calendar.DAY_OF_YEAR)+"")) {
             FIRST_LAUNCH_TODAY = true;
 
-            SECOND_LIFES_COUNT += SECOND_LIFES_DAILY_BONUS;
+            SECOND_LIVES_COUNT += SECOND_LIVES_DAILY_BONUS;
 
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("last-day-played", String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_YEAR)));
-            editor.putInt(SECOND_LIFES_STRING, SECOND_LIFES_COUNT);
+            editor.putInt(SECOND_LIVES_STRING, SECOND_LIVES_COUNT);
             editor.apply();
         }
     }
 
     public static void onSecondLifeUsed() {
-        SECOND_LIFES_COUNT--;
+        SECOND_LIVES_COUNT--;
 
-        preferences.edit().putInt(SECOND_LIFES_STRING, SECOND_LIFES_COUNT).apply();
+        preferences.edit().putInt(SECOND_LIVES_STRING, SECOND_LIVES_COUNT).apply();
     }
 }

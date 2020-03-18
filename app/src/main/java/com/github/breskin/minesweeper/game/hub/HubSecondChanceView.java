@@ -9,8 +9,6 @@ import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
 import com.github.breskin.minesweeper.generic.Button;
 import com.github.breskin.minesweeper.generic.HubView;
-import com.github.breskin.minesweeper.generic.Transition;
-import com.github.breskin.minesweeper.home.HomeView;
 
 public class HubSecondChanceView extends HubView {
 
@@ -54,7 +52,7 @@ public class HubSecondChanceView extends HubView {
         paint.setColor(Color.WHITE);
 
         paint.setTextSize(RenderView.SIZE * 0.05f);
-        canvas.drawText(DataManager.HUB_SECOND_LIFE_AVAILABLE.replace("%1$d", String.valueOf(DataManager.SECOND_LIFES_COUNT)), position.x + (RenderView.VIEW_WIDTH - paint.measureText(DataManager.HUB_SECOND_LIFE_AVAILABLE.replace("%1$d", String.valueOf(DataManager.SECOND_LIFES_COUNT)))) * 0.5f, position.y + paint.getTextSize() * 1.25f, paint);
+        canvas.drawText(DataManager.HUB_SECOND_LIFE_AVAILABLE.replace("%1$d", String.valueOf(DataManager.SECOND_LIVES_COUNT)), position.x + (RenderView.VIEW_WIDTH - paint.measureText(DataManager.HUB_SECOND_LIFE_AVAILABLE.replace("%1$d", String.valueOf(DataManager.SECOND_LIVES_COUNT)))) * 0.5f, position.y + paint.getTextSize() * 1.25f, paint);
 
         paint.setTextSize(RenderView.SIZE * 0.035f);
         canvas.drawText(DataManager.HUB_SECOND_LIFE_ONCE_REMINDER, position.x + (RenderView.VIEW_WIDTH - paint.measureText(DataManager.HUB_SECOND_LIFE_ONCE_REMINDER)) * 0.5f, position.y + RenderView.SIZE * 0.08f + paint.getTextSize(), paint);

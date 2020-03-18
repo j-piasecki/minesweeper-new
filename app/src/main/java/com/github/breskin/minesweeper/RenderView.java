@@ -56,7 +56,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
         getHolder().addCallback(this);
 
         if (DataManager.FIRST_LAUNCH_TODAY) {
-            Toast toast = Toast.makeText(context, context.getString(R.string.daily_second_lives, DataManager.SECOND_LIFES_DAILY_BONUS), Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(context, context.getString(R.string.daily_second_lives, DataManager.SECOND_LIVES_DAILY_BONUS), Toast.LENGTH_SHORT);
             ((TextView)(toast.getView().findViewById(android.R.id.message))).setGravity(Gravity.CENTER);
             toast.show();
         }

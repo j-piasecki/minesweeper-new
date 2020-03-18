@@ -14,6 +14,7 @@ import com.github.breskin.minesweeper.generic.View;
 public class HomeView extends View {
 
     private FieldSizeButton smallButton, mediumButton, largeButton, customButton;
+    private SecondLivesWidget secondLivesWidget;
 
     public HomeView(final RenderView renderView) {
         super(renderView);
@@ -63,6 +64,8 @@ public class HomeView extends View {
                 renderView.switchView(transition);
             }
         });
+
+        secondLivesWidget = new SecondLivesWidget();
     }
 
     @Override
@@ -80,6 +83,9 @@ public class HomeView extends View {
 
         customButton.update();
         customButton.setPosition(new PointF(smallButton.getSize().y * 0.5f, largeButton.getPosition().y + smallButton.getSize().y * 0.75f));
+
+        secondLivesWidget.update();
+        secondLivesWidget.setPosition(new PointF(RenderView.SIZE * 0.025f, RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.025f - secondLivesWidget.getSize().y));
     }
 
     @Override
@@ -90,6 +96,8 @@ public class HomeView extends View {
         mediumButton.render(canvas);
         largeButton.render(canvas);
         customButton.render(canvas);
+
+        secondLivesWidget.render(canvas);
     }
 
     @Override
@@ -98,6 +106,7 @@ public class HomeView extends View {
         if (mediumButton.onTouchEvent(event)) return true;
         if (largeButton.onTouchEvent(event)) return true;
         if (customButton.onTouchEvent(event)) return true;
+        if (secondLivesWidget.onTouchEvent(event)) return true;
 
         return false;
     }

@@ -1,10 +1,7 @@
 package com.github.breskin.minesweeper.game;
 
-import android.util.Log;
-
 import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
-import com.github.breskin.minesweeper.generic.View;
 import com.github.breskin.minesweeper.particles.ParticleSystem;
 
 public class GameLogic {
@@ -118,7 +115,7 @@ public class GameLogic {
     }
 
     public boolean hasSecondLife() {
-        return !secondLifeUsed && DataManager.SECOND_LIFES_COUNT > 0;
+        return !secondLifeUsed && DataManager.SECOND_LIVES_COUNT > 0;
     }
 
     public boolean isGamePaused() {
