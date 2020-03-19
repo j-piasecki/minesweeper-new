@@ -3,11 +3,13 @@ package com.github.breskin.minesweeper.home;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PointF;
 import android.view.MotionEvent;
 
 import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
+import com.github.breskin.minesweeper.game.GameLogic;
 import com.github.breskin.minesweeper.generic.Button;
 import com.github.breskin.minesweeper.generic.View;
 
@@ -16,8 +18,13 @@ public class HomeView extends View {
     private FieldSizeButton smallButton, mediumButton, largeButton, customButton;
     private SecondLivesWidget secondLivesWidget;
 
+    private Paint paint;
+
     public HomeView(final RenderView renderView) {
         super(renderView);
+
+        this.paint = new Paint();
+        this.paint.setAntiAlias(true);
 
         smallButton = new FieldSizeButton(DataManager.FIELD_SIZE_SMALL);
         smallButton.setCallback(new Button.ClickCallback() {
@@ -72,25 +79,27 @@ public class HomeView extends View {
     public void update() {
         super.update();
 
-        smallButton.update();
-        smallButton.setPosition(new PointF(smallButton.getSize().y * 0.1f, RenderView.VIEW_HEIGHT * 0.3f));
-
-        mediumButton.update();
-        mediumButton.setPosition(new PointF(smallButton.getSize().y * 0.5f, smallButton.getPosition().y + smallButton.getSize().y * 0.75f));
-
-        largeButton.update();
-        largeButton.setPosition(new PointF(smallButton.getSize().y * 0.1f, mediumButton.getPosition().y + smallButton.getSize().y * 0.75f));
-
-        customButton.update();
-        customButton.setPosition(new PointF(smallButton.getSize().y * 0.5f, largeButton.getPosition().y + smallButton.getSize().y * 0.75f));
-
         secondLivesWidget.update();
         secondLivesWidget.setPosition(new PointF(RenderView.SIZE * 0.025f, RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.025f - secondLivesWidget.getSize().y));
+
+        smallButton.update();
+        mediumButton.update();
+        largeButton.update();
+        customButton.update();
+
+        float buttonStart = (secondLivesWidget.getPosition().y - RenderView.SIZE * 0.275f - smallButton.getSize().y * 4f) * 0.5f;
+
+        smallButton.setPosition(new PointF(smallButton.getSize().y * 0.1f, RenderView.SIZE * 0.275f + buttonStart));
+        mediumButton.setPosition(new PointF(smallButton.getSize().y * 0.5f, smallButton.getPosition().y + smallButton.getSize().y * 0.75f));
+        largeButton.setPosition(new PointF(smallButton.getSize().y * 0.1f, mediumButton.getPosition().y + smallButton.getSize().y * 0.75f));
+        customButton.setPosition(new PointF(smallButton.getSize().y * 0.5f, largeButton.getPosition().y + smallButton.getSize().y * 0.75f));
     }
 
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
+
+        drawLogo(canvas);
 
         smallButton.render(canvas);
         mediumButton.render(canvas);
@@ -109,6 +118,39 @@ public class HomeView extends View {
         if (secondLivesWidget.onTouchEvent(event)) return true;
 
         return false;
+    }
+
+    private void drawLogo(Canvas canvas) {
+        paint.setTextSize(RenderView.SIZE * 0.125f);
+        paint.setColor(Color.WHITE);
+
+        PointF position = new PointF((RenderView.VIEW_WIDTH - paint.measureText(DataManager.HOME_VIEW_LOGO_FIRST) - paint.measureText(DataManager.HOME_VIEW_LOGO_SECOND) - RenderView.SIZE * 0.08f) * 0.5f, RenderView.SIZE * 0.15f);
+
+        canvas.drawText(DataManager.HOME_VIEW_LOGO_FIRST, position.x, position.y + paint.getTextSize(), paint);
+        canvas.drawText(DataManager.HOME_VIEW_LOGO_SECOND, position.x + paint.measureText(DataManager.HOME_VIEW_LOGO_FIRST) + RenderView.SIZE * 0.08f, position.y + paint.getTextSize(), paint);
+
+        drawFlag(canvas, new PointF(position.x + paint.measureText(DataManager.HOME_VIEW_LOGO_FIRST) - RenderView.SIZE * 0.055f, position.y + RenderView.SIZE * 0.025f));
+    }
+
+    private void drawFlag(Canvas canvas, PointF position) {
+        float size = RenderView.SIZE * 0.175f;
+
+        paint.setColor(Color.rgb(200, 0, 0));
+
+        Path triangle = new Path();
+        triangle.moveTo(position.x + size * 3f / 8f + size * 0.02f, position.y + size * 3f / 16f);
+        triangle.lineTo(position.x + size * 6f / 8f + size * 0.02f, position.y + size * 6f / 16f);
+        triangle.lineTo(position.x + size * 3f / 8f + size * 0.02f, position.y + size * 9f / 16f);
+        triangle.close();
+        canvas.drawPath(triangle, paint);
+
+
+        paint.setColor(Color.WHITE);
+        paint.setStrokeWidth(size * 0.05f);
+        paint.setStyle(Paint.Style.STROKE);
+        canvas.drawLine(position.x + size * 3f / 8f, position.y + size * 3f / 16, position.x + size * 3f / 8f, position.y + size * 13f / 16f, paint);
+        canvas.drawLine(position.x + size * 2f / 8f, position.y + size * 13f / 16, position.x + size * 5f / 8f, position.y + size * 13f / 16f, paint);
+        paint.setStyle(Paint.Style.FILL);
     }
 
     public static class Transition extends com.github.breskin.minesweeper.generic.Transition {

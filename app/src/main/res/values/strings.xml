@@ -18,4 +18,6 @@
     <string name="custom_view_mines">Number of mines</string>
     <string name="custom_view_header">Custom size</string>
     <string name="custom_view_start">Start</string>
+    <string name="home_view_logo_first">Mineswee</string>
+    <string name="home_view_logo_second">er</string>
 </resources>
