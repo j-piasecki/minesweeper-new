@@ -12,8 +12,6 @@ import com.github.breskin.minesweeper.generic.Button;
 import com.github.breskin.minesweeper.generic.Slider;
 import com.github.breskin.minesweeper.generic.View;
 
-import java.util.Collections;
-
 public class CustomFieldView extends View {
 
     private Paint paint;
@@ -21,8 +19,12 @@ public class CustomFieldView extends View {
     private Slider widthSlider, heightSlider, minesSlider;
     private FieldSizeButton startButton;
 
+    private float offset, targetOffset;
+
     public CustomFieldView(final RenderView renderView) {
         super(renderView);
+
+        this.offset = this.targetOffset = 0;
 
         this.paint = new Paint();
 
@@ -47,13 +49,15 @@ public class CustomFieldView extends View {
     public void update() {
         super.update();
 
-        startButton.setPosition(new PointF(RenderView.SIZE * 0.075f, RenderView.VIEW_HEIGHT * 0.925f - startButton.getSize().y));
+        this.offset += (targetOffset - offset) * 0.1f;
+
+        startButton.setPosition(new PointF(RenderView.SIZE * 0.075f, RenderView.VIEW_HEIGHT * 0.925f - startButton.getSize().y + offset));
         startButton.update();
 
         minesSlider.setMinValue(Math.round(widthSlider.getValue() * heightSlider.getValue() * 0.12f));
         minesSlider.setMaxValue(Math.round(widthSlider.getValue() * heightSlider.getValue() * 0.25f));
 
-        float buttonStart = (startButton.getPosition().y - RenderView.SIZE * 0.25f - minesSlider.getHeight() * 3 - RenderView.SIZE * 0.15f) * 0.5f;
+        float buttonStart = (startButton.getPosition().y - RenderView.SIZE * 0.25f - minesSlider.getHeight() * 3 - RenderView.SIZE * 0.15f) * 0.5f + offset;
 
         widthSlider.getPosition().y =  RenderView.SIZE * 0.25f + buttonStart;
         heightSlider.getPosition().y = widthSlider.getPosition().y + widthSlider.getHeight() + RenderView.SIZE * 0.075f;
@@ -68,12 +72,17 @@ public class CustomFieldView extends View {
     public void render(Canvas canvas) {
         paint.setColor(Color.WHITE);
         paint.setTextSize(RenderView.SIZE * 0.1f);
-        canvas.drawText(DataManager.CUSTOM_VIEW_HEADER, (RenderView.VIEW_WIDTH - paint.measureText(DataManager.CUSTOM_VIEW_HEADER)) * 0.5f, RenderView.SIZE * 0.25f, paint);
+        canvas.drawText(DataManager.CUSTOM_VIEW_HEADER, (RenderView.VIEW_WIDTH - paint.measureText(DataManager.CUSTOM_VIEW_HEADER)) * 0.5f, RenderView.SIZE * 0.25f + offset, paint);
 
         widthSlider.render(canvas);
         heightSlider.render(canvas);
         minesSlider.render(canvas);
         startButton.render(canvas);
+    }
+
+    @Override
+    public void open() {
+        this.offset = RenderView.SIZE * 0.25f;
     }
 
     @Override

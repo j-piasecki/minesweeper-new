@@ -21,6 +21,10 @@ public class View {
 
     }
 
+    public void open() {
+
+    }
+
     public boolean onTouchEvent(MotionEvent event) {
         return false;
     }

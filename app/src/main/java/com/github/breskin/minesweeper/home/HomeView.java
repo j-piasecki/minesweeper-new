@@ -20,8 +20,12 @@ public class HomeView extends View {
 
     private Paint paint;
 
+    private float offset, targetOffset;
+
     public HomeView(final RenderView renderView) {
         super(renderView);
+
+        this.offset = this.targetOffset = 0;
 
         this.paint = new Paint();
         this.paint.setAntiAlias(true);
@@ -79,15 +83,17 @@ public class HomeView extends View {
     public void update() {
         super.update();
 
+        this.offset += (targetOffset - offset) * 0.1f;
+
         secondLivesWidget.update();
-        secondLivesWidget.setPosition(new PointF(RenderView.SIZE * 0.025f, RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.025f - secondLivesWidget.getSize().y));
+        secondLivesWidget.setPosition(new PointF(RenderView.SIZE * 0.025f, RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.025f - secondLivesWidget.getSize().y + offset));
 
         smallButton.update();
         mediumButton.update();
         largeButton.update();
         customButton.update();
 
-        float buttonStart = (secondLivesWidget.getPosition().y - RenderView.SIZE * 0.275f - smallButton.getSize().y * 4f) * 0.5f;
+        float buttonStart = (secondLivesWidget.getPosition().y - RenderView.SIZE * 0.275f - smallButton.getSize().y * 4f) * 0.5f + offset;
 
         smallButton.setPosition(new PointF(smallButton.getSize().y * 0.1f, RenderView.SIZE * 0.275f + buttonStart));
         mediumButton.setPosition(new PointF(smallButton.getSize().y * 0.5f, smallButton.getPosition().y + smallButton.getSize().y * 0.75f));
@@ -124,12 +130,17 @@ public class HomeView extends View {
         paint.setTextSize(RenderView.SIZE * 0.125f);
         paint.setColor(Color.WHITE);
 
-        PointF position = new PointF((RenderView.VIEW_WIDTH - paint.measureText(DataManager.HOME_VIEW_LOGO_FIRST) - paint.measureText(DataManager.HOME_VIEW_LOGO_SECOND) - RenderView.SIZE * 0.08f) * 0.5f, RenderView.SIZE * 0.15f);
+        PointF position = new PointF((RenderView.VIEW_WIDTH - paint.measureText(DataManager.HOME_VIEW_LOGO_FIRST) - paint.measureText(DataManager.HOME_VIEW_LOGO_SECOND) - RenderView.SIZE * 0.08f) * 0.5f, RenderView.SIZE * 0.15f + offset);
 
         canvas.drawText(DataManager.HOME_VIEW_LOGO_FIRST, position.x, position.y + paint.getTextSize(), paint);
         canvas.drawText(DataManager.HOME_VIEW_LOGO_SECOND, position.x + paint.measureText(DataManager.HOME_VIEW_LOGO_FIRST) + RenderView.SIZE * 0.08f, position.y + paint.getTextSize(), paint);
 
         drawFlag(canvas, new PointF(position.x + paint.measureText(DataManager.HOME_VIEW_LOGO_FIRST) - RenderView.SIZE * 0.055f, position.y + RenderView.SIZE * 0.025f));
+    }
+
+    @Override
+    public void open() {
+        this.offset = RenderView.VIEW_HEIGHT * 0.15f;
     }
 
     private void drawFlag(Canvas canvas, PointF position) {
@@ -193,8 +204,8 @@ public class HomeView extends View {
             canvas.translate(origin.x, origin.y);
             canvas.rotate(-45);
 
-            canvas.drawRect(-RenderView.VIEW_WIDTH * 2.5f * progress, (progress > 0.5) ? RenderView.VIEW_HEIGHT * 2f * (progress - 0.5f) * 1.05f : 0, RenderView.VIEW_WIDTH * 2.5f * progress, RenderView.VIEW_HEIGHT * 2f * progress,  paint);
-            canvas.drawRect(-RenderView.VIEW_WIDTH * 2.5f * progress, -RenderView.VIEW_HEIGHT * 2f * progress, RenderView.VIEW_WIDTH * 2.5f * progress, (progress > 0.5) ? -RenderView.VIEW_HEIGHT * 2f * (progress - 0.5f) * 1.05f: 0,  paint);
+            canvas.drawRect(-RenderView.VIEW_WIDTH * 3f * progress, (progress > 0.5) ? RenderView.VIEW_HEIGHT * 2f * (progress - 0.5f) * 1.05f : 0, RenderView.VIEW_WIDTH * 3f * progress, RenderView.VIEW_HEIGHT * 2f * progress,  paint);
+            canvas.drawRect(-RenderView.VIEW_WIDTH * 3f * progress, -RenderView.VIEW_HEIGHT * 2f * progress, RenderView.VIEW_WIDTH * 3f * progress, (progress > 0.5) ? -RenderView.VIEW_HEIGHT * 2f * (progress - 0.5f) * 1.05f: 0,  paint);
 
             canvas.restore();
         }

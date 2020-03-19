@@ -120,8 +120,20 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
             public void onViewChange() {
                 currentView = transition.getTargetView();
 
-                if (currentView == ViewType.Game)
-                    gameView.reset();
+                switch (currentView) {
+                    case Game:
+                        gameView.open();
+                        gameView.reset();
+                        break;
+
+                    case Home:
+                        homeView.open();
+                        break;
+
+                    case CustomField:
+                        customFieldView.open();
+                        break;
+                }
             }
         });
     }
@@ -134,6 +146,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
             if (getHolder().getSurface().isValid()) {
                 if (currentView == ViewType.None) {
                     currentView = ViewType.Home;
+                    homeView.open();
                 }
 
                 long time = System.nanoTime() / 1000000;
