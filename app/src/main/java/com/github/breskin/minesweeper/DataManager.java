@@ -3,7 +3,17 @@ package com.github.breskin.minesweeper;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.Calendar;
+import java.util.Objects;
 
 public class DataManager {
 
@@ -59,6 +69,11 @@ public class DataManager {
             editor.putString("last-day-played", String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_YEAR)));
             editor.putInt(SECOND_LIVES_STRING, SECOND_LIVES_COUNT);
             editor.apply();
+
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("sec-lives");
+                reference.setValue(SECOND_LIVES_COUNT);
+            }
         }
     }
 
@@ -66,6 +81,11 @@ public class DataManager {
         SECOND_LIVES_COUNT--;
 
         preferences.edit().putInt(SECOND_LIVES_STRING, SECOND_LIVES_COUNT).apply();
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("sec-lives");
+            reference.setValue(SECOND_LIVES_COUNT);
+        }
     }
 
     public static boolean checkGameDuration(int width, int height, int mines, int duration) {
@@ -73,6 +93,11 @@ public class DataManager {
 
         if (bestTime == -1 || duration < bestTime) {
             preferences.edit().putInt(width + "x" + height + "x" + mines, duration).apply();
+
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("scores").child(width + "x" + height + "x" + mines);
+                reference.setValue(duration);
+            }
 
             return true;
         }
@@ -85,6 +110,44 @@ public class DataManager {
     }
 
     public static void syncDataWithCloud() {
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
 
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child("sec-lives").getValue() != null) {
+                    int secondLives = ((Number) Objects.requireNonNull(dataSnapshot.child("sec-lives").getValue())).intValue();
+
+                    if (secondLives > SECOND_LIVES_COUNT) {
+                        SECOND_LIVES_COUNT = secondLives;
+                        preferences.edit().putInt(SECOND_LIVES_STRING, SECOND_LIVES_COUNT).apply();
+                    } else {
+                        reference.child("sec-lives").setValue(SECOND_LIVES_COUNT);
+                    }
+                } else {
+                    reference.child("sec-lives").setValue(SECOND_LIVES_COUNT);
+                }
+
+                SharedPreferences.Editor editor = preferences.edit();
+
+                for (DataSnapshot snapshot : dataSnapshot.child("scores").getChildren()) {
+                    int currentTime = preferences.getInt(snapshot.getKey(), -1);
+                    int cloudTime = ((Number) Objects.requireNonNull(snapshot.getValue())).intValue();
+
+                    if (currentTime == -1 || cloudTime < currentTime) {
+                        editor.putInt(snapshot.getKey(), cloudTime);
+                    } else if (currentTime < cloudTime) {
+                        reference.child("scores").child(Objects.requireNonNull(snapshot.getKey())).setValue(currentTime);
+                    }
+                }
+
+                editor.apply();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

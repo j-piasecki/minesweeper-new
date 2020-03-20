@@ -11,6 +11,7 @@ import android.view.Window;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
@@ -40,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
+                String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                FirebaseDatabase.getInstance().getReference("user2uid").child(email.substring(0, email.indexOf("@"))).setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                FirebaseDatabase.getInstance().getReference("uid2user").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(email.substring(0, email.indexOf("@")));
+
                 DataManager.syncDataWithCloud();
             }
         }
