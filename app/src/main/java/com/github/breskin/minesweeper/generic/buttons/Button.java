@@ -1,4 +1,4 @@
-package com.github.breskin.minesweeper.generic;
+package com.github.breskin.minesweeper.generic.buttons;
 
 import android.graphics.Canvas;
 import android.graphics.PointF;
@@ -73,15 +73,25 @@ public class Button {
     }
 
     protected boolean isPointInside(PointF point) {
-        return false;
+        PointF size = getSize();
+
+        return point.x > getPosition().x && point.y > getPosition().y && point.x < getPosition().x + size.x && point.y < getPosition().y + size.y;
     }
 
     protected float getSaturation() {
         return saturation;
     }
 
+    protected boolean isHovered() {
+        return hovered;
+    }
+
     public PointF getPosition() {
         return position;
+    }
+
+    public PointF getSize() {
+        return new PointF(0, 0);
     }
 
     public void setPosition(PointF position) {

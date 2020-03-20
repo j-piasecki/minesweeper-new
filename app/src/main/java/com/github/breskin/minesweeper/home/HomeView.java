@@ -10,14 +10,16 @@ import android.view.MotionEvent;
 import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.R;
 import com.github.breskin.minesweeper.RenderView;
-import com.github.breskin.minesweeper.game.GameLogic;
-import com.github.breskin.minesweeper.generic.Button;
+import com.github.breskin.minesweeper.generic.buttons.Button;
+import com.github.breskin.minesweeper.generic.buttons.FancyButton;
 import com.github.breskin.minesweeper.generic.View;
+import com.github.breskin.minesweeper.generic.buttons.ImageButton;
 
 public class HomeView extends View {
 
-    private FieldSizeButton smallButton, mediumButton, largeButton, customButton;
+    private FancyButton smallButton, mediumButton, largeButton, customButton;
     private SecondLivesWidget secondLivesWidget;
+    private ImageButton settingsButton;
 
     private Paint paint;
 
@@ -31,7 +33,7 @@ public class HomeView extends View {
         this.paint = new Paint();
         this.paint.setAntiAlias(true);
 
-        smallButton = new FieldSizeButton(DataManager.FIELD_SIZE_SMALL);
+        smallButton = new FancyButton(DataManager.FIELD_SIZE_SMALL);
         smallButton.setIcon(renderView.getContext(), R.drawable.ic_field_small_button);
         smallButton.setCallback(new Button.ClickCallback() {
             @Override
@@ -44,7 +46,7 @@ public class HomeView extends View {
             }
         });
 
-        mediumButton = new FieldSizeButton(DataManager.FIELD_SIZE_MEDIUM);
+        mediumButton = new FancyButton(DataManager.FIELD_SIZE_MEDIUM);
         mediumButton.setIcon(renderView.getContext(), R.drawable.ic_field_medium_button);
         mediumButton.setCallback(new Button.ClickCallback() {
             @Override
@@ -57,7 +59,7 @@ public class HomeView extends View {
             }
         });
 
-        largeButton = new FieldSizeButton(DataManager.FIELD_SIZE_LARGE);
+        largeButton = new FancyButton(DataManager.FIELD_SIZE_LARGE);
         largeButton.setIcon(renderView.getContext(), R.drawable.ic_field_large_button);
         largeButton.setCallback(new Button.ClickCallback() {
             @Override
@@ -70,7 +72,7 @@ public class HomeView extends View {
             }
         });
 
-        customButton = new FieldSizeButton(DataManager.FIELD_SIZE_CUSTOM);
+        customButton = new FancyButton(DataManager.FIELD_SIZE_CUSTOM);
         customButton.setIcon(renderView.getContext(), R.drawable.ic_field_custom_button);
         customButton.setCallback(new Button.ClickCallback() {
             @Override
@@ -82,6 +84,16 @@ public class HomeView extends View {
         });
 
         secondLivesWidget = new SecondLivesWidget();
+
+        settingsButton = new ImageButton(renderView.getContext(), R.drawable.ic_settings);
+        settingsButton.setCallback(new Button.ClickCallback() {
+            @Override
+            public void onClick() {
+                Transition transition = new HomeView.Transition(RenderView.ViewType.Settings);
+                transition.setOrigin(new PointF(settingsButton.getPosition().x + settingsButton.getSize().y / 2, settingsButton.getPosition().y + settingsButton.getSize().y / 2));
+                renderView.switchView(transition);
+            }
+        });
     }
 
     @Override
@@ -92,6 +104,9 @@ public class HomeView extends View {
 
         secondLivesWidget.update();
         secondLivesWidget.setPosition(new PointF(RenderView.SIZE * 0.025f, RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.025f - secondLivesWidget.getSize().y + offset));
+
+        settingsButton.update();
+        settingsButton.setPosition(new PointF(RenderView.VIEW_WIDTH - settingsButton.getSize().x - RenderView.SIZE * 0.025f, RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.025f - settingsButton.getSize().y + offset));
 
         smallButton.update();
         mediumButton.update();
@@ -116,6 +131,7 @@ public class HomeView extends View {
         mediumButton.render(canvas);
         largeButton.render(canvas);
         customButton.render(canvas);
+        settingsButton.render(canvas);
 
         secondLivesWidget.render(canvas);
     }
@@ -127,6 +143,7 @@ public class HomeView extends View {
         if (largeButton.onTouchEvent(event)) return true;
         if (customButton.onTouchEvent(event)) return true;
         if (secondLivesWidget.onTouchEvent(event)) return true;
+        if (settingsButton.onTouchEvent(event)) return true;
 
         return false;
     }

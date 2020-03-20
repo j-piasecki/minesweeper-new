@@ -7,20 +7,21 @@ import android.view.MotionEvent;
 
 import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
-import com.github.breskin.minesweeper.generic.Button;
+import com.github.breskin.minesweeper.generic.buttons.Button;
+import com.github.breskin.minesweeper.generic.buttons.DefaultButton;
 import com.github.breskin.minesweeper.generic.HubView;
 import com.github.breskin.minesweeper.generic.Transition;
 import com.github.breskin.minesweeper.home.HomeView;
 
 public class HubGameWonView extends HubView {
 
-    private InfoButton backButton, replayButton;
+    private DefaultButton backButton, replayButton;
 
     public HubGameWonView(final InfoHub parent) {
         super(parent);
 
-        backButton = new InfoButton(DataManager.HUB_BUTTON_OK, false);
-        replayButton = new InfoButton(DataManager.HUB_BUTTON_REPLAY, true);
+        backButton = new DefaultButton(DataManager.HUB_BUTTON_OK, false);
+        replayButton = new DefaultButton(DataManager.HUB_BUTTON_REPLAY, true);
 
         backButton.setCallback(new Button.ClickCallback() {
             @Override

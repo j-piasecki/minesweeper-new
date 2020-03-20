@@ -8,7 +8,8 @@ import android.view.MotionEvent;
 
 import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
-import com.github.breskin.minesweeper.generic.Button;
+import com.github.breskin.minesweeper.generic.buttons.Button;
+import com.github.breskin.minesweeper.generic.buttons.FancyButton;
 import com.github.breskin.minesweeper.generic.Slider;
 import com.github.breskin.minesweeper.generic.View;
 
@@ -17,7 +18,7 @@ public class CustomFieldView extends View {
     private Paint paint;
 
     private Slider widthSlider, heightSlider, minesSlider;
-    private FieldSizeButton startButton;
+    private FancyButton startButton;
 
     private float offset, targetOffset;
 
@@ -32,7 +33,7 @@ public class CustomFieldView extends View {
         this.heightSlider = new Slider(DataManager.CUSTOM_VIEW_HEIGHT, 10, 50);
         this.minesSlider = new Slider(DataManager.CUSTOM_VIEW_MINES);
 
-        startButton = new FieldSizeButton(DataManager.CUSTOM_VIEW_START);
+        startButton = new FancyButton(DataManager.CUSTOM_VIEW_START);
         startButton.setCallback(new Button.ClickCallback() {
             @Override
             public void onClick() {

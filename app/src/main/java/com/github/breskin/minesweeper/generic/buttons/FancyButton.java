@@ -1,4 +1,4 @@
-package com.github.breskin.minesweeper.home;
+package com.github.breskin.minesweeper.generic.buttons;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,9 +14,8 @@ import android.graphics.drawable.Drawable;
 import androidx.core.content.ContextCompat;
 
 import com.github.breskin.minesweeper.RenderView;
-import com.github.breskin.minesweeper.generic.Button;
 
-public class FieldSizeButton extends Button {
+public class FancyButton extends Button {
 
     private Paint paint;
     private Path foreground, background;
@@ -24,7 +23,7 @@ public class FieldSizeButton extends Button {
     private String text;
     private Bitmap icon;
 
-    public FieldSizeButton(String text) {
+    public FancyButton(String text) {
         super();
 
         this.text = text;
@@ -97,6 +96,7 @@ public class FieldSizeButton extends Button {
         vectorDrawable.draw(canvas);
     }
 
+    @Override
     public PointF getSize() {
         return size;
     }

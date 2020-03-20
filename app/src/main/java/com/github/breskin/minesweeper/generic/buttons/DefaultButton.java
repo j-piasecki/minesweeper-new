@@ -1,4 +1,4 @@
-package com.github.breskin.minesweeper.game.hub;
+package com.github.breskin.minesweeper.generic.buttons;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -6,15 +6,14 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 
 import com.github.breskin.minesweeper.RenderView;
-import com.github.breskin.minesweeper.generic.Button;
 
-public class InfoButton extends Button {
+public class DefaultButton extends Button {
 
     private Paint paint;
     private String text;
     private boolean filled;
 
-    public InfoButton(String text, boolean filled) {
+    public DefaultButton(String text, boolean filled) {
         super();
 
         this.text = text;
@@ -44,12 +43,6 @@ public class InfoButton extends Button {
     }
 
     @Override
-    protected boolean isPointInside(PointF point) {
-        PointF size = getSize();
-
-        return point.x > getPosition().x && point.y > getPosition().y && point.x < getPosition().x + size.x && point.y < getPosition().y + size.y;
-    }
-
     public PointF getSize() {
         return new PointF(RenderView.SIZE * 0.4f, RenderView.SIZE * 0.08f);
     }

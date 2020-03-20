@@ -21,14 +21,14 @@ public class DataManager {
 
     public static String FIELD_SIZE_SMALL, FIELD_SIZE_MEDIUM, FIELD_SIZE_LARGE, FIELD_SIZE_CUSTOM, HUB_BUTTON_OK, HUB_BUTTON_REPLAY, HUB_GAME_LOST, HUB_GAME_WON, HUB_BUTTON_NO, HUB_BUTTON_YES,
             HUB_SECOND_LIFE_AVAILABLE, HUB_SECOND_LIFE_ONCE_REMINDER, HUB_BEST_TIME, CUSTOM_VIEW_WIDTH, CUSTOM_VIEW_HEIGHT, CUSTOM_VIEW_MINES, CUSTOM_VIEW_HEADER, CUSTOM_VIEW_START,
-            HOME_VIEW_LOGO_FIRST, HOME_VIEW_LOGO_SECOND;
+            HOME_VIEW_LOGO_FIRST, HOME_VIEW_LOGO_SECOND, SETTINGS_VIEW_HEADER, SETTINGS_VIEW_VIBRATIONS, SETTINGS_VIEW_FLAG_ANIMATIONS, SETTINGS_VIEW_REDUCE_PARTICLES, SETTINGS_SIGN_IN;
 
-    private static String SECOND_LIVES_STRING = "second-chance-count";
+    private static String SECOND_LIVES_STRING = "second-chance-count", VIBRATIONS_STRING = "vibrations", FLAG_ANIMATIONS_STRING = "flag-animations", REDUCE_PARTICLES_STRING = "reduce-particles";
 
     public static final int SECOND_LIVES_DAILY_BONUS = 3;
     public static int SECOND_LIVES_COUNT = 0;
 
-    public static boolean FIRST_LAUNCH = false, FIRST_LAUNCH_TODAY = false;
+    public static boolean FIRST_LAUNCH = false, FIRST_LAUNCH_TODAY = false, VIBRATIONS_ENABLED = true, FLAG_ANIMATIONS_ENABLED = true, REDUCE_PARTICLES_ON = false;
 
     public static void load(Context context) {
         FIELD_SIZE_SMALL = context.getString(R.string.game_size_small);
@@ -51,9 +51,18 @@ public class DataManager {
         CUSTOM_VIEW_START = context.getString(R.string.custom_view_start);
         HOME_VIEW_LOGO_FIRST = context.getString(R.string.home_view_logo_first);
         HOME_VIEW_LOGO_SECOND = context.getString(R.string.home_view_logo_second);
+        SETTINGS_VIEW_HEADER = context.getString(R.string.settings_view_header);
+        SETTINGS_VIEW_VIBRATIONS = context.getString(R.string.settings_view_vibrations);
+        SETTINGS_VIEW_FLAG_ANIMATIONS = context.getString(R.string.settings_view_flag_animations);
+        SETTINGS_VIEW_REDUCE_PARTICLES = context.getString(R.string.settings_view_reduce_particles);
+        SETTINGS_SIGN_IN = context.getString(R.string.settings_view_sign_in);
 
         preferences = context.getSharedPreferences("data", Context.MODE_PRIVATE);
         SECOND_LIVES_COUNT = preferences.getInt(SECOND_LIVES_STRING, 0);
+
+        VIBRATIONS_ENABLED = preferences.getBoolean(VIBRATIONS_STRING, true);
+        FLAG_ANIMATIONS_ENABLED = preferences.getBoolean(FLAG_ANIMATIONS_STRING, true);
+        REDUCE_PARTICLES_ON = preferences.getBoolean(REDUCE_PARTICLES_STRING, false);
 
         String lastDayPlayed = preferences.getString("last-day-played", "none");
 
@@ -109,6 +118,24 @@ public class DataManager {
         return preferences.getInt(width + "x" + height + "x" + mines, -1);
     }
 
+    public static void setVibrationsEnabled(boolean vibrationsEnabled) {
+        VIBRATIONS_ENABLED = vibrationsEnabled;
+
+        preferences.edit().putBoolean(VIBRATIONS_STRING, VIBRATIONS_ENABLED).apply();
+    }
+
+    public static void setFlagAnimationsEnabled(boolean flagAnimationsEnabled) {
+        FLAG_ANIMATIONS_ENABLED = flagAnimationsEnabled;
+
+        preferences.edit().putBoolean(FLAG_ANIMATIONS_STRING, FLAG_ANIMATIONS_ENABLED).apply();
+    }
+
+    public static void setReduceParticlesOn(boolean reduceParticlesOn) {
+        REDUCE_PARTICLES_ON = reduceParticlesOn;
+
+        preferences.edit().putBoolean(REDUCE_PARTICLES_STRING, REDUCE_PARTICLES_ON).apply();
+    }
+
     public static void syncDataWithCloud() {
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
 
@@ -128,20 +155,7 @@ public class DataManager {
                     reference.child("sec-lives").setValue(SECOND_LIVES_COUNT);
                 }
 
-                SharedPreferences.Editor editor = preferences.edit();
-
-                for (DataSnapshot snapshot : dataSnapshot.child("scores").getChildren()) {
-                    int currentTime = preferences.getInt(snapshot.getKey(), -1);
-                    int cloudTime = ((Number) Objects.requireNonNull(snapshot.getValue())).intValue();
-
-                    if (currentTime == -1 || cloudTime < currentTime) {
-                        editor.putInt(snapshot.getKey(), cloudTime);
-                    } else if (currentTime < cloudTime) {
-                        reference.child("scores").child(Objects.requireNonNull(snapshot.getKey())).setValue(currentTime);
-                    }
-                }
-
-                editor.apply();
+                syncScores(dataSnapshot);
             }
 
             @Override
@@ -149,5 +163,23 @@ public class DataManager {
 
             }
         });
+    }
+
+    private static void syncScores(DataSnapshot dataSnapshot) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+        SharedPreferences.Editor editor = preferences.edit();
+
+        for (DataSnapshot snapshot : dataSnapshot.child("scores").getChildren()) {
+            int currentTime = preferences.getInt(snapshot.getKey(), -1);
+            int cloudTime = ((Number) Objects.requireNonNull(snapshot.getValue())).intValue();
+
+            if (currentTime == -1 || cloudTime < currentTime) {
+                editor.putInt(snapshot.getKey(), cloudTime);
+            } else if (currentTime < cloudTime) {
+                reference.child("scores").child(Objects.requireNonNull(snapshot.getKey())).setValue(currentTime);
+            }
+        }
+
+        editor.apply();
     }
 }

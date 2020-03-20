@@ -21,4 +21,9 @@
     <string name="custom_view_start">Start</string>
     <string name="home_view_logo_first">Mineswee</string>
     <string name="home_view_logo_second">er</string>
+    <string name="settings_view_header">Settings</string>
+    <string name="settings_view_vibrations">Vibrations</string>
+    <string name="settings_view_flag_animations">Flag animations</string>
+    <string name="settings_view_reduce_particles">Reduce particles</string>
+    <string name="settings_view_sign_in">Sign in</string>
 </resources>

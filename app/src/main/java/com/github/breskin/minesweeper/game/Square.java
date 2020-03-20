@@ -8,6 +8,7 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.Log;
 
+import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
 
 public class Square {
@@ -214,13 +215,15 @@ public class Square {
 
         this.revealed = true;
 
+        int particlesCount = (DataManager.REDUCE_PARTICLES_ON) ? 4 : 8;
+
         if (type == TYPE_MINE) {
             if (tintedRed)
-                logic.getParticleSystem().createInPoint(logic, new PointF(visibleX + 0.5f, visibleY + 0.5f), logic.getCamera().getBlockSize() * 0.7f, 8, 192, 0, 0);
+                logic.getParticleSystem().createInPoint(logic, new PointF(visibleX + 0.5f, visibleY + 0.5f), logic.getCamera().getBlockSize() * 0.7f, particlesCount, 192, 0, 0);
             else
-                logic.getParticleSystem().createInPoint(logic, new PointF(visibleX + 0.5f, visibleY + 0.5f), logic.getCamera().getBlockSize() * 0.7f, 8, 0, 192, 0);
+                logic.getParticleSystem().createInPoint(logic, new PointF(visibleX + 0.5f, visibleY + 0.5f), logic.getCamera().getBlockSize() * 0.7f, particlesCount, 0, 192, 0);
         } else {
-            logic.getParticleSystem().createInPoint(logic, new PointF(visibleX + 0.5f, visibleY + 0.5f), logic.getCamera().getBlockSize() * 0.7f, 8, 48, 48, 48);
+            logic.getParticleSystem().createInPoint(logic, new PointF(visibleX + 0.5f, visibleY + 0.5f), logic.getCamera().getBlockSize() * 0.7f, particlesCount, 48, 48, 48);
         }
 
         if (type == TYPE_EMPTY) {
@@ -259,10 +262,12 @@ public class Square {
 
         flagAnimation = 0;
 
-        if (flagged)
-            currentAnimation = Animation.PlaceFlag;
-        else
-            currentAnimation = Animation.DropFlag;
+        if (DataManager.FLAG_ANIMATIONS_ENABLED) {
+            if (flagged)
+                currentAnimation = Animation.PlaceFlag;
+            else
+                currentAnimation = Animation.DropFlag;
+        }
 
         if (logic.isGamePaused()) return;
 

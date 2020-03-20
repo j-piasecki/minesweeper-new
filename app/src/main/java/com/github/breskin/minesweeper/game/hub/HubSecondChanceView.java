@@ -7,18 +7,19 @@ import android.view.MotionEvent;
 
 import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
-import com.github.breskin.minesweeper.generic.Button;
+import com.github.breskin.minesweeper.generic.buttons.Button;
+import com.github.breskin.minesweeper.generic.buttons.DefaultButton;
 import com.github.breskin.minesweeper.generic.HubView;
 
 public class HubSecondChanceView extends HubView {
 
-    private InfoButton noButton, yesButton;
+    private DefaultButton noButton, yesButton;
 
     public HubSecondChanceView(final InfoHub parent) {
         super(parent);
 
-        noButton = new InfoButton(DataManager.HUB_BUTTON_NO, false);
-        yesButton = new InfoButton(DataManager.HUB_BUTTON_YES, true);
+        noButton = new DefaultButton(DataManager.HUB_BUTTON_NO, false);
+        yesButton = new DefaultButton(DataManager.HUB_BUTTON_YES, true);
 
         noButton.setCallback(new Button.ClickCallback() {
             @Override

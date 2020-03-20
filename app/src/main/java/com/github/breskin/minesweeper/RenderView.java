@@ -17,13 +17,14 @@ import com.github.breskin.minesweeper.game.GameView;
 import com.github.breskin.minesweeper.generic.Transition;
 import com.github.breskin.minesweeper.home.CustomFieldView;
 import com.github.breskin.minesweeper.home.HomeView;
+import com.github.breskin.minesweeper.home.SettingsView;
 import com.github.breskin.minesweeper.particles.ParticleSystem;
 
 public class RenderView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
 
     public static int VIEW_WIDTH, VIEW_HEIGHT, FRAME_TIME, SIZE;
 
-    public enum ViewType { None, Home, Game, CustomField }
+    public enum ViewType { None, Home, Game, CustomField, Settings }
 
     public static Context CONTEXT;
 
@@ -38,6 +39,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
     private HomeView homeView;
     private GameView gameView;
     private CustomFieldView customFieldView;
+    private SettingsView settingsView;
 
     public RenderView(Context context) {
         super(context);
@@ -52,6 +54,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
         homeView = new HomeView(this);
         gameView = new GameView(this);
         customFieldView = new CustomFieldView(this);
+        settingsView = new SettingsView(this);
 
         getHolder().addCallback(this);
 
@@ -67,12 +70,14 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
             case Home: homeView.update(); break;
             case Game: gameView.update(); break;
             case CustomField: customFieldView.update(); break;
+            case Settings: settingsView.update(); break;
         }
 
         switch (currentView) {
             case Home: homeView.render(canvas); break;
             case Game: gameView.render(canvas); break;
             case CustomField: customFieldView.render(canvas); break;
+            case Settings: settingsView.render(canvas); break;
         }
 
         particleSystem.update(gameView.getGameLogic());
@@ -101,6 +106,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
             case Home: if (homeView.onTouchEvent(event)) return true; break;
             case Game: if (gameView.onTouchEvent(event)) return true; break;
             case CustomField: if (customFieldView.onTouchEvent(event)) return true; break;
+            case Settings: if (settingsView.onTouchEvent(event)) return true; break;
         }
 
         return true;
@@ -132,6 +138,10 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
 
                     case CustomField:
                         customFieldView.open();
+                        break;
+
+                    case Settings:
+                        settingsView.open();
                         break;
                 }
             }
@@ -180,7 +190,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
     }
 
     public boolean onBackPressed() {
-        if (currentView == ViewType.Game || currentView == ViewType.CustomField) {
+        if (currentView == ViewType.Game || currentView == ViewType.CustomField || currentView == ViewType.Settings) {
             Transition transition = new HomeView.Transition(ViewType.Home);
             switchView(transition);
 
@@ -234,8 +244,8 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
     }
 
     public static void vibrate(int time) {
-        /*if  (!Config.VIBRATIONS_ENABLED)
-            return;*/
+        if  (!DataManager.VIBRATIONS_ENABLED)
+            return;
 
         Vibrator v = (Vibrator) CONTEXT.getSystemService(Context.VIBRATOR_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
