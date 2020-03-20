@@ -138,6 +138,13 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
         });
     }
 
+    public void showLoginScreen() {
+        MainActivity mainActivity = (MainActivity)CONTEXT;
+
+        if (mainActivity != null)
+            mainActivity.showLoginScreen();
+    }
+
     @Override
     public void run() {
         Canvas canvas;

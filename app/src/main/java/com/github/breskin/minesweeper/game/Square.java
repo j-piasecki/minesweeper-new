@@ -96,7 +96,29 @@ public class Square {
             drawFlag(logic, canvas, position, (int)(255 * flagAnimation));
         } else {
             position = logic.getCamera().calculateOnScreenPosition(new PointF(visibleX, visibleY + flagAnimation * 2));
-            drawFlag(logic, canvas, position, (int)(255 * (1 - flagAnimation)));
+            int alpha = (int)(255 * (1 - flagAnimation));
+            float size = logic.getCamera().getBlockSize();
+            paint.setColor(Color.argb(alpha, 200, 0, 0));
+
+            canvas.save();
+            canvas.translate(position.x + size * 3f / 8f + size * 0.02f, position.y + size * 13f / 16f);
+            canvas.rotate(60 * flagAnimation);
+
+            Path triangle = new Path();
+            triangle.moveTo(0, -size * 10f / 16f);
+            triangle.lineTo(size * 3f / 8f, -size * 7f / 16f);
+            triangle.lineTo(0, -size * 4f / 16f);
+            triangle.close();
+            canvas.drawPath(triangle, paint);
+
+
+            paint.setColor(Color.argb(alpha, 0, 0, 0));
+            paint.setStrokeWidth(size * 0.05f);
+            paint.setStyle(Paint.Style.STROKE);
+            canvas.drawLine(0, -size * 10f / 16, 0, 0, paint);
+            paint.setStyle(Paint.Style.FILL);
+
+            canvas.restore();
         }
     }
 

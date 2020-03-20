@@ -83,4 +83,8 @@ public class DataManager {
     public static int getBestTime(int width, int height, int mines) {
         return preferences.getInt(width + "x" + height + "x" + mines, -1);
     }
+
+    public static void syncDataWithCloud() {
+
+    }
 }
