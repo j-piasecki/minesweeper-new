@@ -214,7 +214,7 @@ public class HomeView extends View {
                     viewExitCallback.onExit();
             }
 
-            if (progress > 0.97)
+            if (progress > 0.99)
                 transitionFinishedCallback.onFinished();
         }
 
@@ -226,8 +226,8 @@ public class HomeView extends View {
             canvas.translate(origin.x, origin.y);
             canvas.rotate(-45);
 
-            canvas.drawRect(-RenderView.VIEW_WIDTH * 3f * progress, (progress > 0.5) ? RenderView.VIEW_HEIGHT * 2f * (progress - 0.5f) * 1.05f : 0, RenderView.VIEW_WIDTH * 3f * progress, RenderView.VIEW_HEIGHT * 2f * progress,  paint);
-            canvas.drawRect(-RenderView.VIEW_WIDTH * 3f * progress, -RenderView.VIEW_HEIGHT * 2f * progress, RenderView.VIEW_WIDTH * 3f * progress, (progress > 0.5) ? -RenderView.VIEW_HEIGHT * 2f * (progress - 0.5f) * 1.05f: 0,  paint);
+            canvas.drawRect(-RenderView.VIEW_WIDTH * 3f * progress, (progress > 0.5) ? RenderView.VIEW_HEIGHT * 2f * (progress - 0.5f) * 1.1f : 0, RenderView.VIEW_WIDTH * 3f * progress, RenderView.VIEW_HEIGHT * 2f * progress,  paint);
+            canvas.drawRect(-RenderView.VIEW_WIDTH * 3f * progress, -RenderView.VIEW_HEIGHT * 2f * progress, RenderView.VIEW_WIDTH * 3f * progress, (progress > 0.5) ? -RenderView.VIEW_HEIGHT * 2f * (progress - 0.5f) * 1.1f: 0,  paint);
 
             canvas.restore();
         }
