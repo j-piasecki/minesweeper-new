@@ -12,9 +12,14 @@ import com.github.breskin.minesweeper.RenderView;
 
 public class Square {
 
+    private enum Animation { None, PlaceFlag, DropFlag }
+
     public static final int TYPE_MINE = -1, TYPE_EMPTY = 0, TYPE_1 = 1, TYPE_2 = 2, TYPE_3 = 3, TYPE_4 = 4, TYPE_5 = 5, TYPE_6 = 6, TYPE_7 = 7, TYPE_8 = 8;
 
     private static Paint paint = new Paint();
+    private Animation currentAnimation = Animation.None;
+
+    private float flagAnimation = 0;
 
     private float visibleX, visibleY;
     private int x, y, targetX, targetY;
@@ -32,6 +37,14 @@ public class Square {
     public void update() {
         this.visibleX += (targetX - visibleX) * 0.1f;
         this.visibleY += (targetY - visibleY) * 0.1f;
+
+        if (currentAnimation == Animation.PlaceFlag || currentAnimation == Animation.DropFlag)
+            flagAnimation += (1 - flagAnimation) * 0.15f;
+
+        if (flagAnimation > 0.995f) {
+            flagAnimation = 0;
+            currentAnimation = Animation.None;
+        }
     }
 
     public void render(GameLogic logic, Canvas canvas) {
@@ -69,16 +82,32 @@ public class Square {
             paint.setColor(Color.rgb(64, 64, 64));
             canvas.drawRoundRect(new RectF(position.x + size * 0.04f, position.y + size * 0.04f, position.x + size * 0.92f, position.y + size * 0.92f), size * 0.1f, size * 0.1f, paint);
 
-            if (flagged) {
+            if (flagged && currentAnimation != Animation.PlaceFlag && currentAnimation != Animation.DropFlag) {
                 drawFlag(logic, canvas, position);
             }
         }
     }
 
+    public void drawOverlay(GameLogic logic, Canvas canvas) {
+        PointF position;
+
+        if (currentAnimation == Animation.PlaceFlag) {
+            position = logic.getCamera().calculateOnScreenPosition(new PointF(visibleX, visibleY - (1 - flagAnimation) * 2));
+            drawFlag(logic, canvas, position, (int)(255 * flagAnimation));
+        } else {
+            position = logic.getCamera().calculateOnScreenPosition(new PointF(visibleX, visibleY + flagAnimation * 2));
+            drawFlag(logic, canvas, position, (int)(255 * (1 - flagAnimation)));
+        }
+    }
+
     private void drawFlag(GameLogic logic, Canvas canvas, PointF position) {
+        drawFlag(logic, canvas, position, 255);
+    }
+
+    private void drawFlag(GameLogic logic, Canvas canvas, PointF position, int alpha) {
         float size = logic.getCamera().getBlockSize();
 
-        paint.setColor(Color.rgb(200, 0, 0));
+        paint.setColor(Color.argb(alpha, 200, 0, 0));
 
         Path triangle = new Path();
         triangle.moveTo(position.x + size * 3f / 8f + size * 0.02f, position.y + size * 3f / 16f);
@@ -88,7 +117,7 @@ public class Square {
         canvas.drawPath(triangle, paint);
 
 
-        paint.setColor(Color.rgb(0, 0, 0));
+        paint.setColor(Color.argb(alpha, 0, 0, 0));
         paint.setStrokeWidth(size * 0.05f);
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawLine(position.x + size * 3f / 8f, position.y + size * 3f / 16, position.x + size * 3f / 8f, position.y + size * 13f / 16f, paint);
@@ -126,6 +155,10 @@ public class Square {
         canvas.rotate(135);
         canvas.drawRoundRect(new RectF(-halfX, -halfY, halfX, halfY), cornerRadius, cornerRadius, paint);
         canvas.restore();
+    }
+
+    public boolean hasOverlay() {
+        return currentAnimation == Animation.PlaceFlag || currentAnimation == Animation.DropFlag;
     }
 
     public int getAdjacentFlagsCount(GameLogic logic) {
@@ -201,6 +234,13 @@ public class Square {
 
     public void flag(GameLogic logic) {
         this.flagged = !this.flagged;
+
+        flagAnimation = 0;
+
+        if (flagged)
+            currentAnimation = Animation.PlaceFlag;
+        else
+            currentAnimation = Animation.DropFlag;
 
         if (logic.isGamePaused()) return;
 

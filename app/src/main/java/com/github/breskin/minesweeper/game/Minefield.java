@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.github.breskin.minesweeper.RenderView;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Minefield {
@@ -19,8 +20,10 @@ public class Minefield {
     private boolean winAnimation = false;
     private int animationDelay = 0;
 
-    public Minefield() {
+    private ArrayList<Square> overlayQueue;
 
+    public Minefield() {
+        overlayQueue = new ArrayList<>();
     }
 
     public void update(GameLogic logic) {
@@ -40,6 +43,8 @@ public class Minefield {
         PointF topLeft = logic.getCamera().calculatePositionFromScreen(new PointF(0, 0));
         PointF bottomRight = logic.getCamera().calculatePositionFromScreen(new PointF(RenderView.VIEW_WIDTH, RenderView.VIEW_HEIGHT));
 
+        overlayQueue.clear();
+
         int startX = (int)Math.floor(topLeft.x - 1); if (startX < 0) startX = 0;
         int startY = (int)Math.floor(topLeft.y - 1); if (startY < 0) startY = 0;
         int endX = (int)Math.ceil(bottomRight.x + 1); if (endX > logic.getMinefield().getWidth()) endX = logic.getMinefield().getWidth();
@@ -47,10 +52,17 @@ public class Minefield {
 
         for (int x = startX; x < endX; x++) {
             for (int y = startY; y < endY; y++) {
-                if (field[x][y] != null)
+                if (field[x][y] != null) {
                     field[x][y].render(logic, canvas);
+
+                    if (field[x][y].hasOverlay())
+                        overlayQueue.add(field[x][y]);
+                }
             }
         }
+
+        for (Square square : overlayQueue)
+            square.drawOverlay(logic, canvas);
     }
 
     public void reveal(GameLogic logic, int x, int y) {
