@@ -1,10 +1,17 @@
 package com.github.breskin.minesweeper.home;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
+
+import androidx.core.content.ContextCompat;
 
 import com.github.breskin.minesweeper.RenderView;
 import com.github.breskin.minesweeper.generic.Button;
@@ -15,6 +22,7 @@ public class FieldSizeButton extends Button {
     private Path foreground, background;
     private PointF size;
     private String text;
+    private Bitmap icon;
 
     public FieldSizeButton(String text) {
         super();
@@ -46,6 +54,9 @@ public class FieldSizeButton extends Button {
         paint.setColor(Color.rgb(0.75f + getSaturation() * 0.25f, 0.75f + getSaturation() * 0.25f, 0.75f + getSaturation() * 0.25f));
         canvas.drawPath(foreground, paint);
 
+        if (icon != null)
+            canvas.drawBitmap(icon, new Rect(0, 0, icon.getWidth(), icon.getHeight()), new RectF(size.y * 0.1f, size.y * 0.1f, size.y * 0.9f, size.y * 0.9f), paint);
+
         canvas.restore();
     }
 
@@ -75,6 +86,15 @@ public class FieldSizeButton extends Button {
         background.lineTo(length + RenderView.SIZE * 0.6f, length * 1.4f);
         background.lineTo(length, length * 1.4f);
         background.close();
+    }
+
+    public void setIcon(Context context, int resource) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, resource);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+
+        icon = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(icon);
+        vectorDrawable.draw(canvas);
     }
 
     public PointF getSize() {

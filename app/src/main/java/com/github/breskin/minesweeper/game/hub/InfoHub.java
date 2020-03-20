@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.view.MotionEvent;
 
+import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
 import com.github.breskin.minesweeper.game.GameLogic;
 
@@ -77,6 +78,13 @@ public class InfoHub {
 
         canvas.drawText(getTimeString(logic.getGameDuration()), RenderView.VIEW_WIDTH * 0.975f - paint.measureText(getTimeString(logic.getGameDuration())), RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.02f - offset, paint);
         canvas.drawText(logic.getFlaggedMines() + "/" + logic.getMinefield().getMinesCount(), RenderView.VIEW_WIDTH * 0.025f, RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.02f - offset, paint);
+
+        if (logic.getBestTime() != -1) {
+            paint.setTextSize(RenderView.SIZE * 0.035f);
+
+            canvas.drawText(DataManager.HUB_BEST_TIME, (RenderView.VIEW_WIDTH - paint.measureText(DataManager.HUB_BEST_TIME)) * 0.5f, RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.06f - offset, paint);
+            canvas.drawText(getTimeString(logic.getBestTime()), (RenderView.VIEW_WIDTH - paint.measureText(getTimeString(logic.getBestTime()))) * 0.5f, RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.015f - offset, paint);
+        }
 
         if (currentView == View.GameWon || targetView == View.GameWon) gameWonView.render(canvas);
         if (currentView == View.GameLost || targetView == View.GameLost) gameLostView.render(canvas);

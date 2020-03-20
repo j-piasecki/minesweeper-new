@@ -10,8 +10,8 @@ public class DataManager {
     private static SharedPreferences preferences;
 
     public static String FIELD_SIZE_SMALL, FIELD_SIZE_MEDIUM, FIELD_SIZE_LARGE, FIELD_SIZE_CUSTOM, HUB_BUTTON_OK, HUB_BUTTON_REPLAY, HUB_GAME_LOST, HUB_GAME_WON, HUB_BUTTON_NO, HUB_BUTTON_YES,
-            HUB_SECOND_LIFE_AVAILABLE, HUB_SECOND_LIFE_ONCE_REMINDER, CUSTOM_VIEW_WIDTH, CUSTOM_VIEW_HEIGHT, CUSTOM_VIEW_MINES, CUSTOM_VIEW_HEADER, CUSTOM_VIEW_START, HOME_VIEW_LOGO_FIRST,
-            HOME_VIEW_LOGO_SECOND;
+            HUB_SECOND_LIFE_AVAILABLE, HUB_SECOND_LIFE_ONCE_REMINDER, HUB_BEST_TIME, CUSTOM_VIEW_WIDTH, CUSTOM_VIEW_HEIGHT, CUSTOM_VIEW_MINES, CUSTOM_VIEW_HEADER, CUSTOM_VIEW_START,
+            HOME_VIEW_LOGO_FIRST, HOME_VIEW_LOGO_SECOND;
 
     private static String SECOND_LIVES_STRING = "second-chance-count";
 
@@ -33,6 +33,7 @@ public class DataManager {
         HUB_GAME_WON = context.getString(R.string.hub_game_won_message);
         HUB_SECOND_LIFE_AVAILABLE = context.getString(R.string.hub_second_life_available);
         HUB_SECOND_LIFE_ONCE_REMINDER = context.getString(R.string.hub_second_life_once_reminder);
+        HUB_BEST_TIME = context.getString(R.string.hub_best_time);
         CUSTOM_VIEW_WIDTH = context.getString(R.string.custom_view_width);
         CUSTOM_VIEW_HEIGHT = context.getString(R.string.custom_view_height);
         CUSTOM_VIEW_MINES = context.getString(R.string.custom_view_mines);
@@ -65,5 +66,21 @@ public class DataManager {
         SECOND_LIVES_COUNT--;
 
         preferences.edit().putInt(SECOND_LIVES_STRING, SECOND_LIVES_COUNT).apply();
+    }
+
+    public static boolean checkGameDuration(int width, int height, int mines, int duration) {
+        int bestTime = preferences.getInt(width + "x" + height + "x" + mines, -1);
+
+        if (bestTime == -1 || duration < bestTime) {
+            preferences.edit().putInt(width + "x" + height + "x" + mines, duration).apply();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public static int getBestTime(int width, int height, int mines) {
+        return preferences.getInt(width + "x" + height + "x" + mines, -1);
     }
 }

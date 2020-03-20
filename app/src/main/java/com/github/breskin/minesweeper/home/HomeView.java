@@ -8,6 +8,7 @@ import android.graphics.PointF;
 import android.view.MotionEvent;
 
 import com.github.breskin.minesweeper.DataManager;
+import com.github.breskin.minesweeper.R;
 import com.github.breskin.minesweeper.RenderView;
 import com.github.breskin.minesweeper.game.GameLogic;
 import com.github.breskin.minesweeper.generic.Button;
@@ -31,6 +32,7 @@ public class HomeView extends View {
         this.paint.setAntiAlias(true);
 
         smallButton = new FieldSizeButton(DataManager.FIELD_SIZE_SMALL);
+        smallButton.setIcon(renderView.getContext(), R.drawable.ic_field_small_button);
         smallButton.setCallback(new Button.ClickCallback() {
             @Override
             public void onClick() {
@@ -43,6 +45,7 @@ public class HomeView extends View {
         });
 
         mediumButton = new FieldSizeButton(DataManager.FIELD_SIZE_MEDIUM);
+        mediumButton.setIcon(renderView.getContext(), R.drawable.ic_field_medium_button);
         mediumButton.setCallback(new Button.ClickCallback() {
             @Override
             public void onClick() {
@@ -55,6 +58,7 @@ public class HomeView extends View {
         });
 
         largeButton = new FieldSizeButton(DataManager.FIELD_SIZE_LARGE);
+        largeButton.setIcon(renderView.getContext(), R.drawable.ic_field_large_button);
         largeButton.setCallback(new Button.ClickCallback() {
             @Override
             public void onClick() {
@@ -67,6 +71,7 @@ public class HomeView extends View {
         });
 
         customButton = new FieldSizeButton(DataManager.FIELD_SIZE_CUSTOM);
+        customButton.setIcon(renderView.getContext(), R.drawable.ic_field_custom_button);
         customButton.setCallback(new Button.ClickCallback() {
             @Override
             public void onClick() {

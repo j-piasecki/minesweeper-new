@@ -103,6 +103,8 @@ public class Camera {
         PointF previous = calculatePositionFromScreen(scaleFocus);
 
         scale += (targetScale - scale) * 0.2f;
+        if (scale > 1.45) scale = 1.45f;
+        if (scale < 0.35) scale = 0.35f;
 
         PointF current = calculatePositionFromScreen(scaleFocus);
 

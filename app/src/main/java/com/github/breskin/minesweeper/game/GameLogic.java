@@ -17,7 +17,7 @@ public class GameLogic {
     private boolean gameLost;
     private boolean secondLifeUsed = false;
 
-    private int gameDuration;
+    private int gameDuration, bestTime;
 
     public GameLogic(RenderView renderView) {
         this.renderView = renderView;
@@ -50,6 +50,8 @@ public class GameLogic {
     public void init(int width, int height, int mines) {
         minefield.init(width, height, mines);
 
+        bestTime = DataManager.getBestTime(width, height, mines);
+
         flaggedMines = 0;
         gameDuration = 0;
         gameLost = gameWon = secondLifeUsed = false;
@@ -70,6 +72,9 @@ public class GameLogic {
         gameWon = true;
 
         minefield.startWinAnimation();
+
+        if (DataManager.checkGameDuration(minefield.getWidth(), minefield.getHeight(), minefield.getMinesCount(), getGameDuration()))
+            bestTime = gameDuration;
 
         if (callback != null)
             callback.onGameWon();
@@ -100,6 +105,10 @@ public class GameLogic {
 
     public int getGameDuration() {
         return gameDuration;
+    }
+
+    public int getBestTime() {
+        return bestTime;
     }
 
     public boolean isGameWon() {
