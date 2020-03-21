@@ -19,6 +19,10 @@ import com.github.breskin.minesweeper.home.CustomFieldView;
 import com.github.breskin.minesweeper.home.HomeView;
 import com.github.breskin.minesweeper.home.SettingsView;
 import com.github.breskin.minesweeper.particles.ParticleSystem;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Calendar;
 
 public class RenderView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
 
@@ -40,6 +44,8 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
     private GameView gameView;
     private CustomFieldView customFieldView;
     private SettingsView settingsView;
+
+    private int timeSinceAccountUpdate = 10000;
 
     public RenderView(Context context) {
         super(context);
@@ -87,6 +93,12 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
             transition.update();
 
             if (transition != null) transition.render(canvas);
+        }
+    }
+
+    private void updateAccount() {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("active").setValue(Calendar.getInstance().getTimeInMillis());
         }
     }
 
@@ -185,6 +197,14 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
                     try { Thread.sleep(16 - System.nanoTime() / 1000000 + time); } catch (Exception e) {}
 
                 FRAME_TIME = (int)(System.nanoTime() / 1000000 - time);
+
+                timeSinceAccountUpdate += FRAME_TIME;
+
+                if (timeSinceAccountUpdate > 10000) {
+                    timeSinceAccountUpdate = 0;
+
+                    updateAccount();
+                }
             }
         }
     }
@@ -248,10 +268,6 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
             return;
 
         Vibrator v = (Vibrator) CONTEXT.getSystemService(Context.VIBRATOR_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v.vibrate(VibrationEffect.createOneShot(time, VibrationEffect.DEFAULT_AMPLITUDE));
-        } else {
-            v.vibrate(time);
-        }
+        v.vibrate(VibrationEffect.createOneShot(time, VibrationEffect.DEFAULT_AMPLITUDE));
     }
 }

@@ -142,18 +142,7 @@ public class DataManager {
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child("sec-lives").getValue() != null) {
-                    int secondLives = ((Number) Objects.requireNonNull(dataSnapshot.child("sec-lives").getValue())).intValue();
-
-                    if (secondLives > SECOND_LIVES_COUNT) {
-                        SECOND_LIVES_COUNT = secondLives;
-                        preferences.edit().putInt(SECOND_LIVES_STRING, SECOND_LIVES_COUNT).apply();
-                    } else {
-                        reference.child("sec-lives").setValue(SECOND_LIVES_COUNT);
-                    }
-                } else {
-                    reference.child("sec-lives").setValue(SECOND_LIVES_COUNT);
-                }
+                syncSecondLives(dataSnapshot);
 
                 syncScores(dataSnapshot);
             }
@@ -163,6 +152,23 @@ public class DataManager {
 
             }
         });
+    }
+
+    private static void syncSecondLives(DataSnapshot dataSnapshot) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+
+        if (dataSnapshot.child("sec-lives").getValue() != null) {
+            int secondLives = ((Number) Objects.requireNonNull(dataSnapshot.child("sec-lives").getValue())).intValue();
+
+            if (secondLives > SECOND_LIVES_COUNT) {
+                SECOND_LIVES_COUNT = secondLives;
+                preferences.edit().putInt(SECOND_LIVES_STRING, SECOND_LIVES_COUNT).apply();
+            } else {
+                reference.child("sec-lives").setValue(SECOND_LIVES_COUNT);
+            }
+        } else {
+            reference.child("sec-lives").setValue(SECOND_LIVES_COUNT);
+        }
     }
 
     private static void syncScores(DataSnapshot dataSnapshot) {

@@ -72,6 +72,11 @@ public class SettingsView extends View {
         super.update();
         this.offset += (targetOffset - offset) * 0.1f;
 
+        vibrationsCheckBox.update();
+        flagAnimationsCheckBox.update();
+        reduceParticlesCheckBox.update();
+        signInButton.update();
+
         vibrationsCheckBox.setPosition(new PointF(0, RenderView.SIZE * 0.45f + offset));
         flagAnimationsCheckBox.setPosition(new PointF(0, vibrationsCheckBox.getPosition().y + vibrationsCheckBox.getSize().y));
         reduceParticlesCheckBox.setPosition(new PointF(0, flagAnimationsCheckBox.getPosition().y + flagAnimationsCheckBox.getSize().y));

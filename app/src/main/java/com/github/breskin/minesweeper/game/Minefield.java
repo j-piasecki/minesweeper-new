@@ -174,7 +174,7 @@ public class Minefield {
     }
 
     public void placeMines(int freeX, int freeY) {
-        Random random = new Random();
+        Random random = new Random(seed);
         int placed = 0;
         while (placed < minesCount) {
             int mineX = random.nextInt(width), mineY = random.nextInt(height);

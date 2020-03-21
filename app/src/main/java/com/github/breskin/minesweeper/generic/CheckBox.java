@@ -22,6 +22,8 @@ public class CheckBox {
     private PointF touchDownPoint;
     private boolean touchDown;
 
+    private float saturation = 0;
+
     public CheckBox(String text) {
         this.paint = new Paint();
         this.paint.setAntiAlias(true);
@@ -35,14 +37,18 @@ public class CheckBox {
     }
 
     public void update() {
-
+        if (touchDown) {
+            saturation += (1 - saturation) * 0.1f;
+        } else {
+            saturation += (0 - saturation) * 0.1f;
+        }
     }
 
     public void render(Canvas canvas) {
         PointF size = getSize();
 
-        if (touchDown) {
-            paint.setColor(Color.argb(24, 255, 255, 255));
+        if (saturation > 0.01f) {
+            paint.setColor(Color.argb((int) (saturation * 24), 255, 255, 255));
             canvas.drawRect(position.x, position.y, position.x + size.x, position.y + size.y, paint);
         }
 
@@ -60,7 +66,7 @@ public class CheckBox {
         paint.setStyle(Paint.Style.FILL);
 
         if (checked || touchDown) {
-            paint.setColor(Color.argb(((checked) ? 96 : 0) + ((touchDown) ? 48 : 0), 255, 255, 255));
+            paint.setColor(Color.argb(((checked) ? 96 : 0) + ((touchDown) ? (int)(saturation * 48) : 0), 255, 255, 255));
             canvas.drawRoundRect(rect, RenderView.SIZE * 0.02f, RenderView.SIZE * 0.02f, paint);
             paint.setColor(Color.WHITE);
 
