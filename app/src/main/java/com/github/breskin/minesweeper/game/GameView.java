@@ -26,12 +26,14 @@ public class GameView extends View {
 
         infoHub = new InfoHub(gameLogic);
 
-        gameLogic.setCallback(new GameLogic.Callback() {
+        gameLogic.setGameLostCallback(new GameLogic.GameLostCallback() {
             @Override
             public void onGameLost() {
                 infoHub.onGameLost();
             }
+        });
 
+        gameLogic.setGameWonCallback(new GameLogic.GameWonCallback() {
             @Override
             public void onGameWon() {
                 infoHub.onGameWon();

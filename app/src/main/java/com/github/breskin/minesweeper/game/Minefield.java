@@ -74,6 +74,7 @@ public class Minefield {
 
         if (!minesPlaced) {
             placeMines(x, y);
+            logic.onGameStarted();
         }
 
         if (field[x][y].getType() == Square.TYPE_MINE && !field[x][y].isFlagged() && !field[x][y].isRevealed()) {
@@ -171,6 +172,10 @@ public class Minefield {
 
     public int getMinesCount() {
         return minesCount;
+    }
+
+    public long getSeed() {
+        return seed;
     }
 
     public void placeMines(int freeX, int freeY) {

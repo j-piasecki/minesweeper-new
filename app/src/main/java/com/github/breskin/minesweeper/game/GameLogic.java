@@ -7,7 +7,10 @@ import com.github.breskin.minesweeper.particles.ParticleSystem;
 public class GameLogic {
 
     private RenderView renderView;
-    private Callback callback;
+
+    private GameStartedCallback gameStartedCallback;
+    private GameLostCallback gameLostCallback;
+    private GameWonCallback gameWonCallback;
 
     private Camera camera;
     private Minefield minefield;
@@ -15,6 +18,7 @@ public class GameLogic {
     private int flaggedMines;
     private boolean gameWon;
     private boolean gameLost;
+    private boolean gameStarted;
     private boolean secondLifeUsed = false;
 
     private int gameDuration, bestTime;
@@ -34,7 +38,7 @@ public class GameLogic {
             onGameWon();
         }
 
-        if (!isGamePaused()) {
+        if (!isGamePaused() && isGameStarted()) {
             gameDuration += RenderView.FRAME_TIME;
         }
     }
@@ -54,7 +58,7 @@ public class GameLogic {
 
         flaggedMines = 0;
         gameDuration = 0;
-        gameLost = gameWon = secondLifeUsed = false;
+        gameLost = gameWon = gameStarted = secondLifeUsed = false;
 
         camera.reset();
         camera.getPosition().x = width * 0.5f - 0.5f;
@@ -64,8 +68,8 @@ public class GameLogic {
     public void onGameLost() {
         gameLost = true;
 
-        if (callback != null)
-            callback.onGameLost();
+        if (gameLostCallback != null)
+            gameLostCallback.onGameLost();
     }
 
     public void onGameWon() {
@@ -76,8 +80,15 @@ public class GameLogic {
         if (DataManager.checkGameDuration(minefield.getWidth(), minefield.getHeight(), minefield.getMinesCount(), getGameDuration()))
             bestTime = gameDuration;
 
-        if (callback != null)
-            callback.onGameWon();
+        if (gameWonCallback != null)
+            gameWonCallback.onGameWon();
+    }
+
+    public void onGameStarted() {
+        gameStarted = true;
+
+        if (gameStartedCallback != null)
+            gameStartedCallback.onGameStarted();
     }
 
     public void useSecondLife() {
@@ -131,17 +142,36 @@ public class GameLogic {
         return isGameFinished();
     }
 
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
 
     public RenderView getRenderView() {
         return renderView;
     }
 
-    public void setCallback(Callback callback) {
-        this.callback = callback;
+    public void setGameStartedCallback(GameStartedCallback gameStartedCallback) {
+        this.gameStartedCallback = gameStartedCallback;
     }
 
-    public interface Callback {
-        void onGameLost();
+    public void setGameLostCallback(GameLostCallback gameLostCallback) {
+        this.gameLostCallback = gameLostCallback;
+    }
+
+    public void setGameWonCallback(GameWonCallback gameWonCallback) {
+        this.gameWonCallback = gameWonCallback;
+    }
+
+    public interface GameWonCallback {
         void onGameWon();
+    }
+
+    public interface GameLostCallback {
+        void onGameLost();
+    }
+
+    public interface GameStartedCallback {
+        void onGameStarted();
     }
 }
