@@ -212,6 +212,19 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
     public boolean onBackPressed() {
         if (currentView == ViewType.Game || currentView == ViewType.CustomField || currentView == ViewType.Settings) {
             Transition transition = new HomeView.Transition(ViewType.Home);
+
+            if (currentView == ViewType.Game) {
+                gameView.getGameLogic().disableSecondLive();
+                gameView.getGameLogic().onGameLost();
+
+                transition.setViewExitCallback(new Transition.ViewExitCallback() {
+                    @Override
+                    public void onExit() {
+                        particleSystem.clear();
+                    }
+                });
+            }
+
             switchView(transition);
 
             return true;

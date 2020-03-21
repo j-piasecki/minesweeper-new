@@ -2,7 +2,6 @@ package com.github.breskin.minesweeper.game;
 
 import android.graphics.Canvas;
 import android.graphics.PointF;
-import android.util.Log;
 
 import com.github.breskin.minesweeper.RenderView;
 
@@ -17,7 +16,7 @@ public class Minefield {
     private int width, height, minesCount;
     private long seed;
     private boolean minesPlaced = false;
-    private boolean winAnimation = false;
+    private boolean winAnimation = false, loseAnimation = false;
     private int animationDelay = 0;
 
     private ArrayList<Square> overlayQueue;
@@ -34,8 +33,8 @@ public class Minefield {
             }
         }
 
-        if (winAnimation) {
-            updateWinAnimation(logic);
+        if (winAnimation || loseAnimation) {
+            updateAnimation(logic);
         }
     }
 
@@ -132,7 +131,7 @@ public class Minefield {
         return true;
     }
 
-    public void updateWinAnimation(GameLogic logic) {
+    public void updateAnimation(GameLogic logic) {
         if (animationDelay > 0) {
             animationDelay--;
             return;
@@ -146,7 +145,12 @@ public class Minefield {
             for (int x = 0; x < width; x++) {
                 if (field[x][y].getType() == Square.TYPE_MINE && !field[x][y].isRevealed()) {
                     if (field[x][y].isFlagged()) field[x][y].flag(logic);
-                    field[x][y].setTintedGreen();
+
+                    if (winAnimation)
+                        field[x][y].setTintedGreen();
+                    else if (loseAnimation)
+                        field[x][y].setTintedRed();
+
                     field[x][y].reveal(logic);
 
                     stop = true;
@@ -160,6 +164,10 @@ public class Minefield {
 
     public void startWinAnimation() {
         winAnimation = true;
+    }
+
+    public void startLoseAnimation() {
+        loseAnimation = true;
     }
 
     public int getWidth() {
@@ -240,6 +248,7 @@ public class Minefield {
 
         minesPlaced = false;
         winAnimation = false;
+        loseAnimation = false;
         animationDelay = 0;
 
         for (int x = 0; x < width; x++) {

@@ -20,6 +20,7 @@ public class GameLogic {
     private boolean gameLost;
     private boolean gameStarted;
     private boolean secondLifeUsed = false;
+    private boolean secondLifeDisabled = false;
 
     private int gameDuration, bestTime;
 
@@ -58,7 +59,7 @@ public class GameLogic {
 
         flaggedMines = 0;
         gameDuration = 0;
-        gameLost = gameWon = gameStarted = secondLifeUsed = false;
+        gameLost = gameWon = gameStarted = secondLifeUsed = secondLifeDisabled = false;
 
         camera.reset();
         camera.getPosition().x = width * 0.5f - 0.5f;
@@ -67,6 +68,9 @@ public class GameLogic {
 
     public void onGameLost() {
         gameLost = true;
+
+        if (!canUseSecondLife())
+            minefield.startLoseAnimation();
 
         if (gameLostCallback != null)
             gameLostCallback.onGameLost();
@@ -134,8 +138,12 @@ public class GameLogic {
         return isGameLost() || isGameWon();
     }
 
-    public boolean hasSecondLife() {
-        return !secondLifeUsed && DataManager.SECOND_LIVES_COUNT > 0;
+    public boolean canUseSecondLife() {
+        return !secondLifeDisabled && !secondLifeUsed && DataManager.SECOND_LIVES_COUNT > 0;
+    }
+
+    public void disableSecondLive() {
+        secondLifeDisabled = true;
     }
 
     public boolean isGamePaused() {

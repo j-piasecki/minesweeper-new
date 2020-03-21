@@ -100,7 +100,7 @@ public class InfoHub {
     }
 
     public void onGameLost() {
-        if (gameLogic.hasSecondLife())
+        if (gameLogic.canUseSecondLife())
             setView(View.SecondChance);
         else
             setView(View.GameLost);
