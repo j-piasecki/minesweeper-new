@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class StartActivity extends AppCompatActivity {
 
     @Override
@@ -18,5 +20,9 @@ public class StartActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            DataManager.syncSecondLives();
+        }
     }
 }

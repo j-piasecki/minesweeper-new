@@ -137,14 +137,28 @@ public class DataManager {
     }
 
     public static void syncDataWithCloud() {
-        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+        syncSecondLives();
+        syncScores();
+    }
+
+    public static void syncSecondLives() {
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("sec-lives");
 
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                syncSecondLives(dataSnapshot);
+                if (dataSnapshot.getValue() != null) {
+                    int secondLives = ((Number) Objects.requireNonNull(dataSnapshot.getValue())).intValue();
 
-                syncScores(dataSnapshot);
+                    if (secondLives > SECOND_LIVES_COUNT) {
+                        SECOND_LIVES_COUNT = secondLives;
+                        preferences.edit().putInt(SECOND_LIVES_STRING, SECOND_LIVES_COUNT).apply();
+                    } else {
+                        reference.setValue(SECOND_LIVES_COUNT);
+                    }
+                } else {
+                    reference.setValue(SECOND_LIVES_COUNT);
+                }
             }
 
             @Override
@@ -154,38 +168,32 @@ public class DataManager {
         });
     }
 
-    private static void syncSecondLives(DataSnapshot dataSnapshot) {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+    public static void syncScores() {
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("scores");
 
-        if (dataSnapshot.child("sec-lives").getValue() != null) {
-            int secondLives = ((Number) Objects.requireNonNull(dataSnapshot.child("sec-lives").getValue())).intValue();
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                SharedPreferences.Editor editor = preferences.edit();
 
-            if (secondLives > SECOND_LIVES_COUNT) {
-                SECOND_LIVES_COUNT = secondLives;
-                preferences.edit().putInt(SECOND_LIVES_STRING, SECOND_LIVES_COUNT).apply();
-            } else {
-                reference.child("sec-lives").setValue(SECOND_LIVES_COUNT);
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    int currentTime = preferences.getInt(snapshot.getKey(), -1);
+                    int cloudTime = ((Number) Objects.requireNonNull(snapshot.getValue())).intValue();
+
+                    if (currentTime == -1 || cloudTime < currentTime) {
+                        editor.putInt(snapshot.getKey(), cloudTime);
+                    } else if (currentTime < cloudTime) {
+                        reference.child(Objects.requireNonNull(snapshot.getKey())).setValue(currentTime);
+                    }
+                }
+
+                editor.apply();
             }
-        } else {
-            reference.child("sec-lives").setValue(SECOND_LIVES_COUNT);
-        }
-    }
 
-    private static void syncScores(DataSnapshot dataSnapshot) {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-        SharedPreferences.Editor editor = preferences.edit();
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-        for (DataSnapshot snapshot : dataSnapshot.child("scores").getChildren()) {
-            int currentTime = preferences.getInt(snapshot.getKey(), -1);
-            int cloudTime = ((Number) Objects.requireNonNull(snapshot.getValue())).intValue();
-
-            if (currentTime == -1 || cloudTime < currentTime) {
-                editor.putInt(snapshot.getKey(), cloudTime);
-            } else if (currentTime < cloudTime) {
-                reference.child("scores").child(Objects.requireNonNull(snapshot.getKey())).setValue(currentTime);
             }
-        }
-
-        editor.apply();
+        });
     }
 }
