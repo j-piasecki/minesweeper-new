@@ -83,7 +83,7 @@ public class Minefield {
 
                 field[x][y].reveal(logic);
 
-                logic.onGameLost();
+                logic.onMineRevealed();
             }
             else {
                 field[x][y].setTintedGreen();

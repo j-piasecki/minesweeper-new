@@ -2,6 +2,7 @@ package com.github.breskin.minesweeper.game;
 
 import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
+import com.github.breskin.minesweeper.game.hub.InfoHub;
 import com.github.breskin.minesweeper.particles.ParticleSystem;
 
 public class GameLogic {
@@ -15,10 +16,13 @@ public class GameLogic {
     private Camera camera;
     private Minefield minefield;
 
+    private InfoHub infoHub;
+
     private int flaggedMines;
     private boolean gameWon;
     private boolean gameLost;
     private boolean gameStarted;
+    private boolean gamePaused;
     private boolean secondLifeUsed = false;
     private boolean secondLifeDisabled = false;
 
@@ -59,18 +63,28 @@ public class GameLogic {
 
         flaggedMines = 0;
         gameDuration = 0;
-        gameLost = gameWon = gameStarted = secondLifeUsed = secondLifeDisabled = false;
+        gameLost = gameWon = gameStarted = gamePaused = secondLifeUsed = secondLifeDisabled = false;
 
         camera.reset();
         camera.getPosition().x = width * 0.5f - 0.5f;
         camera.getPosition().y = height * 0.5f - 0.5f;
     }
 
+    public void onMineRevealed() {
+        if (canUseSecondLife()) {
+            gamePaused = true;
+
+            infoHub.askForSecondLife();
+        } else {
+            infoHub.onGameLost();
+            onGameLost();
+        }
+    }
+
     public void onGameLost() {
         gameLost = true;
 
-        if (!canUseSecondLife())
-            minefield.startLoseAnimation();
+        minefield.startLoseAnimation();
 
         if (gameLostCallback != null)
             gameLostCallback.onGameLost();
@@ -84,6 +98,8 @@ public class GameLogic {
         if (DataManager.checkGameDuration(minefield.getWidth(), minefield.getHeight(), minefield.getMinesCount(), getGameDuration()))
             bestTime = gameDuration;
 
+        infoHub.onGameWon();
+
         if (gameWonCallback != null)
             gameWonCallback.onGameWon();
     }
@@ -96,7 +112,7 @@ public class GameLogic {
     }
 
     public void useSecondLife() {
-        gameLost = false;
+        gamePaused = false;
         secondLifeUsed = true;
 
         DataManager.onSecondLifeUsed();
@@ -147,13 +163,17 @@ public class GameLogic {
     }
 
     public boolean isGamePaused() {
-        return isGameFinished();
+        return isGameFinished() || gamePaused;
     }
 
     public boolean isGameStarted() {
         return gameStarted;
     }
 
+
+    public void setInfoHub(InfoHub infoHub) {
+        this.infoHub = infoHub;
+    }
 
     public RenderView getRenderView() {
         return renderView;

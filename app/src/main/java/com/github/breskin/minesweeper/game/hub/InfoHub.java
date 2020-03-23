@@ -99,11 +99,12 @@ public class InfoHub {
         return false;
     }
 
+    public void askForSecondLife() {
+        setView(View.SecondChance);
+    }
+
     public void onGameLost() {
-        if (gameLogic.canUseSecondLife())
-            setView(View.SecondChance);
-        else
-            setView(View.GameLost);
+        setView(View.GameLost);
     }
 
     public void onGameWon() {

@@ -25,8 +25,7 @@ public class HubSecondChanceView extends HubView {
             @Override
             public void onClick() {
                 parent.switchView(InfoHub.View.GameLost);
-
-                parent.getGameLogic().getMinefield().startLoseAnimation();
+                parent.getGameLogic().onGameLost();
             }
         });
 

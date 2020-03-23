@@ -25,20 +25,7 @@ public class GameView extends View {
         touchDownPoint = new PointF();
 
         infoHub = new InfoHub(gameLogic);
-
-        gameLogic.setGameLostCallback(new GameLogic.GameLostCallback() {
-            @Override
-            public void onGameLost() {
-                infoHub.onGameLost();
-            }
-        });
-
-        gameLogic.setGameWonCallback(new GameLogic.GameWonCallback() {
-            @Override
-            public void onGameWon() {
-                infoHub.onGameWon();
-            }
-        });
+        gameLogic.setInfoHub(infoHub);
     }
 
     @Override
