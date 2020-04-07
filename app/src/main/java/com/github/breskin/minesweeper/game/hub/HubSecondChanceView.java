@@ -56,8 +56,8 @@ public class HubSecondChanceView extends HubView {
         paint.setTextSize(RenderView.SIZE * 0.06f);
         canvas.drawText(DataManager.HUB_DO_YOU_WANT_TO_CONTINUE, position.x + (RenderView.VIEW_WIDTH - paint.measureText(DataManager.HUB_DO_YOU_WANT_TO_CONTINUE)) * 0.5f, position.y + paint.getTextSize() * 1.3f, paint);
 
-        paint.setTextSize(RenderView.SIZE * 0.05f);
-        canvas.drawText(DataManager.HUB_SECOND_LIFE_AVAILABLE.replace("%1$d", String.valueOf(DataManager.SECOND_LIVES_COUNT)), position.x + (RenderView.VIEW_WIDTH - paint.measureText(DataManager.HUB_SECOND_LIFE_AVAILABLE.replace("%1$d", String.valueOf(DataManager.SECOND_LIVES_COUNT)))) * 0.5f, position.y + paint.getTextSize() * 3f, paint);
+        paint.setTextSize(RenderView.SIZE * 0.045f);
+        canvas.drawText(DataManager.HUB_SECOND_LIFE_AVAILABLE.replace("%1$d", String.valueOf(DataManager.SECOND_LIVES_COUNT)), position.x + (RenderView.VIEW_WIDTH - paint.measureText(DataManager.HUB_SECOND_LIFE_AVAILABLE.replace("%1$d", String.valueOf(DataManager.SECOND_LIVES_COUNT)))) * 0.5f, position.y + paint.getTextSize() * 3.25f, paint);
 
         paint.setTextSize(RenderView.SIZE * 0.035f);
         canvas.drawText(DataManager.HUB_SECOND_LIFE_ONCE_REMINDER, position.x + (RenderView.VIEW_WIDTH - paint.measureText(DataManager.HUB_SECOND_LIFE_ONCE_REMINDER)) * 0.5f, position.y + RenderView.SIZE * 0.2f + paint.getTextSize(), paint);

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Saper</string>
+    <string name="game_size_small">Mała</string>
+    <string name="game_size_medium">Średnia</string>
+    <string name="game_size_large">Duża</string>
+    <string name="game_size_custom">Niestandardowa</string>
+    <string name="hub_button_ok">OK</string>
+    <string name="hub_button_replay">Zagraj ponownie</string>
+    <string name="hub_button_yes">Tak</string>
+    <string name="hub_button_no">Nie</string>
+    <string name="hub_game_won_message">Wygrałeś!</string>
+    <string name="hub_game_lost_message">Przegrałeś!</string>
+    <string name="hub_second_do_you_want_to_continue">Czy chcesz kontunuować grę?</string>
+    <string name="hub_second_life_available">Możesz użyć drugiego życia (%1$d pozostało)</string>
+    <string name="hub_second_life_once_reminder">Pamiętaj że możesz go użyć tylko raz na grę</string>
+    <string name="hub_best_time">Najlepszy czas:</string>
+    <string name="daily_second_lives">Dostałeś %1$d Drugich żyć. Wróć jutro po więcej.</string>
+    <string name="custom_view_width">Szerokość</string>
+    <string name="custom_view_height">Wysokość</string>
+    <string name="custom_view_mines">Ilość min</string>
+    <string name="custom_view_header">Dostosuj rozmiar</string>
+    <string name="custom_view_start">Rozpocznij</string>
+    <string name="home_view_logo_first">Sa</string>
+    <string name="home_view_logo_second">er</string>
+    <string name="settings_view_header">Ustawienia</string>
+    <string name="settings_view_vibrations">Wibracje</string>
+    <string name="settings_view_flag_animations">Animacje flagi</string>
+    <string name="settings_view_reduce_particles">Ogranicz cząsteczki</string>
+    <string name="settings_view_sign_in">Zaloguj się</string>
+</resources>
