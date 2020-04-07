@@ -42,8 +42,8 @@ public class HubSecondChanceView extends HubView {
     public void update(PointF position) {
         super.update(position);
 
-        noButton.setPosition(new PointF(position.x + RenderView.VIEW_WIDTH * 0.06f, position.y + RenderView.VIEW_WIDTH * 0.22f));
-        yesButton.setPosition(new PointF(position.x + RenderView.VIEW_WIDTH * 0.14f + noButton.getSize().x, position.y + RenderView.VIEW_WIDTH * 0.22f));
+        noButton.setPosition(new PointF(position.x + RenderView.VIEW_WIDTH * 0.06f, position.y + RenderView.VIEW_WIDTH * 0.3f));
+        yesButton.setPosition(new PointF(position.x + RenderView.VIEW_WIDTH * 0.14f + noButton.getSize().x, position.y + RenderView.VIEW_WIDTH * 0.3f));
 
         noButton.update();
         yesButton.update();
@@ -53,11 +53,14 @@ public class HubSecondChanceView extends HubView {
     protected void drawContent(Canvas canvas) {
         paint.setColor(Color.WHITE);
 
+        paint.setTextSize(RenderView.SIZE * 0.06f);
+        canvas.drawText(DataManager.HUB_DO_YOU_WANT_TO_CONTINUE, position.x + (RenderView.VIEW_WIDTH - paint.measureText(DataManager.HUB_DO_YOU_WANT_TO_CONTINUE)) * 0.5f, position.y + paint.getTextSize() * 1.3f, paint);
+
         paint.setTextSize(RenderView.SIZE * 0.05f);
-        canvas.drawText(DataManager.HUB_SECOND_LIFE_AVAILABLE.replace("%1$d", String.valueOf(DataManager.SECOND_LIVES_COUNT)), position.x + (RenderView.VIEW_WIDTH - paint.measureText(DataManager.HUB_SECOND_LIFE_AVAILABLE.replace("%1$d", String.valueOf(DataManager.SECOND_LIVES_COUNT)))) * 0.5f, position.y + paint.getTextSize() * 1.25f, paint);
+        canvas.drawText(DataManager.HUB_SECOND_LIFE_AVAILABLE.replace("%1$d", String.valueOf(DataManager.SECOND_LIVES_COUNT)), position.x + (RenderView.VIEW_WIDTH - paint.measureText(DataManager.HUB_SECOND_LIFE_AVAILABLE.replace("%1$d", String.valueOf(DataManager.SECOND_LIVES_COUNT)))) * 0.5f, position.y + paint.getTextSize() * 3f, paint);
 
         paint.setTextSize(RenderView.SIZE * 0.035f);
-        canvas.drawText(DataManager.HUB_SECOND_LIFE_ONCE_REMINDER, position.x + (RenderView.VIEW_WIDTH - paint.measureText(DataManager.HUB_SECOND_LIFE_ONCE_REMINDER)) * 0.5f, position.y + RenderView.SIZE * 0.08f + paint.getTextSize(), paint);
+        canvas.drawText(DataManager.HUB_SECOND_LIFE_ONCE_REMINDER, position.x + (RenderView.VIEW_WIDTH - paint.measureText(DataManager.HUB_SECOND_LIFE_ONCE_REMINDER)) * 0.5f, position.y + RenderView.SIZE * 0.2f + paint.getTextSize(), paint);
 
         noButton.render(canvas);
         yesButton.render(canvas);
@@ -73,6 +76,6 @@ public class HubSecondChanceView extends HubView {
 
     @Override
     public int getHeight() {
-        return (int)(RenderView.SIZE * 0.4f);
+        return (int)(RenderView.SIZE * 0.45f);
     }
 }

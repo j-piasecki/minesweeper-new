@@ -10,6 +10,7 @@
     <string name="hub_button_no">No</string>
     <string name="hub_game_won_message">You won!</string>
     <string name="hub_game_lost_message">You lost!</string>
+    <string name="hub_second_do_you_want_to_continue">Do you want to continue playing?</string>
     <string name="hub_second_life_available">You can use a second life (%1$d left)</string>
     <string name="hub_second_life_once_reminder">Remember that you can use it only once per game.</string>
     <string name="hub_best_time">Best time:</string>

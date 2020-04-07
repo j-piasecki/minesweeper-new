@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
 import com.github.breskin.minesweeper.game.GameLogic;
+import com.github.breskin.minesweeper.generic.HubView;
 
 public class InfoHub {
 
@@ -52,20 +53,11 @@ public class InfoHub {
             }
         }
 
-        if (currentView == View.GameWon)
-            gameWonView.update(new PointF(RenderView.VIEW_WIDTH * viewSwitchProgress, RenderView.VIEW_HEIGHT - offset));
-        else if (targetView == View.GameWon)
-            gameWonView.update(new PointF(RenderView.VIEW_WIDTH * (viewSwitchProgress - 1), RenderView.VIEW_HEIGHT - offset));
+        if (currentView != View.None)
+            getView(currentView).update(new PointF(RenderView.VIEW_WIDTH * viewSwitchProgress, RenderView.VIEW_HEIGHT - offset));
 
-        if (currentView == View.GameLost)
-            gameLostView.update(new PointF(RenderView.VIEW_WIDTH * viewSwitchProgress, RenderView.VIEW_HEIGHT - offset));
-        else if (targetView == View.GameLost)
-            gameLostView.update(new PointF(RenderView.VIEW_WIDTH * (viewSwitchProgress - 1), RenderView.VIEW_HEIGHT - offset));
-
-        if (currentView == View.SecondChance)
-            secondChanceView.update(new PointF(RenderView.VIEW_WIDTH * viewSwitchProgress, RenderView.VIEW_HEIGHT - offset));
-        else if (targetView == View.SecondChance)
-            secondChanceView.update(new PointF(RenderView.VIEW_WIDTH * (viewSwitchProgress - 1), RenderView.VIEW_HEIGHT - offset));
+        if (targetView != View.None)
+            getView(targetView).update(new PointF(RenderView.VIEW_WIDTH * (viewSwitchProgress - 1), RenderView.VIEW_HEIGHT - offset));
     }
 
     public void render(GameLogic logic, Canvas canvas) {
@@ -129,6 +121,16 @@ public class InfoHub {
 
         currentView = view;
         targetView = View.None;
+    }
+
+    private HubView getView(View view) {
+        switch (view) {
+            case GameWon: return gameWonView;
+            case GameLost: return gameLostView;
+            case SecondChance: return secondChanceView;
+
+            default: return null;
+        }
     }
 
     private int getViewHeight(View view) {
