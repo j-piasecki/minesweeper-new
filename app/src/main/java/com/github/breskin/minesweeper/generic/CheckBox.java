@@ -76,8 +76,8 @@ public class CheckBox {
 
         if (text != null) {
             paint.setColor(Color.WHITE);
-            paint.setTextSize(RenderView.SIZE * 0.06f);
-            canvas.drawText(text, RenderView.VIEW_WIDTH * 0.05f + position.x, position.y + (size.y - paint.getTextSize()) * 0.4f + paint.getTextSize(), paint);
+            paint.setTextSize(RenderView.SIZE * 0.05f);
+            canvas.drawText(text, RenderView.VIEW_WIDTH * 0.05f + position.x, position.y + (size.y - paint.getTextSize()) * 0.44f + paint.getTextSize(), paint);
         }
     }
 

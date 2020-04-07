@@ -3,4 +3,5 @@
     <color name="colorPrimary">#222222</color>
     <color name="colorPrimaryDark">#111111</color>
     <color name="colorAccent">#dddddd</color>
+    <color name="splashScreenColor">#000000</color>
 </resources>

@@ -199,14 +199,14 @@ public class HomeView extends View {
 
             this.paint = new Paint();
             this.progress = 0;
-            this.origin = new PointF(RenderView.VIEW_WIDTH / 2, RenderView.VIEW_HEIGHT / 2);
+            this.origin = new PointF(RenderView.VIEW_WIDTH * 0.5f, RenderView.VIEW_HEIGHT * 0.5f);
         }
 
         @Override
         public void update() {
-            this.progress += (1 - progress) * 0.0325f;
+            this.progress += 0.0075f + (1 - Math.abs(progress - 0.275) * 2) * 0.02;
 
-            if (!viewChanged && progress > 0.5) {
+            if (!viewChanged && progress > 0.4) {
                 viewChangeCallback.onViewChange();
                 viewChanged = true;
 
@@ -220,14 +220,14 @@ public class HomeView extends View {
 
         @Override
         public void render(Canvas canvas) {
-            paint.setColor(Color.argb((progress < 0.5) ? (progress * 2) : 1, 1, 1, 1));
+            paint.setColor(Color.argb((progress < 0.4) ? (progress * 2.5f) : 1, 1, 1, 1));
 
             canvas.save();
             canvas.translate(origin.x, origin.y);
             canvas.rotate(-45);
 
-            canvas.drawRect(-RenderView.VIEW_WIDTH * 3.25f * progress, (progress > 0.5) ? RenderView.VIEW_HEIGHT * 2f * (float)Math.pow(progress - 0.5f, 0.9) * 1.1f : 0, RenderView.VIEW_WIDTH * 3.25f * progress, RenderView.VIEW_HEIGHT * 2f * progress,  paint);
-            canvas.drawRect(-RenderView.VIEW_WIDTH * 3.25f * progress, -RenderView.VIEW_HEIGHT * 2f * progress, RenderView.VIEW_WIDTH * 3.25f * progress, (progress > 0.5) ? -RenderView.VIEW_HEIGHT * 2f * (float)Math.pow(progress - 0.5f, 0.9) * 1.1f: 0,  paint);
+            canvas.drawRect(-RenderView.VIEW_WIDTH * 3.25f * progress, (progress > 0.4) ? RenderView.VIEW_HEIGHT * 2f * (progress - 0.4f) * 1.05f : 0, RenderView.VIEW_WIDTH * 3.25f * progress, RenderView.VIEW_HEIGHT * 2f * progress,  paint);
+            canvas.drawRect(-RenderView.VIEW_WIDTH * 3.25f * progress, -RenderView.VIEW_HEIGHT * 2f * progress, RenderView.VIEW_WIDTH * 3.25f * progress, (progress > 0.4) ? -RenderView.VIEW_HEIGHT * 2f * (progress - 0.4f) * 1.05f: 0,  paint);
 
             canvas.restore();
         }
