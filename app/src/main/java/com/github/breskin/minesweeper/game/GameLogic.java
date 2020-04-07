@@ -98,6 +98,8 @@ public class GameLogic {
         if (DataManager.checkGameDuration(minefield.getWidth(), minefield.getHeight(), minefield.getMinesCount(), getGameDuration()))
             bestTime = gameDuration;
 
+        flaggedMines = minefield.getMinesCount();
+
         infoHub.onGameWon();
 
         if (gameWonCallback != null)
