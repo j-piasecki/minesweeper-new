@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
@@ -14,6 +15,7 @@ import android.graphics.drawable.Drawable;
 import androidx.core.content.ContextCompat;
 
 import com.github.breskin.minesweeper.RenderView;
+import com.github.breskin.minesweeper.Theme;
 
 public class FancyButton extends Button {
 
@@ -44,13 +46,13 @@ public class FancyButton extends Button {
         canvas.save();
         canvas.translate(getPosition().x, getPosition().y);
 
-        paint.setColor(Color.rgb(0.6f + getSaturation() * 0.25f, 0.6f + getSaturation() * 0.25f, 0.6f + getSaturation() * 0.25f));
+        paint.setColor(Theme.getColor(Theme.ColorType.FancyButtonBackground) + Color.rgb(getSaturation() * 0.25f, getSaturation() * 0.25f, getSaturation() * 0.25f));
         canvas.drawPath(background, paint);
-        paint.setColor(Color.BLACK);
+        paint.setColor(Theme.getColor(Theme.ColorType.FancyButtonText));
         paint.setTextSize(size.y * 0.2f);
         canvas.drawText(text, size.y * 1.05f, size.y * 0.57f, paint);
 
-        paint.setColor(Color.rgb(0.75f + getSaturation() * 0.25f, 0.75f + getSaturation() * 0.25f, 0.75f + getSaturation() * 0.25f));
+        paint.setColor(Theme.getColor(Theme.ColorType.FancyButtonForeground) + Color.rgb(getSaturation() * 0.25f, getSaturation() * 0.25f, getSaturation() * 0.25f));
         canvas.drawPath(foreground, paint);
 
         if (icon != null)
@@ -90,6 +92,7 @@ public class FancyButton extends Button {
     public void setIcon(Context context, int resource) {
         Drawable vectorDrawable = ContextCompat.getDrawable(context, resource);
         vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        vectorDrawable.setColorFilter(Theme.getColor(Theme.ColorType.FancyButtonIcon), PorterDuff.Mode.SRC_ATOP);
 
         icon = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(icon);

@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 
 import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
+import com.github.breskin.minesweeper.Theme;
 import com.github.breskin.minesweeper.generic.buttons.Button;
 import com.github.breskin.minesweeper.generic.buttons.FancyButton;
 import com.github.breskin.minesweeper.generic.Slider;
@@ -71,7 +72,7 @@ public class CustomFieldView extends View {
 
     @Override
     public void render(Canvas canvas) {
-        paint.setColor(Color.WHITE);
+        paint.setColor(Theme.getColor(Theme.ColorType.Header));
         paint.setTextSize(RenderView.SIZE * 0.1f);
         canvas.drawText(DataManager.CUSTOM_VIEW_HEADER, (RenderView.VIEW_WIDTH - paint.measureText(DataManager.CUSTOM_VIEW_HEADER)) * 0.5f, RenderView.SIZE * 0.25f + offset, paint);
 

@@ -63,8 +63,8 @@ public class Camera {
     }
 
     public void move(float x, float y) {
-        position.x -= x / getBlockSize() * (RenderView.FRAME_TIME / 16f);
-        position.y -= y / getBlockSize() * (RenderView.FRAME_TIME / 16f);
+        position.x -= x / getBlockSize();
+        position.y -= y / getBlockSize();
     }
 
     public void scale(float change) {

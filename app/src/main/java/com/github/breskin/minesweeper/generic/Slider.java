@@ -4,10 +4,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import com.github.breskin.minesweeper.RenderView;
+import com.github.breskin.minesweeper.Theme;
 
 public class Slider {
 
@@ -51,7 +51,7 @@ public class Slider {
     }
 
     public void render(Canvas canvas) {
-        paint.setColor(Color.WHITE);
+        paint.setColor(Theme.getColor(Theme.ColorType.SliderForeground));
         paint.setTextSize(RenderView.SIZE * 0.065f);
 
         float centerPosition = position.x + RenderView.SIZE * 0.05f + visibleValue / (float)(maxValue - minValue) * RenderView.SIZE * 0.9f;
@@ -61,7 +61,7 @@ public class Slider {
         canvas.drawRect(position.x + RenderView.SIZE * 0.05f, position.y + paint.getTextSize() + RenderView.SIZE * 0.05f, centerPosition, position.y + paint.getTextSize() + RenderView.SIZE * 0.06f, paint);
         canvas.drawCircle(centerPosition, position.y + paint.getTextSize() + RenderView.SIZE * 0.055f, RenderView.SIZE * 0.015f, paint);
 
-        paint.setColor(Color.argb(128, 255, 255, 255));
+        paint.setColor(Theme.getColor(Theme.ColorType.SliderBackground));
         canvas.drawRect(centerPosition, position.y + paint.getTextSize() + RenderView.SIZE * 0.05f, position.x + RenderView.SIZE * 0.95f, position.y + paint.getTextSize() + RenderView.SIZE * 0.06f, paint);
 
         paint.setTextSize(RenderView.SIZE * 0.04f);

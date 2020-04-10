@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 
 import com.github.breskin.minesweeper.RenderView;
+import com.github.breskin.minesweeper.Theme;
 
 public class DefaultButton extends Button {
 
@@ -25,13 +26,13 @@ public class DefaultButton extends Button {
     @Override
     public void render(Canvas canvas) {
         PointF size = getSize();
-        paint.setColor(Color.rgb(0.8f + getSaturation() * 0.2f, 0.8f + getSaturation() * 0.2f, 0.8f + getSaturation() * 0.2f));
+        paint.setColor(Theme.getColor(Theme.ColorType.DefaultButton) + Color.rgb(getSaturation() * 0.2f, getSaturation() * 0.2f, getSaturation() * 0.2f));
         paint.setTextSize(size.y * 0.6f);
 
         if (filled) {
             canvas.drawRoundRect(getPosition().x, getPosition().y, getPosition().x + size.x, getPosition().y + size.y, size.y * 0.25f, size.y * 0.25f, paint);
 
-            paint.setColor(Color.BLACK);
+            paint.setColor(Theme.getColor(Theme.ColorType.DefaultButtonFilledText));
         } else {
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeWidth(size.y * 0.05f);

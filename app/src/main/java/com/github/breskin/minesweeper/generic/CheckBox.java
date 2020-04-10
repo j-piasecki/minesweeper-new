@@ -5,10 +5,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import com.github.breskin.minesweeper.RenderView;
+import com.github.breskin.minesweeper.Theme;
 
 public class CheckBox {
 
@@ -48,11 +48,11 @@ public class CheckBox {
         PointF size = getSize();
 
         if (saturation > 0.01f) {
-            paint.setColor(Color.argb((int) (saturation * 24), 255, 255, 255));
+            paint.setColor(Theme.getColor(Theme.ColorType.CheckBoxHovered, saturation));
             canvas.drawRect(position.x, position.y, position.x + size.x, position.y + size.y, paint);
         }
 
-        paint.setColor(Color.WHITE);
+        paint.setColor(Theme.getColor(Theme.ColorType.CheckBox));
         paint.setStrokeWidth(RenderView.SIZE * 0.0075f);
         paint.setStyle(Paint.Style.STROKE);
 
@@ -66,16 +66,16 @@ public class CheckBox {
         paint.setStyle(Paint.Style.FILL);
 
         if (checked || touchDown) {
-            paint.setColor(Color.argb(((checked) ? 96 : 0) + ((touchDown) ? (int)(saturation * 48) : 0), 255, 255, 255));
+            paint.setColor(Theme.getColor(Theme.ColorType.CheckBox, (((checked) ? 96 : 0) + ((touchDown) ? saturation * 48 : 0)) / 255));
             canvas.drawRoundRect(rect, RenderView.SIZE * 0.02f, RenderView.SIZE * 0.02f, paint);
-            paint.setColor(Color.WHITE);
+            paint.setColor(Theme.getColor(Theme.ColorType.CheckBox));
 
             if (checked)
                 canvas.drawCircle(rect.left + rect.width() * 0.5f, rect.top + rect.height() * 0.5f, RenderView.SIZE * 0.015f, paint);
         }
 
         if (text != null) {
-            paint.setColor(Color.WHITE);
+            paint.setColor(Theme.getColor(Theme.ColorType.CheckBox));
             paint.setTextSize(RenderView.SIZE * 0.05f);
             canvas.drawText(text, RenderView.VIEW_WIDTH * 0.05f + position.x, position.y + (size.y - paint.getTextSize()) * 0.44f + paint.getTextSize(), paint);
         }

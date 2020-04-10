@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 
 import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
+import com.github.breskin.minesweeper.Theme;
 import com.github.breskin.minesweeper.generic.buttons.DefaultButton;
 import com.github.breskin.minesweeper.generic.buttons.Button;
 import com.github.breskin.minesweeper.generic.CheckBox;
@@ -89,7 +90,7 @@ public class SettingsView extends View {
         super.render(canvas);
 
         paint.setTextSize(RenderView.SIZE * 0.125f);
-        paint.setColor(Color.WHITE);
+        paint.setColor(Theme.getColor(Theme.ColorType.Header));
         canvas.drawText(DataManager.SETTINGS_VIEW_HEADER, (RenderView.VIEW_WIDTH - paint.measureText(DataManager.SETTINGS_VIEW_HEADER)) * 0.5f, RenderView.SIZE * 0.15f + paint.getTextSize() + offset, paint);
 
         vibrationsCheckBox.render(canvas);

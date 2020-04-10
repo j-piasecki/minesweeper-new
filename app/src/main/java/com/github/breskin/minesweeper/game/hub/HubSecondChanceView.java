@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 
 import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
+import com.github.breskin.minesweeper.Theme;
 import com.github.breskin.minesweeper.generic.buttons.Button;
 import com.github.breskin.minesweeper.generic.buttons.DefaultButton;
 import com.github.breskin.minesweeper.generic.HubView;
@@ -51,7 +52,7 @@ public class HubSecondChanceView extends HubView {
 
     @Override
     protected void drawContent(Canvas canvas) {
-        paint.setColor(Color.WHITE);
+        paint.setColor(Theme.getColor(Theme.ColorType.HubText));
 
         paint.setTextSize(RenderView.SIZE * 0.06f);
         canvas.drawText(DataManager.HUB_DO_YOU_WANT_TO_CONTINUE, position.x + (RenderView.VIEW_WIDTH - paint.measureText(DataManager.HUB_DO_YOU_WANT_TO_CONTINUE)) * 0.5f, position.y + paint.getTextSize() * 1.3f, paint);

@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 
 import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
+import com.github.breskin.minesweeper.Theme;
 
 public class SecondLivesWidget {
 
@@ -36,7 +37,7 @@ public class SecondLivesWidget {
 
         PointF size = getSize();
 
-        paint.setColor(Color.WHITE);
+        paint.setColor(Theme.getColor(Theme.ColorType.SecondLivesWidget));
         paint.setStyle(Paint.Style.STROKE);
 
         canvas.drawRoundRect(position.x, position.y, position.x + size.x, position.y + size.y, size.y * 0.3f, size.y * 0.3f, paint);

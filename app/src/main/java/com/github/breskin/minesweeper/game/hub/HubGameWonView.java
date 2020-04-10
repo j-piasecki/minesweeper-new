@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 
 import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
+import com.github.breskin.minesweeper.Theme;
 import com.github.breskin.minesweeper.generic.buttons.Button;
 import com.github.breskin.minesweeper.generic.buttons.DefaultButton;
 import com.github.breskin.minesweeper.generic.HubView;
@@ -61,7 +62,7 @@ public class HubGameWonView extends HubView {
 
     @Override
     protected void drawContent(Canvas canvas) {
-        paint.setColor(Color.WHITE);
+        paint.setColor(Theme.getColor(Theme.ColorType.HubText));
         paint.setTextSize(RenderView.SIZE * 0.1f);
 
         canvas.drawText(DataManager.HUB_GAME_WON, position.x + (RenderView.VIEW_WIDTH - paint.measureText(DataManager.HUB_GAME_WON)) * 0.5f, position.y + paint.getTextSize() * 1.2f, paint);

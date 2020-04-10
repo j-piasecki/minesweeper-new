@@ -186,7 +186,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
                     continue;
 
                 canvas.save();
-                canvas.drawColor(Color.BLACK);
+                canvas.drawColor(Theme.getColor(Theme.ColorType.Background));
 
                 render(canvas);
 

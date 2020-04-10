@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
+import com.github.breskin.minesweeper.Theme;
 
 public class Square {
 
@@ -54,25 +55,25 @@ public class Square {
 
         if (revealed) {
             if (tintedRed)
-                paint.setColor(Color.rgb(192, 0, 0));
+                paint.setColor(Theme.getColor(Theme.ColorType.SquareRed));
             else if (tintedGreen)
-                paint.setColor(Color.rgb(0, 192, 0));
+                paint.setColor(Theme.getColor(Theme.ColorType.SquareGreen));
             else
-                paint.setColor(Color.rgb(96, 96, 96));
+                paint.setColor(Theme.getColor(Theme.ColorType.SquareRevealed));
             canvas.drawRoundRect(new RectF(position.x + size * 0.04f, position.y + size * 0.04f, position.x + size * 0.92f, position.y + size * 0.92f), size * 0.1f, size * 0.1f, paint);
 
             if (type > 0) {
                 paint.setTextSize(size * 0.75f);
 
                 switch (type) {
-                    case TYPE_1: paint.setColor(Color.rgb(0, 64, 255)); break;
-                    case TYPE_2: paint.setColor(Color.rgb(0, 200, 0)); break;
-                    case TYPE_3: paint.setColor(Color.rgb(255, 0, 0)); break;
-                    case TYPE_4: paint.setColor(Color.rgb(0, 0, 192)); break;
-                    case TYPE_5: paint.setColor(Color.rgb(192, 0, 0)); break;
-                    case TYPE_6: paint.setColor(Color.rgb(0, 255, 255)); break;
-                    case TYPE_7: paint.setColor(Color.rgb(0, 0, 0)); break;
-                    case TYPE_8: paint.setColor(Color.rgb(200, 200, 200)); break;
+                    case TYPE_1: paint.setColor(Theme.getColor(Theme.ColorType.FieldType1)); break;
+                    case TYPE_2: paint.setColor(Theme.getColor(Theme.ColorType.FieldType2)); break;
+                    case TYPE_3: paint.setColor(Theme.getColor(Theme.ColorType.FieldType3)); break;
+                    case TYPE_4: paint.setColor(Theme.getColor(Theme.ColorType.FieldType4)); break;
+                    case TYPE_5: paint.setColor(Theme.getColor(Theme.ColorType.FieldType5)); break;
+                    case TYPE_6: paint.setColor(Theme.getColor(Theme.ColorType.FieldType6)); break;
+                    case TYPE_7: paint.setColor(Theme.getColor(Theme.ColorType.FieldType7)); break;
+                    case TYPE_8: paint.setColor(Theme.getColor(Theme.ColorType.FieldType8)); break;
                 }
 
                 canvas.drawText(String.valueOf(type),position.x + (size - paint.measureText(String.valueOf(type))) / 2, (int)(position.y + paint.getTextSize()), paint);
@@ -80,7 +81,7 @@ public class Square {
                 drawMine(logic, canvas, position);
             }
         } else {
-            paint.setColor(Color.rgb(64, 64, 64));
+            paint.setColor(Theme.getColor(Theme.ColorType.Square));
             canvas.drawRoundRect(new RectF(position.x + size * 0.04f, position.y + size * 0.04f, position.x + size * 0.92f, position.y + size * 0.92f), size * 0.1f, size * 0.1f, paint);
 
             if (flagged && currentAnimation != Animation.PlaceFlag && currentAnimation != Animation.DropFlag) {
@@ -94,12 +95,11 @@ public class Square {
 
         if (currentAnimation == Animation.PlaceFlag) {
             position = logic.getCamera().calculateOnScreenPosition(new PointF(visibleX, visibleY - (1 - flagAnimation) * 2));
-            drawFlag(logic, canvas, position, (int)(255 * flagAnimation));
+            drawFlag(logic, canvas, position, flagAnimation);
         } else {
             position = logic.getCamera().calculateOnScreenPosition(new PointF(visibleX, visibleY + flagAnimation * 2));
-            int alpha = (int)(255 * (1 - flagAnimation));
             float size = logic.getCamera().getBlockSize();
-            paint.setColor(Color.argb(alpha, 200, 0, 0));
+            paint.setColor(Theme.getColor(Theme.ColorType.Flag, 1 - flagAnimation));
 
             canvas.save();
             canvas.translate(position.x + size * 3f / 8f + size * 0.02f, position.y + size * 13f / 16f);
@@ -113,7 +113,7 @@ public class Square {
             canvas.drawPath(triangle, paint);
 
 
-            paint.setColor(Color.argb(alpha, 0, 0, 0));
+            paint.setColor(Theme.getColor(Theme.ColorType.FlagHandle, 1 - flagAnimation));
             paint.setStrokeWidth(size * 0.05f);
             paint.setStyle(Paint.Style.STROKE);
             canvas.drawLine(0, -size * 10f / 16, 0, 0, paint);
@@ -124,13 +124,13 @@ public class Square {
     }
 
     private void drawFlag(GameLogic logic, Canvas canvas, PointF position) {
-        drawFlag(logic, canvas, position, 255);
+        drawFlag(logic, canvas, position, 1);
     }
 
-    private void drawFlag(GameLogic logic, Canvas canvas, PointF position, int alpha) {
+    private void drawFlag(GameLogic logic, Canvas canvas, PointF position, float alpha) {
         float size = logic.getCamera().getBlockSize();
 
-        paint.setColor(Color.argb(alpha, 200, 0, 0));
+        paint.setColor(Theme.getColor(Theme.ColorType.Flag, alpha));
 
         Path triangle = new Path();
         triangle.moveTo(position.x + size * 3f / 8f + size * 0.02f, position.y + size * 3f / 16f);
@@ -140,7 +140,7 @@ public class Square {
         canvas.drawPath(triangle, paint);
 
 
-        paint.setColor(Color.argb(alpha, 0, 0, 0));
+        paint.setColor(Theme.getColor(Theme.ColorType.FlagHandle, alpha));
         paint.setStrokeWidth(size * 0.05f);
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawLine(position.x + size * 3f / 8f, position.y + size * 3f / 16, position.x + size * 3f / 8f, position.y + size * 13f / 16f, paint);
@@ -151,7 +151,7 @@ public class Square {
     private void drawMine(GameLogic logic, Canvas canvas, PointF position) {
         float size = logic.getCamera().getBlockSize();
 
-        paint.setColor(Color.rgb(255, 255, 255));
+        paint.setColor(Theme.getColor(Theme.ColorType.Mine));
         canvas.drawCircle(position.x + size * 0.475f, position.y + size * 0.475f, size * 0.25f, paint);
 
         float halfX = size * 0.05f, halfY = size * 0.3f, cornerRadius = size * 0.1f;

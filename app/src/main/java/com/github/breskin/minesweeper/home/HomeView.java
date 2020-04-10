@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.R;
 import com.github.breskin.minesweeper.RenderView;
+import com.github.breskin.minesweeper.Theme;
 import com.github.breskin.minesweeper.generic.buttons.Button;
 import com.github.breskin.minesweeper.generic.buttons.FancyButton;
 import com.github.breskin.minesweeper.generic.View;
@@ -150,7 +151,7 @@ public class HomeView extends View {
 
     private void drawLogo(Canvas canvas) {
         paint.setTextSize(RenderView.SIZE * 0.125f);
-        paint.setColor(Color.WHITE);
+        paint.setColor(Theme.getColor(Theme.ColorType.Header));
 
         PointF position = new PointF((RenderView.VIEW_WIDTH - paint.measureText(DataManager.HOME_VIEW_LOGO_FIRST) - paint.measureText(DataManager.HOME_VIEW_LOGO_SECOND) - RenderView.SIZE * 0.08f) * 0.5f, RenderView.SIZE * 0.15f + offset);
 
@@ -168,7 +169,7 @@ public class HomeView extends View {
     private void drawFlag(Canvas canvas, PointF position) {
         float size = RenderView.SIZE * 0.175f;
 
-        paint.setColor(Color.rgb(200, 0, 0));
+        paint.setColor(Theme.getColor(Theme.ColorType.Flag));
 
         Path triangle = new Path();
         triangle.moveTo(position.x + size * 3f / 8f + size * 0.02f, position.y + size * 3f / 16f);
@@ -178,7 +179,7 @@ public class HomeView extends View {
         canvas.drawPath(triangle, paint);
 
 
-        paint.setColor(Color.WHITE);
+        paint.setColor(Theme.getColor(Theme.ColorType.Header));
         paint.setStrokeWidth(size * 0.05f);
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawLine(position.x + size * 3f / 8f, position.y + size * 3f / 16, position.x + size * 3f / 8f, position.y + size * 13f / 16f, paint);
@@ -220,7 +221,7 @@ public class HomeView extends View {
 
         @Override
         public void render(Canvas canvas) {
-            paint.setColor(Color.argb((progress < 0.4) ? (progress * 2.5f) : 1, 1, 1, 1));
+            paint.setColor(Theme.getColor(Theme.ColorType.HomeTransition, (progress < 0.4) ? (progress * 2.5f) : 1));
 
             canvas.save();
             canvas.translate(origin.x, origin.y);

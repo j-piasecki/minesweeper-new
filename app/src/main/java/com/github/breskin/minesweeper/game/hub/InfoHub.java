@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 
 import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
+import com.github.breskin.minesweeper.Theme;
 import com.github.breskin.minesweeper.game.GameLogic;
 import com.github.breskin.minesweeper.generic.HubView;
 
@@ -61,11 +62,11 @@ public class InfoHub {
     }
 
     public void render(GameLogic logic, Canvas canvas) {
-        paint.setColor(Color.argb(160, 0, 0, 0));
+        paint.setColor(Theme.getColor(Theme.ColorType.HubBackground));
 
         canvas.drawRect(0, RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.1f - offset, RenderView.VIEW_WIDTH, RenderView.VIEW_HEIGHT, paint);
 
-        paint.setColor(Color.WHITE);
+        paint.setColor(Theme.getColor(Theme.ColorType.HubText));
         paint.setTextSize(RenderView.SIZE * 0.07f);
 
         canvas.drawText(getTimeString(logic.getGameDuration()), RenderView.VIEW_WIDTH * 0.975f - paint.measureText(getTimeString(logic.getGameDuration())), RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.02f - offset, paint);
