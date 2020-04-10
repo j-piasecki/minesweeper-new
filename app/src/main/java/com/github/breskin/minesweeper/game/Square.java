@@ -223,7 +223,10 @@ public class Square {
             else
                 logic.getParticleSystem().createInPoint(logic, new PointF(visibleX + 0.5f, visibleY + 0.5f), logic.getCamera().getBlockSize() * 0.7f, particlesCount, 0, 192, 0);
         } else {
-            logic.getParticleSystem().createInPoint(logic, new PointF(visibleX + 0.5f, visibleY + 0.5f), logic.getCamera().getBlockSize() * 0.7f, particlesCount, 48, 48, 48);
+            if (DataManager.DARK_THEME)
+                logic.getParticleSystem().createInPoint(logic, new PointF(visibleX + 0.5f, visibleY + 0.5f), logic.getCamera().getBlockSize() * 0.7f, particlesCount, 48, 48, 48);
+            else
+                logic.getParticleSystem().createInPoint(logic, new PointF(visibleX + 0.5f, visibleY + 0.5f), logic.getCamera().getBlockSize() * 0.7f, particlesCount, 128, 128, 128);
         }
 
         if (type == TYPE_EMPTY) {

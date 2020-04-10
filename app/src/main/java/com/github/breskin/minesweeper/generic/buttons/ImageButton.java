@@ -23,13 +23,7 @@ public class ImageButton extends Button {
     private Paint paint;
 
     public ImageButton(Context context, int resource) {
-        Drawable vectorDrawable = ContextCompat.getDrawable(context, resource);
-        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
-        vectorDrawable.setColorFilter(Theme.getColor(Theme.ColorType.ImageButtonIcon), PorterDuff.Mode.SRC_ATOP);
-
-        icon = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(icon);
-        vectorDrawable.draw(canvas);
+        setIcon(context, resource);
 
         paint = new Paint();
     }
@@ -48,5 +42,15 @@ public class ImageButton extends Button {
     @Override
     public PointF getSize() {
         return new PointF(RenderView.SIZE * 0.125f, RenderView.SIZE * 0.125f);
+    }
+
+    public void setIcon(Context context, int resource) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, resource);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        vectorDrawable.setColorFilter(Theme.getColor(Theme.ColorType.ImageButtonIcon), PorterDuff.Mode.SRC_ATOP);
+
+        icon = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(icon);
+        vectorDrawable.draw(canvas);
     }
 }

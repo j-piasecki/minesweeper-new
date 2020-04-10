@@ -187,6 +187,15 @@ public class HomeView extends View {
         paint.setStyle(Paint.Style.FILL);
     }
 
+    @Override
+    public void onThemeChanged() {
+        smallButton.setIcon(renderView.getContext(), R.drawable.ic_field_small_button);
+        mediumButton.setIcon(renderView.getContext(), R.drawable.ic_field_medium_button);
+        largeButton.setIcon(renderView.getContext(), R.drawable.ic_field_large_button);
+        customButton.setIcon(renderView.getContext(), R.drawable.ic_field_custom_button);
+        settingsButton.setIcon(renderView.getContext(), R.drawable.ic_settings);
+    }
+
     public static class Transition extends com.github.breskin.minesweeper.generic.Transition {
 
         private Paint paint;

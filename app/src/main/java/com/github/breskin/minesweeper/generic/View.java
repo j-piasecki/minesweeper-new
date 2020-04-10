@@ -28,4 +28,8 @@ public class View {
     public boolean onTouchEvent(MotionEvent event) {
         return false;
     }
+
+    public void onThemeChanged() {
+
+    }
 }

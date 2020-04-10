@@ -28,4 +28,5 @@
     <string name="settings_view_flag_animations">Animacje flagi</string>
     <string name="settings_view_reduce_particles">Ogranicz cząsteczki</string>
     <string name="settings_view_sign_in">Zaloguj się</string>
+    <string name="settings_view_dark_theme">Ciemny motyw</string>
 </resources>

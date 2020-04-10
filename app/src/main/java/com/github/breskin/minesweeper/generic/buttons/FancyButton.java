@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 
 import androidx.core.content.ContextCompat;
 
+import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
 import com.github.breskin.minesweeper.Theme;
 
@@ -46,13 +47,20 @@ public class FancyButton extends Button {
         canvas.save();
         canvas.translate(getPosition().x, getPosition().y);
 
-        paint.setColor(Theme.getColor(Theme.ColorType.FancyButtonBackground) + Color.rgb(getSaturation() * 0.25f, getSaturation() * 0.25f, getSaturation() * 0.25f));
+        if (DataManager.DARK_THEME)
+            paint.setColor(Theme.getColor(Theme.ColorType.FancyButtonBackground) + Color.rgb(getSaturation() * 0.25f, getSaturation() * 0.25f, getSaturation() * 0.25f));
+        else
+            paint.setColor(Theme.getColor(Theme.ColorType.FancyButtonBackground) + Color.rgb(getSaturation() * 0.125f, getSaturation() * 0.125f, getSaturation() * 0.125f));
+
         canvas.drawPath(background, paint);
         paint.setColor(Theme.getColor(Theme.ColorType.FancyButtonText));
         paint.setTextSize(size.y * 0.2f);
         canvas.drawText(text, size.y * 1.05f, size.y * 0.57f, paint);
 
-        paint.setColor(Theme.getColor(Theme.ColorType.FancyButtonForeground) + Color.rgb(getSaturation() * 0.25f, getSaturation() * 0.25f, getSaturation() * 0.25f));
+        if (DataManager.DARK_THEME)
+            paint.setColor(Theme.getColor(Theme.ColorType.FancyButtonForeground) + Color.rgb(getSaturation() * 0.25f, getSaturation() * 0.25f, getSaturation() * 0.25f));
+        else
+            paint.setColor(Theme.getColor(Theme.ColorType.FancyButtonForeground) + Color.rgb(getSaturation() * 0.125f, getSaturation() * 0.125f, getSaturation() * 0.125f));
         canvas.drawPath(foreground, paint);
 
         if (icon != null)

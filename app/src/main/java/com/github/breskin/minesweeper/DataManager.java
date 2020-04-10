@@ -22,14 +22,15 @@ public class DataManager {
     public static String FIELD_SIZE_SMALL, FIELD_SIZE_MEDIUM, FIELD_SIZE_LARGE, FIELD_SIZE_CUSTOM, HUB_BUTTON_OK, HUB_BUTTON_REPLAY, HUB_GAME_LOST, HUB_GAME_WON, HUB_BUTTON_NO, HUB_BUTTON_YES,
             HUB_SECOND_LIFE_AVAILABLE, HUB_SECOND_LIFE_ONCE_REMINDER, HUB_BEST_TIME, CUSTOM_VIEW_WIDTH, CUSTOM_VIEW_HEIGHT, CUSTOM_VIEW_MINES, CUSTOM_VIEW_HEADER, CUSTOM_VIEW_START,
             HOME_VIEW_LOGO_FIRST, HOME_VIEW_LOGO_SECOND, SETTINGS_VIEW_HEADER, SETTINGS_VIEW_VIBRATIONS, SETTINGS_VIEW_FLAG_ANIMATIONS, SETTINGS_VIEW_REDUCE_PARTICLES, SETTINGS_SIGN_IN,
-            HUB_DO_YOU_WANT_TO_CONTINUE;
+            HUB_DO_YOU_WANT_TO_CONTINUE, SETTINGS_DARK_THEME;
 
-    private static String SECOND_LIVES_STRING = "second-chance-count", VIBRATIONS_STRING = "vibrations", FLAG_ANIMATIONS_STRING = "flag-animations", REDUCE_PARTICLES_STRING = "reduce-particles";
+    private static String SECOND_LIVES_STRING = "second-chance-count", VIBRATIONS_STRING = "vibrations", FLAG_ANIMATIONS_STRING = "flag-animations", REDUCE_PARTICLES_STRING = "reduce-particles",
+                            DARK_THEME_STRING = "dark-theme";
 
     public static final int SECOND_LIVES_DAILY_BONUS = 3;
     public static int SECOND_LIVES_COUNT = 0;
 
-    public static boolean FIRST_LAUNCH = false, FIRST_LAUNCH_TODAY = false, VIBRATIONS_ENABLED = true, FLAG_ANIMATIONS_ENABLED = true, REDUCE_PARTICLES_ON = false;
+    public static boolean FIRST_LAUNCH = false, FIRST_LAUNCH_TODAY = false, VIBRATIONS_ENABLED = true, FLAG_ANIMATIONS_ENABLED = true, REDUCE_PARTICLES_ON = false, DARK_THEME = true;
 
     public static void load(Context context) {
         FIELD_SIZE_SMALL = context.getString(R.string.game_size_small);
@@ -58,6 +59,7 @@ public class DataManager {
         SETTINGS_VIEW_REDUCE_PARTICLES = context.getString(R.string.settings_view_reduce_particles);
         SETTINGS_SIGN_IN = context.getString(R.string.settings_view_sign_in);
         HUB_DO_YOU_WANT_TO_CONTINUE = context.getString(R.string.hub_second_do_you_want_to_continue);
+        SETTINGS_DARK_THEME = context.getString(R.string.settings_view_dark_theme);
 
         preferences = context.getSharedPreferences("data", Context.MODE_PRIVATE);
         SECOND_LIVES_COUNT = preferences.getInt(SECOND_LIVES_STRING, 0);
@@ -65,6 +67,7 @@ public class DataManager {
         VIBRATIONS_ENABLED = preferences.getBoolean(VIBRATIONS_STRING, true);
         FLAG_ANIMATIONS_ENABLED = preferences.getBoolean(FLAG_ANIMATIONS_STRING, true);
         REDUCE_PARTICLES_ON = preferences.getBoolean(REDUCE_PARTICLES_STRING, false);
+        DARK_THEME = preferences.getBoolean(DARK_THEME_STRING, true);
 
         String lastDayPlayed = preferences.getString("last-day-played", "none");
 
@@ -136,6 +139,12 @@ public class DataManager {
         REDUCE_PARTICLES_ON = reduceParticlesOn;
 
         preferences.edit().putBoolean(REDUCE_PARTICLES_STRING, REDUCE_PARTICLES_ON).apply();
+    }
+
+    public static void setDarkTheme(boolean darkTheme) {
+        DARK_THEME = darkTheme;
+
+        preferences.edit().putBoolean(DARK_THEME_STRING, DARK_THEME).apply();
     }
 
     public static void syncDataWithCloud() {

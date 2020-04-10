@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class SettingsView extends View {
 
     private Paint paint;
-    private CheckBox vibrationsCheckBox, flagAnimationsCheckBox, reduceParticlesCheckBox;
+    private CheckBox vibrationsCheckBox, flagAnimationsCheckBox, reduceParticlesCheckBox, darkThemeCheckBox;
 
     private DefaultButton signInButton;
 
@@ -59,6 +59,16 @@ public class SettingsView extends View {
             }
         });
 
+        darkThemeCheckBox = new CheckBox(DataManager.SETTINGS_DARK_THEME);
+        darkThemeCheckBox.setChecked(DataManager.DARK_THEME);
+        darkThemeCheckBox.setCallback(new CheckBox.CheckChangeCallback() {
+            @Override
+            public void onChecked(boolean checked) {
+                DataManager.setDarkTheme(checked);
+                renderView.themeChanged();
+            }
+        });
+
         signInButton = new DefaultButton(DataManager.SETTINGS_SIGN_IN, true);
         signInButton.setCallback(new Button.ClickCallback() {
             @Override
@@ -76,11 +86,13 @@ public class SettingsView extends View {
         vibrationsCheckBox.update();
         flagAnimationsCheckBox.update();
         reduceParticlesCheckBox.update();
+        darkThemeCheckBox.update();
         signInButton.update();
 
         vibrationsCheckBox.setPosition(new PointF(0, RenderView.SIZE * 0.45f + offset));
         flagAnimationsCheckBox.setPosition(new PointF(0, vibrationsCheckBox.getPosition().y + vibrationsCheckBox.getSize().y));
         reduceParticlesCheckBox.setPosition(new PointF(0, flagAnimationsCheckBox.getPosition().y + flagAnimationsCheckBox.getSize().y));
+        darkThemeCheckBox.setPosition(new PointF(0, reduceParticlesCheckBox.getPosition().y + reduceParticlesCheckBox.getSize().y));
 
         signInButton.setPosition(new PointF((RenderView.VIEW_WIDTH - signInButton.getSize().x) * 0.5f, RenderView.VIEW_HEIGHT - signInButton.getSize().y * 1.75f + offset));
     }
@@ -96,6 +108,7 @@ public class SettingsView extends View {
         vibrationsCheckBox.render(canvas);
         flagAnimationsCheckBox.render(canvas);
         reduceParticlesCheckBox.render(canvas);
+        darkThemeCheckBox.render(canvas);
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null)
             signInButton.render(canvas);
@@ -106,6 +119,7 @@ public class SettingsView extends View {
         if (vibrationsCheckBox.onTouchEvent(event)) return true;
         if (flagAnimationsCheckBox.onTouchEvent(event)) return true;
         if (reduceParticlesCheckBox.onTouchEvent(event)) return true;
+        if (darkThemeCheckBox.onTouchEvent(event)) return true;
         if (FirebaseAuth.getInstance().getCurrentUser() == null && signInButton.onTouchEvent(event)) return true;
 
         return super.onTouchEvent(event);

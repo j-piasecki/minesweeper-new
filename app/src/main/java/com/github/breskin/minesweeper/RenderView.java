@@ -110,6 +110,13 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
         return gameView;
     }
 
+    public void themeChanged() {
+        homeView.onThemeChanged();
+        gameView.onThemeChanged();
+        customFieldView.onThemeChanged();
+        settingsView.onThemeChanged();
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event)  {
         if (transition != null && !transition.passTouchEvents()) return true;

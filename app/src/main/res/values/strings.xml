@@ -27,4 +27,5 @@
     <string name="settings_view_reduce_particles">Reduce particles</string>
     <string name="settings_view_sign_in">Sign in</string>
     <string name="hub_second_life_available">You can use a second life (%1$d left)</string>
+    <string name="settings_view_dark_theme">Dark theme</string>
 </resources>
