@@ -207,7 +207,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
 
                 timeSinceAccountUpdate += FRAME_TIME;
 
-                if (timeSinceAccountUpdate > 10000) {
+                if (timeSinceAccountUpdate > 5000) {
                     timeSinceAccountUpdate = 0;
 
                     updateAccount();

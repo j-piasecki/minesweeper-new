@@ -95,6 +95,7 @@ public class GameLogic {
 
         minefield.startWinAnimation();
 
+        DataManager.incrementGamesWonCounter(minefield.getWidth(), minefield.getHeight(), minefield.getMinesCount());
         if (DataManager.checkGameDuration(minefield.getWidth(), minefield.getHeight(), minefield.getMinesCount(), getGameDuration()))
             bestTime = gameDuration;
 
@@ -108,6 +109,8 @@ public class GameLogic {
 
     public void onGameStarted() {
         gameStarted = true;
+
+        DataManager.incrementGameCounter(minefield.getWidth(), minefield.getHeight(), minefield.getMinesCount());
 
         if (gameStartedCallback != null)
             gameStartedCallback.onGameStarted();

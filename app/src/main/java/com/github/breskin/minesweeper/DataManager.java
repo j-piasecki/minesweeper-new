@@ -2,14 +2,18 @@ package com.github.breskin.minesweeper;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
@@ -117,6 +121,62 @@ public class DataManager {
         }
 
         return false;
+    }
+
+    public static void incrementGameCounter(int width, int height, int mines) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null)
+            return;
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("stats").child(width + "x" + height + "x" + mines).child("started");
+
+        reference.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                Integer value = mutableData.getValue(Integer.class);
+
+                if (value == null) {
+                    mutableData.setValue(1);
+                } else {
+                    mutableData.setValue(value + 1);
+                }
+
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+                Log.i("Minesweeper", "Game started increment completed: " + databaseError);
+            }
+        });
+    }
+
+    public static void incrementGamesWonCounter(int width, int height, int mines) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null)
+            return;
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("stats").child(width + "x" + height + "x" + mines).child("won");
+
+        reference.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                Integer value = mutableData.getValue(Integer.class);
+
+                if (value == null) {
+                    mutableData.setValue(1);
+                } else {
+                    mutableData.setValue(value + 1);
+                }
+
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+                Log.i("Minesweeper", "Game won increment completed: " + databaseError);
+            }
+        });
     }
 
     public static int getBestTime(int width, int height, int mines) {
