@@ -1,5 +1,6 @@
 package com.github.breskin.minesweeper;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,8 +12,12 @@ import android.view.Window;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,9 +46,25 @@ public class MainActivity extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
-                String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                final String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
                 FirebaseDatabase.getInstance().getReference("user2uid").child(email.substring(0, email.indexOf("@"))).setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 FirebaseDatabase.getInstance().getReference("uid2user").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(email.substring(0, email.indexOf("@")));
+
+                FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("name").runTransaction(new Transaction.Handler() {
+                    @NonNull
+                    @Override
+                    public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                        if (mutableData.getValue() == null)
+                            mutableData.setValue(email.substring(0, email.indexOf("@")));
+
+                        return Transaction.success(mutableData);
+                    }
+
+                    @Override
+                    public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+
+                    }
+                });
 
                 DataManager.syncDataWithCloud();
             }

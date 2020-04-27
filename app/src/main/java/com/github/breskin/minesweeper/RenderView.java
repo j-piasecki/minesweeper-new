@@ -19,6 +19,7 @@ import com.github.breskin.minesweeper.home.CustomFieldView;
 import com.github.breskin.minesweeper.home.HomeView;
 import com.github.breskin.minesweeper.home.SettingsView;
 import com.github.breskin.minesweeper.particles.ParticleSystem;
+import com.github.breskin.minesweeper.profile.friends.FriendsView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -28,7 +29,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
 
     public static int VIEW_WIDTH, VIEW_HEIGHT, FRAME_TIME, SIZE;
 
-    public enum ViewType { None, Home, Game, CustomField, Settings }
+    public enum ViewType { None, Home, Game, CustomField, Settings, Friends }
 
     public static Context CONTEXT;
 
@@ -44,6 +45,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
     private GameView gameView;
     private CustomFieldView customFieldView;
     private SettingsView settingsView;
+    private FriendsView friendsView;
 
     private int timeSinceAccountUpdate = 10000;
 
@@ -61,6 +63,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
         gameView = new GameView(this);
         customFieldView = new CustomFieldView(this);
         settingsView = new SettingsView(this);
+        friendsView = new FriendsView(this);
 
         getHolder().addCallback(this);
 
@@ -77,6 +80,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
             case Game: gameView.update(); break;
             case CustomField: customFieldView.update(); break;
             case Settings: settingsView.update(); break;
+            case Friends: friendsView.update(); break;
         }
 
         switch (currentView) {
@@ -84,6 +88,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
             case Game: gameView.render(canvas); break;
             case CustomField: customFieldView.render(canvas); break;
             case Settings: settingsView.render(canvas); break;
+            case Friends: friendsView.render(canvas); break;
         }
 
         particleSystem.update(gameView.getGameLogic());
@@ -115,6 +120,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
         gameView.onThemeChanged();
         customFieldView.onThemeChanged();
         settingsView.onThemeChanged();
+        friendsView.onThemeChanged();
     }
 
     @Override
@@ -126,6 +132,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
             case Game: if (gameView.onTouchEvent(event)) return true; break;
             case CustomField: if (customFieldView.onTouchEvent(event)) return true; break;
             case Settings: if (settingsView.onTouchEvent(event)) return true; break;
+            case Friends: if (friendsView.onTouchEvent(event)) return true; break;
         }
 
         return true;
@@ -161,6 +168,10 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
 
                     case Settings:
                         settingsView.open();
+                        break;
+
+                    case Friends:
+                        friendsView.open();
                         break;
                 }
             }
@@ -217,7 +228,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
     }
 
     public boolean onBackPressed() {
-        if (currentView == ViewType.Game || currentView == ViewType.CustomField || currentView == ViewType.Settings) {
+        if (currentView == ViewType.Game || currentView == ViewType.CustomField || currentView == ViewType.Settings || currentView == ViewType.Friends) {
             Transition transition = new HomeView.Transition(ViewType.Home);
 
             if (currentView == ViewType.Game) {
