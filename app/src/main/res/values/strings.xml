@@ -29,4 +29,10 @@
     <string name="hub_second_life_available">You can use a second life (%1$d left)</string>
     <string name="settings_view_dark_theme">Dark theme</string>
     <string name="home_profile">Profile</string>
+    <string name="invite_friend_dialog_input_hint">E-mail or user id...</string>
+    <string name="invite_friend_dialog_name">Add friend</string>
+    <string name="invite_friend_dialog_accept_button">Add</string>
+    <string name="friends_view_header">Friends</string>
+    <string name="invite_friend_view_header">Invites</string>
+    <string name="invite_friend_send_invite_button">Add friend</string>
 </resources>

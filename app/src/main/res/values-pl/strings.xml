@@ -30,4 +30,10 @@
     <string name="settings_view_sign_in">Zaloguj się</string>
     <string name="settings_view_dark_theme">Ciemny motyw</string>
     <string name="home_profile">Profil</string>
+    <string name="invite_friend_dialog_input_hint">E-mail lub identyfikator...</string>
+    <string name="invite_friend_dialog_name">Dodaj znajomego</string>
+    <string name="invite_friend_dialog_accept_button">Dodaj</string>
+    <string name="friends_view_header">Znajomi</string>
+    <string name="invite_friend_view_header">Zaproszenia</string>
+    <string name="invite_friend_send_invite_button">Dodaj znajomego</string>
 </resources>

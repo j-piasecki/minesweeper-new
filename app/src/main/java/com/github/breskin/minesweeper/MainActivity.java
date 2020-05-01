@@ -2,12 +2,17 @@ package com.github.breskin.minesweeper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -81,6 +86,33 @@ public class MainActivity extends AppCompatActivity {
                 .setLogo(R.drawable.ic_icon_splash)
                 .setTheme(R.style.AppTheme)
                 .build(), RC_SIGN_IN);
+    }
+
+    public void showInviteFriendUI() {
+        final View dialogView = getLayoutInflater().inflate(R.layout.dialog_invite_friend, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(getString(R.string.invite_friend_dialog_name));
+        builder.setView(dialogView);
+        builder.setCancelable(true);
+        builder.setPositiveButton(getString(R.string.invite_friend_dialog_accept_button), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                EditText textInput = dialogView.findViewById(R.id.invite_friend_input);
+                String value = textInput.getText().toString();
+
+                if (value.length() > 0) {
+                    if (value.contains("@")) {
+                        Toast.makeText(MainActivity.this, "e-mail: " + value, Toast.LENGTH_SHORT).show();
+                    } else if (value.startsWith("u:")) {
+                        Toast.makeText(MainActivity.this, "uid: " + value.substring(2), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+        builder.create().show();
     }
 
     @Override

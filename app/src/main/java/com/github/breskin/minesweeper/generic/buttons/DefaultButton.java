@@ -14,6 +14,8 @@ public class DefaultButton extends Button {
     private String text;
     private boolean filled;
 
+    private float width = -1;
+
     public DefaultButton(String text, boolean filled) {
         super();
 
@@ -43,8 +45,15 @@ public class DefaultButton extends Button {
         canvas.drawText(text, getPosition().x + (size.x - paint.measureText(text)) * 0.5f, getPosition().y + paint.getTextSize() * 1.15f, paint);
     }
 
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
     @Override
     public PointF getSize() {
-        return new PointF(RenderView.SIZE * 0.4f, RenderView.SIZE * 0.08f);
+        if (width < 0)
+            width = RenderView.SIZE * 0.4f;
+
+        return new PointF(width, RenderView.SIZE * 0.08f);
     }
 }
