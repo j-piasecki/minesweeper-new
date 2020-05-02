@@ -252,8 +252,8 @@ public class HomeView extends View {
             canvas.translate(origin.x, origin.y);
             canvas.rotate(-45);
 
-            canvas.drawRect(-RenderView.VIEW_WIDTH * 3.25f * progress, (progress > 0.4) ? RenderView.VIEW_HEIGHT * 2f * (progress - 0.4f) * 1.05f : 0, RenderView.VIEW_WIDTH * 3.25f * progress, RenderView.VIEW_HEIGHT * 2f * progress,  paint);
-            canvas.drawRect(-RenderView.VIEW_WIDTH * 3.25f * progress, -RenderView.VIEW_HEIGHT * 2f * progress, RenderView.VIEW_WIDTH * 3.25f * progress, (progress > 0.4) ? -RenderView.VIEW_HEIGHT * 2f * (progress - 0.4f) * 1.05f: 0,  paint);
+            canvas.drawRect(-RenderView.VIEW_WIDTH * 3.75f * progress, (progress > 0.4) ? RenderView.VIEW_HEIGHT * 2f * (progress - 0.4f) * 1.05f : 0, RenderView.VIEW_WIDTH * 3.75f * progress, RenderView.VIEW_HEIGHT * 2f * progress,  paint);
+            canvas.drawRect(-RenderView.VIEW_WIDTH * 3.75f * progress, -RenderView.VIEW_HEIGHT * 2f * progress, RenderView.VIEW_WIDTH * 3.75f * progress, (progress > 0.4) ? -RenderView.VIEW_HEIGHT * 2f * (progress - 0.4f) * 1.05f: 0,  paint);
 
             canvas.restore();
         }

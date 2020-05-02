@@ -28,6 +28,8 @@ public class ListRenderer {
     public ListRenderer(List<ListEntry> list) {
         source = list;
 
+        paint.setAntiAlias(true);
+
         this.touchDownPoint = new PointF();
         this.lastTouchPoint = new PointF();
         this.translationChange = new PointF();

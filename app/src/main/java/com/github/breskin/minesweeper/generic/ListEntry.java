@@ -22,6 +22,7 @@ public class ListEntry {
 
     public ListEntry() {
         touchDownPoint = new PointF(0, 0);
+        paint.setAntiAlias(true);
     }
 
     public void update(float translation) {

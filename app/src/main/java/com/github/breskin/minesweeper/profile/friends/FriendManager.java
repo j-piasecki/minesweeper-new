@@ -48,6 +48,10 @@ public class FriendManager {
         }
     }
 
+    public static void syncFriendsWithCloud() {
+        Log.w("A", "friends sync");
+    }
+
     public static ReentrantLock getFriendsLock() {
         return friendsLock;
     }

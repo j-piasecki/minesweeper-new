@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 DataManager.syncDataWithCloud();
+                FriendManager.syncFriendsWithCloud();
             }
         }
     }

@@ -34,6 +34,7 @@ public class FriendsRequestsView extends View {
         super(renderView);
 
         paint = new Paint();
+        paint.setAntiAlias(true);
 
         listEntries = new ArrayList<>();
         listRenderer = new ListRenderer(listEntries);
