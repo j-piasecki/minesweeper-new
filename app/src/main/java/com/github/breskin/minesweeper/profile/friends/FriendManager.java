@@ -34,6 +34,7 @@ public class FriendManager {
     private static ArrayList<Friend> friendRequests = new ArrayList<>();
 
     private static ChildEventListener requestsListener;
+    private static ChildEventListener friendsChangeListener;
 
 
     public static void load(Context context) {
@@ -42,11 +43,13 @@ public class FriendManager {
         if (FirebaseAuth.getInstance().getCurrentUser() == null)
             return;
 
-        friendsLock.lock();
         requestsLock.lock();
-
-        friends.clear();
         friendRequests.clear();
+        requestsLock.unlock();
+
+
+        friendsLock.lock();
+        friends.clear();
 
         for (Map.Entry<String, ?> entry : friendsPreferences.getAll().entrySet()) {
             Friend f = new Friend(entry.getValue().toString(), entry.getKey());
@@ -54,12 +57,13 @@ public class FriendManager {
 
             f.update();
         }
-
-        requestsLock.unlock();
         friendsLock.unlock();
+
+        syncFriendsWithCloud();
 
 
         setupRequestsListener();
+        setupFriendsChangeListener();
     }
 
     public static void setupRequestsListener() {
@@ -89,6 +93,56 @@ public class FriendManager {
         };
 
         FirebaseDatabase.getInstance().getReference("users").child(uid).child("frequests").addChildEventListener(requestsListener);
+    }
+
+    public static void setupFriendsChangeListener() {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        if (friendsChangeListener != null)
+            FirebaseDatabase.getInstance().getReference("users").child(uid).child("friends").removeEventListener(friendsChangeListener);
+
+        friendsChangeListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot.exists()) {
+                    friendsLock.lock();
+
+                    Friend friend = new Friend(dataSnapshot.getValue().toString(), dataSnapshot.getKey());
+                    friends.add(friend);
+
+                    friendsLock.unlock();
+
+                    friend.updateStatus();
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    friendsLock.lock();
+
+                    for (int i = 0; i < friends.size(); i++) {
+                        if (friends.get(i).getUid().equals(dataSnapshot.getKey())) {
+                            friendsPreferences.edit().remove(friends.get(i).getUid()).apply();
+                            friends.remove(i);
+
+                            friendsLock.unlock();
+                            return;
+                        }
+                    }
+
+                    friendsLock.unlock();
+                }
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        };
+
+        FirebaseDatabase.getInstance().getReference("users").child(uid).child("friends").addChildEventListener(friendsChangeListener);
     }
 
     public static void updateStatuses() {
@@ -198,23 +252,22 @@ public class FriendManager {
         FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    friendsLock.lock();
+                friendsLock.lock();
 
-                    SharedPreferences.Editor editor = friendsPreferences.edit();
+                SharedPreferences.Editor editor = friendsPreferences.edit();
+                friends.clear();
 
-                    for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        if (child.exists()) {
-                            friends.add(new Friend(child.getValue().toString(), child.getKey()));
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    if (child.exists()) {
+                        friends.add(new Friend(child.getValue().toString(), child.getKey()));
 
-                            editor.putString(child.getKey(), child.getValue().toString());
-                        }
+                        editor.putString(child.getKey(), child.getValue().toString());
                     }
-
-                    editor.apply();
-
-                    friendsLock.unlock();
                 }
+
+                editor.apply();
+
+                friendsLock.unlock();
             }
 
             @Override

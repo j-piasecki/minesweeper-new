@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 DataManager.syncDataWithCloud();
                 FriendManager.syncFriendsWithCloud();
                 FriendManager.setupRequestsListener();
+                FriendManager.setupFriendsChangeListener();
             }
         }
     }

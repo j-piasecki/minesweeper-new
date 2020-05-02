@@ -115,7 +115,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
 
             friendStatusUpdateCounter++;
 
-            if (friendStatusUpdateCounter == 15) {
+            if ((friendStatusUpdateCounter == 15 && currentView == ViewType.Game) || (currentView != ViewType.Game && friendStatusUpdateCounter == 5)) {
                 FriendManager.updateStatuses();
 
                 friendStatusUpdateCounter = 0;
