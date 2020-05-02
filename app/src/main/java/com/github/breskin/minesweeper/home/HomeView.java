@@ -15,6 +15,7 @@ import com.github.breskin.minesweeper.generic.buttons.Button;
 import com.github.breskin.minesweeper.generic.buttons.FancyButton;
 import com.github.breskin.minesweeper.generic.View;
 import com.github.breskin.minesweeper.generic.buttons.ImageButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeView extends View {
 
@@ -89,9 +90,13 @@ public class HomeView extends View {
         profileButton.setCallback(new Button.ClickCallback() {
             @Override
             public void onClick() {
-                Transition transition = new HomeView.Transition(RenderView.ViewType.Friends);
-                transition.setOrigin(new PointF(profileButton.getPosition().x + profileButton.getSize().y / 2, profileButton.getPosition().y + profileButton.getSize().y / 2));
-                renderView.switchView(transition);
+                if (FirebaseAuth.getInstance().getCurrentUser() == null)
+                    renderView.showLoginScreen();
+                else {
+                    Transition transition = new HomeView.Transition(RenderView.ViewType.Friends);
+                    transition.setOrigin(new PointF(profileButton.getPosition().x + profileButton.getSize().y / 2, profileButton.getPosition().y + profileButton.getSize().y / 2));
+                    renderView.switchView(transition);
+                }
             }
         });
 

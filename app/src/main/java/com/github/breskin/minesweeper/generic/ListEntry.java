@@ -45,6 +45,10 @@ public class ListEntry {
         canvas.drawLine(RenderView.VIEW_WIDTH * 0.05f, translation, RenderView.VIEW_WIDTH * 0.95f, translation, paint);
     }
 
+    protected boolean onTouch(float x, float y) {
+        return false;
+    }
+
     public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
@@ -65,7 +69,11 @@ public class ListEntry {
                 break;
 
             case MotionEvent.ACTION_UP:
-                touchDown = false;
+                if (touchDown) {
+                    touchDown = false;
+
+                    if (onTouch(x, y)) return true;
+                }
                 break;
         }
 

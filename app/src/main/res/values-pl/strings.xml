@@ -37,4 +37,6 @@
     <string name="invite_friend_view_header">Zaproszenia</string>
     <string name="invite_friend_send_invite_button">Dodaj znajomego</string>
     <string name="list_renderer_empty_message">Lista jest pusta...</string>
+    <string name="message_email_does_not_exist">Żadne konto nie jest powiązane z tym adresem.</string>
+    <string name="message_friend_list_full">Twoja lista znajomych jest pełna.</string>
 </resources>

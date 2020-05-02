@@ -51,6 +51,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
     private FriendsRequestsView friendsRequestsView;
 
     private int timeSinceAccountUpdate = 10000;
+    private int friendStatusUpdateCounter = 0;
 
     public RenderView(Context context) {
         super(context);
@@ -111,6 +112,14 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
     private void updateAccount() {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("active").setValue(Calendar.getInstance().getTimeInMillis());
+
+            friendStatusUpdateCounter++;
+
+            if (friendStatusUpdateCounter == 15) {
+                FriendManager.updateStatuses();
+
+                friendStatusUpdateCounter = 0;
+            }
         }
     }
 
@@ -231,7 +240,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
 
                 timeSinceAccountUpdate += FRAME_TIME;
 
-                if (timeSinceAccountUpdate > 5000) {
+                if (timeSinceAccountUpdate > 4000) {
                     timeSinceAccountUpdate = 0;
 
                     updateAccount();

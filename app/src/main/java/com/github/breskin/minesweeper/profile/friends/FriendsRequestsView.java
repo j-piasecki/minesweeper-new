@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.MainActivity;
+import com.github.breskin.minesweeper.R;
 import com.github.breskin.minesweeper.RenderView;
 import com.github.breskin.minesweeper.Theme;
 import com.github.breskin.minesweeper.generic.ListEntry;
@@ -43,7 +44,10 @@ public class FriendsRequestsView extends View {
         sendInviteButton.setCallback(new Button.ClickCallback() {
             @Override
             public void onClick() {
-                ((MainActivity)renderView.getContext()).showInviteFriendUI();
+                if (FriendManager.canSendInvites())
+                    ((MainActivity)renderView.getContext()).showInviteFriendUI();
+                else
+                    ((MainActivity)renderView.getContext()).showToast(renderView.getContext().getString(R.string.message_friend_list_full));
             }
         });
     }

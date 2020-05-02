@@ -17,6 +17,7 @@ import com.github.breskin.minesweeper.generic.ListEntry;
 import com.github.breskin.minesweeper.home.HomeView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 
 public class FriendsView extends View {
@@ -28,6 +29,8 @@ public class FriendsView extends View {
 
     private ArrayList<ListEntry> listEntries;
     private ListRenderer listRenderer;
+
+    private long lastUpdate;
 
     public FriendsView(final RenderView renderView) {
         super(renderView);
@@ -58,8 +61,31 @@ public class FriendsView extends View {
         requestsButton.update();
         requestsButton.setPosition(new PointF(RenderView.VIEW_WIDTH - requestsButton.getSize().x - RenderView.SIZE * 0.025f, RenderView.SIZE * 0.15f + offset));
 
+        for (int i = 0; i < listEntries.size(); i++) {
+            FriendListEntry friendEntry = (FriendListEntry)listEntries.get(i);
+
+            if (friendEntry.isDeleted()) {
+                listEntries.remove(i);
+                i--;
+            }
+        }
+
         listRenderer.setMarginTop(RenderView.VIEW_WIDTH * 0.325f + offset);
         listRenderer.update();
+
+        if (Calendar.getInstance().getTimeInMillis() - lastUpdate > 3900)
+            updateStatus();
+    }
+
+    private void updateStatus() {
+        FriendManager.getFriendsLock().lock();
+        for (Friend friend : FriendManager.getFriends()) {
+            if (friend.isActive())
+                friend.updateStatus();
+        }
+        FriendManager.getFriendsLock().unlock();
+
+        lastUpdate = Calendar.getInstance().getTimeInMillis();
     }
 
     @Override
@@ -100,9 +126,13 @@ public class FriendsView extends View {
         listEntries.clear();
 
         FriendManager.getFriendsLock().lock();
-        for (Friend friend : FriendManager.getFriends())
+        for (Friend friend : FriendManager.getFriends()) {
+            friend.updateStatus();
             listEntries.add(new FriendListEntry(friend));
+        }
         FriendManager.getFriendsLock().unlock();
+
+        lastUpdate = Calendar.getInstance().getTimeInMillis();
 
         listEntries.sort(new Comparator<ListEntry>() {
             @Override

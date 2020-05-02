@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
                 DataManager.syncDataWithCloud();
                 FriendManager.syncFriendsWithCloud();
+                FriendManager.setupRequestsListener();
             }
         }
     }
@@ -102,15 +103,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 EditText textInput = dialogView.findViewById(R.id.invite_friend_input);
-                String value = textInput.getText().toString();
+                String value = textInput.getText().toString().trim();
 
                 if (value.length() > 0) {
-                    FriendManager.sendInvite(value);
+                    if (value.contains("@")) {
+                        FriendManager.sendInviteByEmail(value.toLowerCase());
+                    } else if (value.startsWith("u:")) {
+                        FriendManager.sendInviteByUid(value.substring(2));
+                    }
                 }
             }
         });
 
         builder.create().show();
+    }
+
+    public void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
