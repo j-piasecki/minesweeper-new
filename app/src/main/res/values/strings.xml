@@ -35,4 +35,5 @@
     <string name="friends_view_header">Friends</string>
     <string name="invite_friend_view_header">Invites</string>
     <string name="invite_friend_send_invite_button">Add friend</string>
+    <string name="list_renderer_empty_message">The list is empty...</string>
 </resources>

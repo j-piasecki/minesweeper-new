@@ -71,6 +71,13 @@ public class ListEntry {
         return false;
     }
 
+    public boolean isVisible() {
+        if (translation > RenderView.VIEW_HEIGHT || translation < 0)
+            return false;
+
+        return true;
+    }
+
     public float getHeight() {
         return RenderView.VIEW_WIDTH * 0.2f;
     }

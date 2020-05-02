@@ -12,9 +12,13 @@ import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.MainActivity;
 import com.github.breskin.minesweeper.RenderView;
 import com.github.breskin.minesweeper.Theme;
+import com.github.breskin.minesweeper.generic.ListEntry;
+import com.github.breskin.minesweeper.generic.ListRenderer;
 import com.github.breskin.minesweeper.generic.View;
 import com.github.breskin.minesweeper.generic.buttons.Button;
 import com.github.breskin.minesweeper.generic.buttons.DefaultButton;
+
+import java.util.ArrayList;
 
 public class FriendsRequestsView extends View {
 
@@ -23,10 +27,16 @@ public class FriendsRequestsView extends View {
 
     private DefaultButton sendInviteButton;
 
+    private ArrayList<ListEntry> listEntries;
+    private ListRenderer listRenderer;
+
     public FriendsRequestsView(final RenderView renderView) {
         super(renderView);
 
         paint = new Paint();
+
+        listEntries = new ArrayList<>();
+        listRenderer = new ListRenderer(listEntries);
 
         sendInviteButton = new DefaultButton(DataManager.INVITE_FRIENDS_VIEW_INVITE_BUTTON, true);
         sendInviteButton.setCallback(new Button.ClickCallback() {
@@ -43,6 +53,19 @@ public class FriendsRequestsView extends View {
 
         offset += (0 - offset) * 0.1f;
 
+        for (int i = 0; i < listEntries.size(); i++) {
+            FriendRequestListEntry entry = (FriendRequestListEntry)listEntries.get(i);
+
+            if (entry.isCompleted()) {
+                listEntries.remove(i);
+                i--;
+            }
+        }
+
+        listRenderer.setMarginTop(RenderView.VIEW_WIDTH * 0.325f + offset);
+        listRenderer.setMarginBottom(RenderView.VIEW_WIDTH * 0.185f);
+        listRenderer.update();
+
         sendInviteButton.setWidth(RenderView.VIEW_WIDTH * 0.55f);
         sendInviteButton.update();
         sendInviteButton.setPosition(new PointF((RenderView.VIEW_WIDTH - sendInviteButton.getSize().x) * 0.5f, RenderView.VIEW_HEIGHT - RenderView.VIEW_WIDTH * 0.05f - sendInviteButton.getSize().y + offset));
@@ -52,6 +75,7 @@ public class FriendsRequestsView extends View {
     public void render(Canvas canvas) {
         paint.setTextSize(RenderView.VIEW_WIDTH * 0.1f);
 
+        listRenderer.render(canvas);
 
         paint.setColor(Theme.getColor(Theme.ColorType.Background));
         canvas.drawRect(0, 0, RenderView.VIEW_WIDTH, RenderView.VIEW_WIDTH * 0.325f, paint);
@@ -67,6 +91,7 @@ public class FriendsRequestsView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (sendInviteButton.onTouchEvent(event)) return true;
+        if (listRenderer.onTouchEvent(event)) return true;
 
         return false;
     }
@@ -76,5 +101,12 @@ public class FriendsRequestsView extends View {
         super.open();
 
         offset = RenderView.VIEW_WIDTH * 0.1f;
+
+        listEntries.clear();
+
+        FriendManager.getRequestsLock().lock();
+        for (Friend friend : FriendManager.getFriendRequests())
+            listEntries.add(new FriendRequestListEntry(friend));
+        FriendManager.getRequestsLock().unlock();
     }
 }

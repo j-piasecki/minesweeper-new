@@ -1,15 +1,20 @@
 package com.github.breskin.minesweeper.generic;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
+import com.github.breskin.minesweeper.Theme;
 
 import java.util.List;
 
 public class ListRenderer {
+
+    private static Paint paint = new Paint();
 
     private List<ListEntry> source;
     private float marginTop = 0, height = 0, marginBottom = 0;
@@ -17,6 +22,8 @@ public class ListRenderer {
 
     private PointF touchDownPoint, lastTouchPoint, translationChange, velocity;
     private boolean touchDown, moving;
+
+    private String listEmptyMessage;
 
     public ListRenderer(List<ListEntry> list) {
         source = list;
@@ -26,6 +33,8 @@ public class ListRenderer {
         this.translationChange = new PointF();
         this.velocity = new PointF();
         touchDown = false;
+
+        setListEmptyMessage(DataManager.LIST_RENDERER_EMPTY_MESSAGE);
     }
 
     private void updateScrolling() {
@@ -72,8 +81,18 @@ public class ListRenderer {
     }
 
     public void render(Canvas canvas) {
-        for (ListEntry entry : source)
-            entry.render(canvas);
+        if (source.isEmpty()) {
+            if (listEmptyMessage != null && listEmptyMessage.length() > 0) {
+                paint.setTextSize(RenderView.VIEW_WIDTH * 0.05f);
+                paint.setColor(Theme.getColor(Theme.ColorType.ListEmptyText));
+
+                canvas.drawText(listEmptyMessage, (RenderView.VIEW_WIDTH - paint.measureText(listEmptyMessage)) * 0.5f, marginTop + (RenderView.VIEW_HEIGHT - marginTop - marginBottom) * 0.5f, paint);
+            }
+        } else {
+            for (ListEntry entry : source)
+                if (entry.isVisible())
+                    entry.render(canvas);
+        }
     }
 
     public boolean onTouchEvent(MotionEvent event) {
@@ -120,5 +139,9 @@ public class ListRenderer {
 
     public void setMarginBottom(float marginBottom) {
         this.marginBottom = marginBottom;
+    }
+
+    public void setListEmptyMessage(String listEmptyMessage) {
+        this.listEmptyMessage = listEmptyMessage;
     }
 }

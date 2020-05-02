@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.github.breskin.minesweeper.profile.friends.FriendManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -103,11 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 String value = textInput.getText().toString();
 
                 if (value.length() > 0) {
-                    if (value.contains("@")) {
-                        Toast.makeText(MainActivity.this, "e-mail: " + value, Toast.LENGTH_SHORT).show();
-                    } else if (value.startsWith("u:")) {
-                        Toast.makeText(MainActivity.this, "uid: " + value.substring(2), Toast.LENGTH_SHORT).show();
-                    }
+                    FriendManager.sendInvite(value);
                 }
             }
         });

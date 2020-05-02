@@ -17,6 +17,7 @@ import com.github.breskin.minesweeper.generic.ListEntry;
 import com.github.breskin.minesweeper.home.HomeView;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class FriendsView extends View {
 
@@ -97,9 +98,16 @@ public class FriendsView extends View {
 
         listEntries.clear();
 
-        FriendManager.getLock().lock();
+        FriendManager.getFriendsLock().lock();
         for (Friend friend : FriendManager.getFriends())
             listEntries.add(new FriendListEntry(friend));
-        FriendManager.getLock().unlock();
+        FriendManager.getFriendsLock().unlock();
+
+        listEntries.sort(new Comparator<ListEntry>() {
+            @Override
+            public int compare(ListEntry o1, ListEntry o2) {
+                return (int)Math.signum(((FriendListEntry)o1).getFriend().getLastSeen() - ((FriendListEntry)o2).getFriend().getLastSeen());
+            }
+        });
     }
 }

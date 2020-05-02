@@ -17,7 +17,7 @@ public class Friend {
     }
 
     public String getDisplayName() {
-        return displayName;
+        return (displayName.length() > 0) ? displayName : uid;
     }
 
     public String getUid() {
