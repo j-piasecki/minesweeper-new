@@ -6,7 +6,8 @@ public class Theme {
     public enum ColorType {
         FieldType1, FieldType2, FieldType3, FieldType4, FieldType5, FieldType6, FieldType7, FieldType8,
         Background, FancyButtonText, FancyButtonBackground, FancyButtonForeground, FancyButtonIcon, SliderForeground, SliderBackground, Square, SquareRevealed, SquareRed, SquareGreen, Flag, FlagHandle,
-        Mine, HubBackground, HubText, DefaultButton, DefaultButtonFilledText, ImageButtonIcon, ImageButtonBackground, CheckBox, CheckBoxHovered, Header, SecondLivesWidget, HomeTransition
+        Mine, HubBackground, HubText, DefaultButton, DefaultButtonFilledText, ImageButtonIcon, ImageButtonBackground, CheckBox, CheckBoxHovered, Header, SecondLivesWidget, HomeTransition,
+        ListEntryBackground, ListEntrySeparator
     }
 
     public static int getColor(ColorType type) {
@@ -58,6 +59,8 @@ public class Theme {
             case Header: return Color.argb((int)(alpha * 255), 255, 255, 255);
             case SecondLivesWidget: return Color.argb((int)(alpha * 255), 255, 255, 255);
             case HomeTransition: return Color.argb((int)(alpha * 255), 255, 255, 255);
+            case ListEntryBackground: return Color.argb((int)(alpha * 255), 32, 32, 32);
+            case ListEntrySeparator: return Color.argb((int)(alpha * 255), 64, 64, 64);
         }
 
         return Color.BLACK;
@@ -90,6 +93,8 @@ public class Theme {
             case Header: return Color.argb((int)(alpha * 255), 32, 32, 32);
             case SecondLivesWidget: return Color.argb((int)(alpha * 255), 32, 32, 32);
             case HomeTransition: return Color.argb((int)(alpha * 255), 160, 160, 160);
+            case ListEntryBackground: return Color.argb((int)(alpha * 255), 192, 192, 192);
+            case ListEntrySeparator: return Color.argb((int)(alpha * 255), 180, 180, 180);
         }
 
         return Color.WHITE;

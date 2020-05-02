@@ -19,6 +19,7 @@ import com.github.breskin.minesweeper.home.CustomFieldView;
 import com.github.breskin.minesweeper.home.HomeView;
 import com.github.breskin.minesweeper.home.SettingsView;
 import com.github.breskin.minesweeper.particles.ParticleSystem;
+import com.github.breskin.minesweeper.profile.friends.FriendManager;
 import com.github.breskin.minesweeper.profile.friends.FriendsRequestsView;
 import com.github.breskin.minesweeper.profile.friends.FriendsView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,6 +55,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
     public RenderView(Context context) {
         super(context);
         DataManager.load(context);
+        FriendManager.load(context);
 
         CONTEXT = context;
 

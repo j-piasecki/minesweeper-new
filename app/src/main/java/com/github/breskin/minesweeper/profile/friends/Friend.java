@@ -2,6 +2,8 @@ package com.github.breskin.minesweeper.profile.friends;
 
 import android.util.Log;
 
+import java.util.Calendar;
+
 public class Friend {
     private String displayName;
     private String uid;
@@ -10,6 +12,8 @@ public class Friend {
     public Friend(String name, String uid) {
         this.displayName = name;
         this.uid = uid;
+
+        this.lastSeen = 0;
     }
 
     public String getDisplayName() {
@@ -22,6 +26,13 @@ public class Friend {
 
     public long getLastSeen() {
         return lastSeen;
+    }
+
+    public boolean isActive() {
+        if (Calendar.getInstance().getTimeInMillis() - lastSeen < 7500)
+            return true;
+
+        return false;
     }
 
     public void update() {

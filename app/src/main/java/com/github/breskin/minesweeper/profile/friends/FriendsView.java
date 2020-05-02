@@ -1,7 +1,6 @@
 package com.github.breskin.minesweeper.profile.friends;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.view.MotionEvent;
@@ -10,10 +9,14 @@ import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.R;
 import com.github.breskin.minesweeper.RenderView;
 import com.github.breskin.minesweeper.Theme;
+import com.github.breskin.minesweeper.generic.ListRenderer;
 import com.github.breskin.minesweeper.generic.View;
 import com.github.breskin.minesweeper.generic.buttons.Button;
 import com.github.breskin.minesweeper.generic.buttons.ImageButton;
+import com.github.breskin.minesweeper.generic.ListEntry;
 import com.github.breskin.minesweeper.home.HomeView;
+
+import java.util.ArrayList;
 
 public class FriendsView extends View {
 
@@ -22,10 +25,16 @@ public class FriendsView extends View {
 
     private ImageButton requestsButton;
 
+    private ArrayList<ListEntry> listEntries;
+    private ListRenderer listRenderer;
+
     public FriendsView(final RenderView renderView) {
         super(renderView);
 
         paint = new Paint();
+
+        listEntries = new ArrayList<>();
+        listRenderer = new ListRenderer(listEntries);
 
         requestsButton = new ImageButton(renderView.getContext(), R.drawable.ic_friend_requests_button);
         requestsButton.setCallback(new Button.ClickCallback() {
@@ -46,12 +55,16 @@ public class FriendsView extends View {
 
         requestsButton.update();
         requestsButton.setPosition(new PointF(RenderView.VIEW_WIDTH - requestsButton.getSize().x - RenderView.SIZE * 0.025f, RenderView.SIZE * 0.15f + offset));
+
+        listRenderer.setMarginTop(RenderView.VIEW_WIDTH * 0.325f + offset);
+        listRenderer.update();
     }
 
     @Override
     public void render(Canvas canvas) {
         paint.setTextSize(RenderView.VIEW_WIDTH * 0.1f);
 
+        listRenderer.render(canvas);
 
         paint.setColor(Theme.getColor(Theme.ColorType.Background));
         canvas.drawRect(0, 0, RenderView.VIEW_WIDTH, RenderView.VIEW_WIDTH * 0.325f, paint);
@@ -66,6 +79,8 @@ public class FriendsView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         if (requestsButton.onTouchEvent(event)) return true;
 
+        if (listRenderer.onTouchEvent(event)) return true;
+
         return false;
     }
 
@@ -79,5 +94,12 @@ public class FriendsView extends View {
         super.open();
 
         offset = RenderView.VIEW_WIDTH * 0.1f;
+
+        listEntries.clear();
+
+        FriendManager.getLock().lock();
+        for (Friend friend : FriendManager.getFriends())
+            listEntries.add(new FriendListEntry(friend));
+        FriendManager.getLock().unlock();
     }
 }
