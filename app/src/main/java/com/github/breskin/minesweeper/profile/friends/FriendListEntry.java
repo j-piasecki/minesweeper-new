@@ -32,6 +32,7 @@ public class FriendListEntry extends ListEntry {
         });
     }
 
+    @Override
     public void update(float translation) {
         super.update(translation);
 
@@ -74,6 +75,7 @@ public class FriendListEntry extends ListEntry {
         return super.onTouchEvent(event);
     }
 
+    @Override
     public float getHeight() {
         return RenderView.VIEW_WIDTH * 0.2f;
     }

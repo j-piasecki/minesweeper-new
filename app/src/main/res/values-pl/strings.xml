@@ -29,7 +29,7 @@
     <string name="settings_view_reduce_particles">Ogranicz cząsteczki</string>
     <string name="settings_view_sign_in">Zaloguj się</string>
     <string name="settings_view_dark_theme">Ciemny motyw</string>
-    <string name="home_profile">Profil</string>
+    <string name="home_community">Społeczność</string>
     <string name="invite_friend_dialog_input_hint">E-mail lub identyfikator...</string>
     <string name="invite_friend_dialog_name">Dodaj znajomego</string>
     <string name="invite_friend_dialog_accept_button">Dodaj</string>
@@ -39,4 +39,10 @@
     <string name="list_renderer_empty_message">Lista jest pusta...</string>
     <string name="message_email_does_not_exist">Żadne konto nie jest powiązane z tym adresem.</string>
     <string name="message_friend_list_full">Twoja lista znajomych jest pełna.</string>
+    <string name="profile_view_header">Profil</string>
+    <string name="change_name_input_hint">Nowa nazwa...</string>
+    <string name="change_name_dialog_name">Zmień nazwę</string>
+    <string name="dialog_ok_button">OK</string>
+    <string name="message_copied_to_clipboard">Skopiowano!</string>
+    <string name="profile_uid">Id: u:</string>
 </resources>

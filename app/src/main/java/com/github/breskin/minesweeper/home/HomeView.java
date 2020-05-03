@@ -1,7 +1,6 @@
 package com.github.breskin.minesweeper.home;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
@@ -19,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeView extends View {
 
-    private FancyButton smallButton, mediumButton, largeButton, customButton, profileButton;
+    private FancyButton smallButton, mediumButton, largeButton, customButton, communityButton;
     private SecondLivesWidget secondLivesWidget;
     private ImageButton settingsButton;
 
@@ -85,16 +84,16 @@ public class HomeView extends View {
             }
         });
 
-        profileButton = new FancyButton(DataManager.HOME_PROFILE);
-        profileButton.setIcon(renderView.getContext(), R.drawable.ic_profile_button);
-        profileButton.setCallback(new Button.ClickCallback() {
+        communityButton = new FancyButton(DataManager.HOME_COMMUNITY);
+        communityButton.setIcon(renderView.getContext(), R.drawable.ic_profile_button);
+        communityButton.setCallback(new Button.ClickCallback() {
             @Override
             public void onClick() {
                 if (FirebaseAuth.getInstance().getCurrentUser() == null)
                     renderView.showLoginScreen();
                 else {
-                    Transition transition = new HomeView.Transition(RenderView.ViewType.Friends);
-                    transition.setOrigin(new PointF(profileButton.getPosition().x + profileButton.getSize().y / 2, profileButton.getPosition().y + profileButton.getSize().y / 2));
+                    Transition transition = new HomeView.Transition(RenderView.ViewType.Profile);
+                    transition.setOrigin(new PointF(communityButton.getPosition().x + communityButton.getSize().y / 2, communityButton.getPosition().y + communityButton.getSize().y / 2));
                     renderView.switchView(transition);
                 }
             }
@@ -129,7 +128,7 @@ public class HomeView extends View {
         mediumButton.update();
         largeButton.update();
         customButton.update();
-        profileButton.update();
+        communityButton.update();
 
         float buttonStart = (secondLivesWidget.getPosition().y - RenderView.SIZE * 0.275f - smallButton.getSize().y * 4f) * 0.5f + offset;
 
@@ -137,7 +136,7 @@ public class HomeView extends View {
         mediumButton.setPosition(new PointF(smallButton.getSize().y * 0.5f, smallButton.getPosition().y + smallButton.getSize().y * 0.75f));
         largeButton.setPosition(new PointF(smallButton.getSize().y * 0.1f, mediumButton.getPosition().y + smallButton.getSize().y * 0.75f));
         customButton.setPosition(new PointF(smallButton.getSize().y * 0.5f, largeButton.getPosition().y + smallButton.getSize().y * 0.75f));
-        profileButton.setPosition(new PointF(smallButton.getSize().y * 0.1f, customButton.getPosition().y + smallButton.getSize().y * 0.75f));
+        communityButton.setPosition(new PointF(smallButton.getSize().y * 0.1f, customButton.getPosition().y + smallButton.getSize().y * 0.75f));
     }
 
     @Override
@@ -150,7 +149,7 @@ public class HomeView extends View {
         mediumButton.render(canvas);
         largeButton.render(canvas);
         customButton.render(canvas);
-        profileButton.render(canvas);
+        communityButton.render(canvas);
         settingsButton.render(canvas);
 
         secondLivesWidget.render(canvas);
@@ -162,7 +161,7 @@ public class HomeView extends View {
         if (mediumButton.onTouchEvent(event)) return true;
         if (largeButton.onTouchEvent(event)) return true;
         if (customButton.onTouchEvent(event)) return true;
-        if (profileButton.onTouchEvent(event)) return true;
+        if (communityButton.onTouchEvent(event)) return true;
         if (secondLivesWidget.onTouchEvent(event)) return true;
         if (settingsButton.onTouchEvent(event)) return true;
 
@@ -213,7 +212,7 @@ public class HomeView extends View {
         mediumButton.setIcon(renderView.getContext(), R.drawable.ic_field_medium_button);
         largeButton.setIcon(renderView.getContext(), R.drawable.ic_field_large_button);
         customButton.setIcon(renderView.getContext(), R.drawable.ic_field_custom_button);
-        profileButton.setIcon(renderView.getContext(), R.drawable.ic_profile_button);
+        communityButton.setIcon(renderView.getContext(), R.drawable.ic_profile_button);
         settingsButton.setIcon(renderView.getContext(), R.drawable.ic_settings);
     }
 

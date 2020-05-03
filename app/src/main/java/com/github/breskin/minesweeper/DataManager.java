@@ -26,7 +26,8 @@ public class DataManager {
     public static String FIELD_SIZE_SMALL, FIELD_SIZE_MEDIUM, FIELD_SIZE_LARGE, FIELD_SIZE_CUSTOM, HUB_BUTTON_OK, HUB_BUTTON_REPLAY, HUB_GAME_LOST, HUB_GAME_WON, HUB_BUTTON_NO, HUB_BUTTON_YES,
             HUB_SECOND_LIFE_AVAILABLE, HUB_SECOND_LIFE_ONCE_REMINDER, HUB_BEST_TIME, CUSTOM_VIEW_WIDTH, CUSTOM_VIEW_HEIGHT, CUSTOM_VIEW_MINES, CUSTOM_VIEW_HEADER, CUSTOM_VIEW_START,
             HOME_VIEW_LOGO_FIRST, HOME_VIEW_LOGO_SECOND, SETTINGS_VIEW_HEADER, SETTINGS_VIEW_VIBRATIONS, SETTINGS_VIEW_FLAG_ANIMATIONS, SETTINGS_VIEW_REDUCE_PARTICLES, SETTINGS_SIGN_IN,
-            HUB_DO_YOU_WANT_TO_CONTINUE, SETTINGS_DARK_THEME, HOME_PROFILE, FRIENDS_VIEW_HEADER, INVITE_FRIENDS_VIEW_HEADER, INVITE_FRIENDS_VIEW_INVITE_BUTTON, LIST_RENDERER_EMPTY_MESSAGE;
+            HUB_DO_YOU_WANT_TO_CONTINUE, SETTINGS_DARK_THEME, HOME_COMMUNITY, FRIENDS_VIEW_HEADER, INVITE_FRIENDS_VIEW_HEADER, INVITE_FRIENDS_VIEW_INVITE_BUTTON, LIST_RENDERER_EMPTY_MESSAGE,
+            PROFILE_VIEW_HEADER;
 
     private static String SECOND_LIVES_STRING = "second-chance-count", VIBRATIONS_STRING = "vibrations", FLAG_ANIMATIONS_STRING = "flag-animations", REDUCE_PARTICLES_STRING = "reduce-particles",
                             DARK_THEME_STRING = "dark-theme";
@@ -64,11 +65,12 @@ public class DataManager {
         SETTINGS_SIGN_IN = context.getString(R.string.settings_view_sign_in);
         HUB_DO_YOU_WANT_TO_CONTINUE = context.getString(R.string.hub_second_do_you_want_to_continue);
         SETTINGS_DARK_THEME = context.getString(R.string.settings_view_dark_theme);
-        HOME_PROFILE = context.getString(R.string.home_profile);
+        HOME_COMMUNITY = context.getString(R.string.home_community);
         FRIENDS_VIEW_HEADER = context.getString(R.string.friends_view_header);
         INVITE_FRIENDS_VIEW_HEADER = context.getString(R.string.invite_friend_view_header);
         INVITE_FRIENDS_VIEW_INVITE_BUTTON = context.getString(R.string.invite_friend_send_invite_button);
         LIST_RENDERER_EMPTY_MESSAGE = context.getString(R.string.list_renderer_empty_message);
+        PROFILE_VIEW_HEADER = context.getString(R.string.profile_view_header);
 
         preferences = context.getSharedPreferences("data", Context.MODE_PRIVATE);
         SECOND_LIVES_COUNT = preferences.getInt(SECOND_LIVES_STRING, 0);
@@ -281,5 +283,9 @@ public class DataManager {
 
             }
         });
+    }
+
+    public static SharedPreferences getPreferences() {
+        return preferences;
     }
 }

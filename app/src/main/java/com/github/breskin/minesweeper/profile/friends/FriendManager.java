@@ -25,6 +25,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class FriendManager {
 
+    private static final int MAX_NUMBER_OF_FRIENDS = 30;
+
     private static SharedPreferences friendsPreferences;
 
     private static ReentrantLock friendsLock = new ReentrantLock();
@@ -168,6 +170,19 @@ public class FriendManager {
         };
 
         FirebaseDatabase.getInstance().getReference("users").child(uid).child("friends").child("toremove").addChildEventListener(friendRemovedListener);
+    }
+
+    public static void removeListeners() {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        if (requestsListener != null)
+            FirebaseDatabase.getInstance().getReference("users").child(uid).child("friends").child("requests").removeEventListener(requestsListener);
+
+        if (friendAddedListener != null)
+            FirebaseDatabase.getInstance().getReference("users").child(uid).child("friends").child("toadd").removeEventListener(friendAddedListener);
+
+        if (friendRemovedListener != null)
+            FirebaseDatabase.getInstance().getReference("users").child(uid).child("friends").child("toremove").removeEventListener(friendRemovedListener);
     }
 
     public static void updateStatuses() {
@@ -324,6 +339,6 @@ public class FriendManager {
     }
 
     public static boolean canSendInvites() {
-        return friends.size() < 30;
+        return friends.size() < MAX_NUMBER_OF_FRIENDS;
     }
 }

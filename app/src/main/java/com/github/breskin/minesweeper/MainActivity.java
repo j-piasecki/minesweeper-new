@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.github.breskin.minesweeper.profile.UserProfile;
 import com.github.breskin.minesweeper.profile.friends.FriendManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 FriendManager.syncFriendsWithCloud();
                 FriendManager.setupRequestsListener();
                 FriendManager.setupFriendsChangeListener();
+                UserProfile.syncWithCloud();
             }
         }
     }
@@ -119,6 +121,29 @@ public class MainActivity extends AppCompatActivity {
         builder.create().show();
     }
 
+    public void showNameChangeUI() {
+        final View dialogView = getLayoutInflater().inflate(R.layout.dialog_change_name, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(getString(R.string.change_name_dialog_name));
+        builder.setView(dialogView);
+        builder.setCancelable(true);
+        builder.setPositiveButton(getString(R.string.dialog_ok_button), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                EditText textInput = dialogView.findViewById(R.id.change_name_input);
+                String value = textInput.getText().toString().trim();
+
+                if (value.length() > 0) {
+                    UserProfile.changeName(value);
+                }
+            }
+        });
+
+        builder.create().show();
+    }
+
     public void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
@@ -135,6 +160,13 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         renderView.resume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        FriendManager.removeListeners();
     }
 
     @Override
