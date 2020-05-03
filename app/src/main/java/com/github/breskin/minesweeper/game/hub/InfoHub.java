@@ -70,7 +70,7 @@ public class InfoHub {
         paint.setTextSize(RenderView.SIZE * 0.07f);
 
         canvas.drawText(getTimeString(logic.getGameDuration()), RenderView.VIEW_WIDTH * 0.975f - paint.measureText(getTimeString(logic.getGameDuration())), RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.02f - offset, paint);
-        canvas.drawText(logic.getFlaggedMines() + "/" + logic.getMinefield().getMinesCount(), RenderView.VIEW_WIDTH * 0.025f, RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.02f - offset, paint);
+        canvas.drawText(logic.getFlaggedMines() + "/" + logic.getMinefield().getFieldSize().getMinesCount(), RenderView.VIEW_WIDTH * 0.025f, RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.02f - offset, paint);
 
         if (logic.getBestTime() != -1) {
             paint.setTextSize(RenderView.SIZE * 0.035f);

@@ -10,6 +10,7 @@ import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.R;
 import com.github.breskin.minesweeper.RenderView;
 import com.github.breskin.minesweeper.Theme;
+import com.github.breskin.minesweeper.game.FieldSize;
 import com.github.breskin.minesweeper.generic.buttons.Button;
 import com.github.breskin.minesweeper.generic.buttons.FancyButton;
 import com.github.breskin.minesweeper.generic.View;
@@ -43,7 +44,7 @@ public class HomeView extends View {
                 transition.setOrigin(new PointF(mediumButton.getPosition().x + smallButton.getSize().y / 2, smallButton.getPosition().y + smallButton.getSize().y / 2));
                 renderView.switchView(transition);
 
-                renderView.getGameView().getGameLogic().init(10, 16, 25);
+                renderView.getGameView().getGameLogic().init(FieldSize.SMALL);
             }
         });
 
@@ -56,7 +57,7 @@ public class HomeView extends View {
                 transition.setOrigin(new PointF(mediumButton.getPosition().x + mediumButton.getSize().y / 2, mediumButton.getPosition().y + mediumButton.getSize().y / 2));
                 renderView.switchView(transition);
 
-                renderView.getGameView().getGameLogic().init(14, 20, 40);
+                renderView.getGameView().getGameLogic().init(FieldSize.MEDIUM);
             }
         });
 
@@ -69,7 +70,7 @@ public class HomeView extends View {
                 transition.setOrigin(new PointF(largeButton.getPosition().x + largeButton.getSize().y / 2, largeButton.getPosition().y + largeButton.getSize().y / 2));
                 renderView.switchView(transition);
 
-                renderView.getGameView().getGameLogic().init(16, 26, 70);
+                renderView.getGameView().getGameLogic().init(FieldSize.LARGE);
             }
         });
 

@@ -42,7 +42,7 @@ public class HubGameWonView extends HubView {
                 transition.setViewExitCallback(new Transition.ViewExitCallback() {
                     @Override
                     public void onExit() {
-                        parent.getGameLogic().init(parent.getGameLogic().getMinefield().getWidth(), parent.getGameLogic().getMinefield().getHeight(), parent.getGameLogic().getMinefield().getMinesCount());
+                        parent.getGameLogic().init(parent.getGameLogic().getMinefield().getFieldSize());
                     }
                 });
             }

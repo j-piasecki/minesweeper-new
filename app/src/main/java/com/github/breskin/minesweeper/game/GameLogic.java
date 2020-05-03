@@ -56,18 +56,18 @@ public class GameLogic {
         return minefield;
     }
 
-    public void init(int width, int height, int mines) {
-        minefield.init(width, height, mines);
+    public void init(FieldSize fieldSize) {
+        minefield.init(fieldSize);
 
-        bestTime = DataManager.getBestTime(width, height, mines);
+        bestTime = DataManager.getBestTime(fieldSize);
 
         flaggedMines = 0;
         gameDuration = 0;
         gameLost = gameWon = gameStarted = gamePaused = secondLifeUsed = secondLifeDisabled = false;
 
         camera.reset();
-        camera.getPosition().x = width * 0.5f - 0.5f;
-        camera.getPosition().y = height * 0.5f - 0.5f;
+        camera.getPosition().x = fieldSize.getWidth() * 0.5f - 0.5f;
+        camera.getPosition().y = fieldSize.getHeight() * 0.5f - 0.5f;
     }
 
     public void onMineRevealed() {
@@ -95,11 +95,11 @@ public class GameLogic {
 
         minefield.startWinAnimation();
 
-        DataManager.incrementGamesWonCounter(minefield.getWidth(), minefield.getHeight(), minefield.getMinesCount());
-        if (DataManager.checkGameDuration(minefield.getWidth(), minefield.getHeight(), minefield.getMinesCount(), getGameDuration()))
+        DataManager.incrementGamesWonCounter(minefield.getFieldSize());
+        if (DataManager.checkGameDuration(minefield.getFieldSize(), getGameDuration()))
             bestTime = gameDuration;
 
-        flaggedMines = minefield.getMinesCount();
+        flaggedMines = minefield.getFieldSize().getMinesCount();
 
         infoHub.onGameWon();
 
@@ -110,7 +110,7 @@ public class GameLogic {
     public void onGameStarted() {
         gameStarted = true;
 
-        DataManager.incrementGameCounter(minefield.getWidth(), minefield.getHeight(), minefield.getMinesCount());
+        DataManager.incrementGameCounter(minefield.getFieldSize());
 
         if (gameStartedCallback != null)
             gameStartedCallback.onGameStarted();

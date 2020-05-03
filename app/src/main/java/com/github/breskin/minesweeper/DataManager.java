@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.github.breskin.minesweeper.game.FieldSize;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -117,14 +118,14 @@ public class DataManager {
         }
     }
 
-    public static boolean checkGameDuration(int width, int height, int mines, int duration) {
-        int bestTime = preferences.getInt(width + "x" + height + "x" + mines, -1);
+    public static boolean checkGameDuration(FieldSize fieldSize, int duration) {
+        int bestTime = preferences.getInt(fieldSize.toString(), -1);
 
         if (bestTime == -1 || duration < bestTime) {
-            preferences.edit().putInt(width + "x" + height + "x" + mines, duration).apply();
+            preferences.edit().putInt(fieldSize.toString(), duration).apply();
 
             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("scores").child(width + "x" + height + "x" + mines);
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("scores").child(fieldSize.toString());
                 reference.setValue(duration);
             }
 
@@ -134,11 +135,11 @@ public class DataManager {
         return false;
     }
 
-    public static void incrementGameCounter(int width, int height, int mines) {
+    public static void incrementGameCounter(FieldSize fieldSize) {
         if (FirebaseAuth.getInstance().getCurrentUser() == null)
             return;
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("stats").child(width + "x" + height + "x" + mines).child("started");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("stats").child(fieldSize.toString()).child("started");
 
         reference.runTransaction(new Transaction.Handler() {
             @NonNull
@@ -162,11 +163,11 @@ public class DataManager {
         });
     }
 
-    public static void incrementGamesWonCounter(int width, int height, int mines) {
+    public static void incrementGamesWonCounter(FieldSize fieldSize) {
         if (FirebaseAuth.getInstance().getCurrentUser() == null)
             return;
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("stats").child(width + "x" + height + "x" + mines).child("won");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("stats").child(fieldSize.toString()).child("won");
 
         reference.runTransaction(new Transaction.Handler() {
             @NonNull
@@ -190,8 +191,8 @@ public class DataManager {
         });
     }
 
-    public static int getBestTime(int width, int height, int mines) {
-        return preferences.getInt(width + "x" + height + "x" + mines, -1);
+    public static int getBestTime(FieldSize fieldSize) {
+        return preferences.getInt(fieldSize.toString(), -1);
     }
 
     public static void setVibrationsEnabled(boolean vibrationsEnabled) {

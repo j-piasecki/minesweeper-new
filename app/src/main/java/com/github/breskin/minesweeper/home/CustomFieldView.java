@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
 import com.github.breskin.minesweeper.Theme;
+import com.github.breskin.minesweeper.game.FieldSize;
 import com.github.breskin.minesweeper.generic.buttons.Button;
 import com.github.breskin.minesweeper.generic.buttons.FancyButton;
 import com.github.breskin.minesweeper.generic.Slider;
@@ -42,7 +43,7 @@ public class CustomFieldView extends View {
                 transition.setOrigin(new PointF(startButton.getPosition().x + startButton.getSize().y / 2, startButton.getPosition().y + startButton.getSize().y / 2));
                 renderView.switchView(transition);
 
-                renderView.getGameView().getGameLogic().init(widthSlider.getValue(), heightSlider.getValue(), minesSlider.getValue());
+                renderView.getGameView().getGameLogic().init(new FieldSize(widthSlider.getValue(), heightSlider.getValue(), minesSlider.getValue()));
             }
         });
     }
