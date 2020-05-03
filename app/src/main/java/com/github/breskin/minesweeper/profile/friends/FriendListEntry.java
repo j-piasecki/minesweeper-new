@@ -16,6 +16,7 @@ public class FriendListEntry extends ListEntry {
     private Friend friend;
 
     private ImageButton deleteButton;
+    private String displayName;
 
     private boolean deleted = false;
 
@@ -30,6 +31,17 @@ public class FriendListEntry extends ListEntry {
                 deleted = true;
             }
         });
+
+        displayName = friend.getDisplayName();
+
+        paint.setTextSize(getHeight() * 0.3f);
+        if (paint.measureText(displayName) > RenderView.VIEW_WIDTH * 0.7f) {
+            while (paint.measureText(displayName + "…")  > RenderView.VIEW_WIDTH * 0.7f) {
+                displayName = displayName.substring(0, displayName.length() - 1);
+            }
+
+            displayName += "…";
+        }
     }
 
     @Override
@@ -49,7 +61,7 @@ public class FriendListEntry extends ListEntry {
         paint.setTextSize(getHeight() * 0.3f);
         paint.setColor(Theme.getColor(Theme.ColorType.ListEntryText));
 
-        canvas.drawText(friend.getDisplayName(), RenderView.VIEW_WIDTH * 0.085f, translation + (getHeight() - paint.getTextSize()) * 0.4f + paint.getTextSize(), paint);
+        canvas.drawText(displayName, RenderView.VIEW_WIDTH * 0.085f, translation + (getHeight() - paint.getTextSize()) * 0.45f + paint.getTextSize(), paint);
 
         deleteButton.render(canvas);
     }
@@ -62,7 +74,7 @@ public class FriendListEntry extends ListEntry {
 
         float indicatorSize = RenderView.VIEW_WIDTH * 0.008f;
         canvas.save();
-        canvas.translate(RenderView.VIEW_WIDTH * 0.0425f, translation + (getHeight() - indicatorSize * 2) * 0.5f);
+        canvas.translate(RenderView.VIEW_WIDTH * 0.0425f, translation + getHeight() * 0.5f);
         canvas.rotate(45);
         canvas.drawRect(-indicatorSize, -indicatorSize, indicatorSize, indicatorSize, paint);
         canvas.restore();

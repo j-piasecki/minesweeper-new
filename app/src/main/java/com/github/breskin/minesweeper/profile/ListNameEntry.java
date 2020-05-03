@@ -16,6 +16,7 @@ import com.github.breskin.minesweeper.generic.buttons.ImageButton;
 public class ListNameEntry extends ListEntry {
 
     private ImageButton editButton;
+    private String displayName;
 
     public ListNameEntry() {
         editButton = new ImageButton(RenderView.CONTEXT, R.drawable.ic_edit);
@@ -33,6 +34,17 @@ public class ListNameEntry extends ListEntry {
 
         editButton.setPosition(new PointF(RenderView.VIEW_WIDTH * 0.975f - editButton.getSize().x, translation + (getHeight() - editButton.getSize().y) * 0.5f));
         editButton.update();
+
+        displayName = UserProfile.getName();
+
+        paint.setTextSize(getHeight() * 0.3f);
+        if (paint.measureText(displayName) > RenderView.VIEW_WIDTH * 0.7f) {
+            while (paint.measureText(displayName + "…")  > RenderView.VIEW_WIDTH * 0.7f) {
+                displayName = displayName.substring(0, displayName.length() - 1);
+            }
+
+            displayName += "…";
+        }
     }
 
     @Override
@@ -42,7 +54,7 @@ public class ListNameEntry extends ListEntry {
         paint.setTextSize(getHeight() * 0.3f);
         paint.setColor(Theme.getColor(Theme.ColorType.ListEntryText));
 
-        canvas.drawText(UserProfile.getName(), RenderView.VIEW_WIDTH * 0.085f, translation + (getHeight() - paint.getTextSize()) * 0.4f + paint.getTextSize(), paint);
+        canvas.drawText(displayName, RenderView.VIEW_WIDTH * 0.085f, translation + (getHeight() - paint.getTextSize()) * 0.4f + paint.getTextSize(), paint);
 
         editButton.render(canvas);
     }
