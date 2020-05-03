@@ -50,6 +50,19 @@ public class FriendRequestListEntry extends ListEntry {
 
         acceptButton.update();
         declineButton.update();
+
+        FriendManager.getRequestsLock().lock();
+        boolean removed = true;
+
+        for (Friend friend : FriendManager.getFriendRequests())
+            if (friend.getUid().equals(this.friend.getUid())) {
+                removed = false;
+                break;
+            }
+
+        if (removed)
+            completed = true;
+        FriendManager.getRequestsLock().unlock();
     }
 
     @Override
