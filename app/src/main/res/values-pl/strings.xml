@@ -47,4 +47,7 @@
     <string name="profile_uid">Id: u:</string>
     <string name="profile_best_results">Najlepsze wyniki:</string>
     <string name="friend_details_view_header">Znajomy</string>
+    <string name="message_already_friends">Już jesteście znajomymi</string>
+    <string name="message_no_user_with_uid">Nie ma użytkownika z takim id</string>
+    <string name="message_wrong_friend_format">Wpisz poprawny email lub uid</string>
 </resources>

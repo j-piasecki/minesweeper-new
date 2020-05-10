@@ -253,7 +253,20 @@ public class FriendManager {
             return;
         }
 
-        FirebaseDatabase.getInstance().getReference("users").child(uid).child("friends").child("requests").child(currentUID).setValue(UserProfile.getName());
+        Friend current = getByUid(uid);
+        if (current != null) {
+            ((MainActivity)RenderView.CONTEXT).showToast(RenderView.CONTEXT.getString(R.string.message_already_friends));
+            return;
+        }
+
+        FirebaseDatabase.getInstance().getReference("users").child(uid).child("friends").child("requests").child(currentUID).setValue(UserProfile.getName(), new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                    ((MainActivity)RenderView.CONTEXT).showToast(RenderView.CONTEXT.getString(R.string.message_no_user_with_uid));
+                }
+            }
+        });
     }
 
     public static void removeFriend(final Friend friend) {
@@ -284,6 +297,21 @@ public class FriendManager {
         }
 
         requestsLock.unlock();
+
+        return null;
+    }
+
+    public static Friend getByUid(String uid) {
+        friendsLock.lock();
+
+        for (Friend friend : friends) {
+            if (friend.getUid().equals(uid)) {
+                friendsLock.unlock();
+                return friend;
+            }
+        }
+
+        friendsLock.unlock();
 
         return null;
     }

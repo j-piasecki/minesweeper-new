@@ -113,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
                         FriendManager.sendInviteByEmail(value.toLowerCase());
                     } else if (value.startsWith("u:")) {
                         FriendManager.sendInviteByUid(value.substring(2));
+                    } else {
+                        showToast(getString(R.string.message_wrong_friend_format));
                     }
                 }
             }
