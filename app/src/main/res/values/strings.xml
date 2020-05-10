@@ -45,4 +45,5 @@
     <string name="message_copied_to_clipboard">Copied!</string>
     <string name="profile_uid">Id: u:</string>
     <string name="profile_best_results">Best results:</string>
+    <string name="friend_details_view_header">Friend</string>
 </resources>

@@ -46,4 +46,5 @@
     <string name="message_copied_to_clipboard">Skopiowano!</string>
     <string name="profile_uid">Id: u:</string>
     <string name="profile_best_results">Najlepsze wyniki:</string>
+    <string name="friend_details_view_header">Znajomy</string>
 </resources>

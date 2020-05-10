@@ -2,8 +2,8 @@ package com.github.breskin.minesweeper;
 
 public class Utils {
 
-    public static String getTimeString(int t) {
-        if (t < 0)
+    public static String getTimeString(Integer t) {
+        if (t == null || t < 0)
             return "-";
 
         int time = t / 1000;

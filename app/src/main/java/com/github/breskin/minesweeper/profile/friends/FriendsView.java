@@ -128,7 +128,7 @@ public class FriendsView extends View {
         FriendManager.getFriendsLock().lock();
         for (Friend friend : FriendManager.getFriends()) {
             friend.updateStatus();
-            listEntries.add(new FriendListEntry(friend));
+            listEntries.add(new FriendListEntry(friend, renderView));
         }
         FriendManager.getFriendsLock().unlock();
 

@@ -2,6 +2,7 @@ package com.github.breskin.minesweeper.profile.friends;
 
 import android.graphics.Canvas;
 import android.graphics.PointF;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.github.breskin.minesweeper.R;
@@ -10,9 +11,11 @@ import com.github.breskin.minesweeper.Theme;
 import com.github.breskin.minesweeper.generic.ListEntry;
 import com.github.breskin.minesweeper.generic.buttons.Button;
 import com.github.breskin.minesweeper.generic.buttons.ImageButton;
+import com.github.breskin.minesweeper.home.HomeView;
 
 public class FriendListEntry extends ListEntry {
 
+    private RenderView renderView;
     private Friend friend;
 
     private ImageButton deleteButton;
@@ -20,7 +23,8 @@ public class FriendListEntry extends ListEntry {
 
     private boolean deleted = false;
 
-    public FriendListEntry(final Friend friend) {
+    public FriendListEntry(final Friend friend, RenderView renderView) {
+        this.renderView = renderView;
         this.friend = friend;
 
         deleteButton = new ImageButton(RenderView.CONTEXT, R.drawable.ic_delete);
@@ -78,6 +82,16 @@ public class FriendListEntry extends ListEntry {
         canvas.rotate(45);
         canvas.drawRect(-indicatorSize, -indicatorSize, indicatorSize, indicatorSize, paint);
         canvas.restore();
+    }
+
+    @Override
+    protected boolean onTouch(float x, float y) {
+        HomeView.Transition transition = new HomeView.Transition(RenderView.ViewType.FriendDetails);
+        transition.setOrigin(new PointF(x, y));
+        renderView.switchView(transition);
+        renderView.getFriendDetailsView().setFriend(friend);
+
+        return true;
     }
 
     @Override
