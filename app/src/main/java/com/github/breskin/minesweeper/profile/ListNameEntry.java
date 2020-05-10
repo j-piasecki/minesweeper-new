@@ -9,6 +9,7 @@ import com.github.breskin.minesweeper.MainActivity;
 import com.github.breskin.minesweeper.R;
 import com.github.breskin.minesweeper.RenderView;
 import com.github.breskin.minesweeper.Theme;
+import com.github.breskin.minesweeper.Utils;
 import com.github.breskin.minesweeper.generic.ListEntry;
 import com.github.breskin.minesweeper.generic.buttons.Button;
 import com.github.breskin.minesweeper.generic.buttons.ImageButton;
@@ -35,16 +36,8 @@ public class ListNameEntry extends ListEntry {
         editButton.setPosition(new PointF(RenderView.VIEW_WIDTH * 0.975f - editButton.getSize().x, translation + (getHeight() - editButton.getSize().y) * 0.5f));
         editButton.update();
 
-        displayName = UserProfile.getName();
-
         paint.setTextSize(getHeight() * 0.3f);
-        if (paint.measureText(displayName) > RenderView.VIEW_WIDTH * 0.7f) {
-            while (paint.measureText(displayName + "…")  > RenderView.VIEW_WIDTH * 0.7f) {
-                displayName = displayName.substring(0, displayName.length() - 1);
-            }
-
-            displayName += "…";
-        }
+        displayName = Utils.trimText(UserProfile.getName(), RenderView.VIEW_WIDTH * 0.7f, paint);
     }
 
     @Override
