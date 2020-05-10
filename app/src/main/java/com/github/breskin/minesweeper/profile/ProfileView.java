@@ -40,7 +40,7 @@ public class ProfileView extends View {
 
         listEntries.add(new ListNameEntry());
         listEntries.add(new ListUIDEntry());
-        listEntries.add(new ListBestTimesEntry().setUser(FirebaseAuth.getInstance().getCurrentUser().getUid()));
+        listEntries.add(new ListBestTimesEntry());
 
         friendsButton = new ImageButton(renderView.getContext(), R.drawable.ic_friends);
         friendsButton.setCallback(new Button.ClickCallback() {
@@ -93,6 +93,8 @@ public class ProfileView extends View {
         super.open();
 
         offset = RenderView.VIEW_WIDTH * 0.1f;
+
+        ((ListBestTimesEntry)listEntries.get(2)).setUser(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         listRenderer.refresh();
     }
