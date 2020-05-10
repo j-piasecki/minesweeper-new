@@ -1,4 +1,4 @@
-package com.github.breskin.minesweeper.profile.friends;
+package com.github.breskin.minesweeper.profile;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;

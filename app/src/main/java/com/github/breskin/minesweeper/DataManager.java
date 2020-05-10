@@ -28,7 +28,7 @@ public class DataManager {
             HUB_SECOND_LIFE_AVAILABLE, HUB_SECOND_LIFE_ONCE_REMINDER, HUB_BEST_TIME, CUSTOM_VIEW_WIDTH, CUSTOM_VIEW_HEIGHT, CUSTOM_VIEW_MINES, CUSTOM_VIEW_HEADER, CUSTOM_VIEW_START,
             HOME_VIEW_LOGO_FIRST, HOME_VIEW_LOGO_SECOND, SETTINGS_VIEW_HEADER, SETTINGS_VIEW_VIBRATIONS, SETTINGS_VIEW_FLAG_ANIMATIONS, SETTINGS_VIEW_REDUCE_PARTICLES, SETTINGS_SIGN_IN,
             HUB_DO_YOU_WANT_TO_CONTINUE, SETTINGS_DARK_THEME, HOME_COMMUNITY, FRIENDS_VIEW_HEADER, INVITE_FRIENDS_VIEW_HEADER, INVITE_FRIENDS_VIEW_INVITE_BUTTON, LIST_RENDERER_EMPTY_MESSAGE,
-            PROFILE_VIEW_HEADER;
+            PROFILE_VIEW_HEADER, PROFILE_BEST_RESULTS;
 
     private static String SECOND_LIVES_STRING = "second-chance-count", VIBRATIONS_STRING = "vibrations", FLAG_ANIMATIONS_STRING = "flag-animations", REDUCE_PARTICLES_STRING = "reduce-particles",
                             DARK_THEME_STRING = "dark-theme";
@@ -72,6 +72,7 @@ public class DataManager {
         INVITE_FRIENDS_VIEW_INVITE_BUTTON = context.getString(R.string.invite_friend_send_invite_button);
         LIST_RENDERER_EMPTY_MESSAGE = context.getString(R.string.list_renderer_empty_message);
         PROFILE_VIEW_HEADER = context.getString(R.string.profile_view_header);
+        PROFILE_BEST_RESULTS = context.getString(R.string.profile_best_results);
 
         preferences = context.getSharedPreferences("data", Context.MODE_PRIVATE);
         SECOND_LIVES_COUNT = preferences.getInt(SECOND_LIVES_STRING, 0);

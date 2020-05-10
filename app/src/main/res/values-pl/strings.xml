@@ -45,4 +45,5 @@
     <string name="dialog_ok_button">OK</string>
     <string name="message_copied_to_clipboard">Skopiowano!</string>
     <string name="profile_uid">Id: u:</string>
+    <string name="profile_best_results">Najlepsze wyniki:</string>
 </resources>

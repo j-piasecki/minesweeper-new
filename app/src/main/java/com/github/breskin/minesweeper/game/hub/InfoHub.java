@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import com.github.breskin.minesweeper.DataManager;
 import com.github.breskin.minesweeper.RenderView;
 import com.github.breskin.minesweeper.Theme;
+import com.github.breskin.minesweeper.Utils;
 import com.github.breskin.minesweeper.game.GameLogic;
 import com.github.breskin.minesweeper.generic.HubView;
 
@@ -69,14 +70,14 @@ public class InfoHub {
         paint.setColor(Theme.getColor(Theme.ColorType.HubText));
         paint.setTextSize(RenderView.SIZE * 0.07f);
 
-        canvas.drawText(getTimeString(logic.getGameDuration()), RenderView.VIEW_WIDTH * 0.975f - paint.measureText(getTimeString(logic.getGameDuration())), RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.02f - offset, paint);
+        canvas.drawText(Utils.getTimeString(logic.getGameDuration()), RenderView.VIEW_WIDTH * 0.975f - paint.measureText(Utils.getTimeString(logic.getGameDuration())), RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.02f - offset, paint);
         canvas.drawText(logic.getFlaggedMines() + "/" + logic.getMinefield().getFieldSize().getMinesCount(), RenderView.VIEW_WIDTH * 0.025f, RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.02f - offset, paint);
 
         if (logic.getBestTime() != -1) {
             paint.setTextSize(RenderView.SIZE * 0.035f);
 
             canvas.drawText(DataManager.HUB_BEST_TIME, (RenderView.VIEW_WIDTH - paint.measureText(DataManager.HUB_BEST_TIME)) * 0.5f, RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.06f - offset, paint);
-            canvas.drawText(getTimeString(logic.getBestTime()), (RenderView.VIEW_WIDTH - paint.measureText(getTimeString(logic.getBestTime()))) * 0.5f, RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.015f - offset, paint);
+            canvas.drawText(Utils.getTimeString(logic.getBestTime()), (RenderView.VIEW_WIDTH - paint.measureText(Utils.getTimeString(logic.getBestTime()))) * 0.5f, RenderView.VIEW_HEIGHT - RenderView.SIZE * 0.015f - offset, paint);
         }
 
         if (currentView == View.GameWon || targetView == View.GameWon) gameWonView.render(canvas);
@@ -151,13 +152,5 @@ public class InfoHub {
 
     public GameLogic getGameLogic() {
         return gameLogic;
-    }
-
-    private String getTimeString(int t) {
-        int time = t / 1000;
-        int minutes = time / 60;
-        time -= minutes * 60;
-
-        return ((minutes < 10) ? "0" : "") + minutes + ":" + ((time < 10) ? "0" : "") +  time;
     }
 }

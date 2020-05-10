@@ -80,6 +80,10 @@ public class ListEntry {
         return false;
     }
 
+    public void refresh() {
+
+    }
+
     public boolean isVisible() {
         if (translation > RenderView.VIEW_HEIGHT || translation < 0)
             return false;

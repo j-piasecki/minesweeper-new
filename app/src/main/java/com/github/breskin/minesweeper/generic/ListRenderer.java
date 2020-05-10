@@ -135,6 +135,11 @@ public class ListRenderer {
         return false;
     }
 
+    public void refresh() {
+        for (ListEntry entry : source)
+            entry.refresh();
+    }
+
     public void setMarginTop(float marginTop) {
         this.marginTop = marginTop;
     }

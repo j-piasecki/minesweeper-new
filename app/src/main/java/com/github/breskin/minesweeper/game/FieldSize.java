@@ -1,6 +1,9 @@
 package com.github.breskin.minesweeper.game;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.github.breskin.minesweeper.DataManager;
 
 public class FieldSize {
 
@@ -26,6 +29,24 @@ public class FieldSize {
 
     public int getMinesCount() {
         return minesCount;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof FieldSize))
+            return false;
+
+        FieldSize f = (FieldSize)obj;
+
+        return width == f.width && height == f.height && minesCount == f.minesCount;
+    }
+
+    public String getVisibleName() {
+        if (this.equals(SMALL)) return DataManager.FIELD_SIZE_SMALL;
+        if (this.equals(MEDIUM)) return DataManager.FIELD_SIZE_MEDIUM;
+        if (this.equals(LARGE)) return DataManager.FIELD_SIZE_LARGE;
+
+        return this.toString();
     }
 
     @NonNull

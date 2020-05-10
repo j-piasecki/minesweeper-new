@@ -15,7 +15,7 @@ import com.github.breskin.minesweeper.generic.View;
 import com.github.breskin.minesweeper.generic.buttons.Button;
 import com.github.breskin.minesweeper.generic.buttons.ImageButton;
 import com.github.breskin.minesweeper.home.HomeView;
-import com.github.breskin.minesweeper.profile.friends.ListUIDEntry;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -40,6 +40,7 @@ public class ProfileView extends View {
 
         listEntries.add(new ListNameEntry());
         listEntries.add(new ListUIDEntry());
+        listEntries.add(new ListBestTimesEntry().setUser(FirebaseAuth.getInstance().getCurrentUser().getUid()));
 
         friendsButton = new ImageButton(renderView.getContext(), R.drawable.ic_friends);
         friendsButton.setCallback(new Button.ClickCallback() {
@@ -92,5 +93,7 @@ public class ProfileView extends View {
         super.open();
 
         offset = RenderView.VIEW_WIDTH * 0.1f;
+
+        listRenderer.refresh();
     }
 }
