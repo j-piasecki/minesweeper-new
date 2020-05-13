@@ -23,6 +23,8 @@ public class UserProfile {
         String mail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
         name = DataManager.getPreferences().getString("user-name", mail.substring(0, mail.indexOf("@")));
+
+        syncWithCloud();
     }
 
     public static String getName() {

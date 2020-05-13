@@ -1,8 +1,6 @@
 package com.github.breskin.minesweeper.profile;
 
-import android.content.Context;
 import android.graphics.Canvas;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -18,7 +16,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ListBestTimesEntry extends ListEntry {
@@ -26,7 +25,7 @@ public class ListBestTimesEntry extends ListEntry {
     private String uid;
 
     private ReentrantLock scoresLock = new ReentrantLock();
-    private HashMap<FieldSize, Integer> scores = new HashMap<>();
+    private TreeMap<FieldSize, Integer> scores = new TreeMap<>();
 
     @Override
     public void render(Canvas canvas) {
@@ -38,14 +37,18 @@ public class ListBestTimesEntry extends ListEntry {
         canvas.drawText(DataManager.PROFILE_BEST_RESULTS, (RenderView.VIEW_WIDTH - paint.measureText(DataManager.PROFILE_BEST_RESULTS)) * 0.5f, translation + paint.getTextSize() * 2, paint);
         scoresLock.lock();
 
-        canvas.drawText(FieldSize.SMALL.getVisibleName(), RenderView.VIEW_WIDTH * 0.085f, translation + paint.getTextSize() * 5, paint);
-        canvas.drawText(Utils.getTimeString(scores.get(FieldSize.SMALL)), RenderView.VIEW_WIDTH * 0.915f - paint.measureText(Utils.getTimeString(scores.get(FieldSize.SMALL))), translation + paint.getTextSize() * 5, paint);
+        int marginMultiplier = 5;
 
-        canvas.drawText(FieldSize.MEDIUM.getVisibleName(), RenderView.VIEW_WIDTH * 0.085f, translation + paint.getTextSize() * 7, paint);
-        canvas.drawText(Utils.getTimeString(scores.get(FieldSize.MEDIUM)), RenderView.VIEW_WIDTH * 0.915f - paint.measureText(Utils.getTimeString(scores.get(FieldSize.MEDIUM))), translation + paint.getTextSize() * 7, paint);
+        for (TreeMap.Entry<FieldSize, Integer> entry : scores.entrySet()) {
+            float margin = translation + paint.getTextSize() * marginMultiplier;
 
-        canvas.drawText(FieldSize.LARGE.getVisibleName(), RenderView.VIEW_WIDTH * 0.085f, translation + paint.getTextSize() * 9, paint);
-        canvas.drawText(Utils.getTimeString(scores.get(FieldSize.LARGE)), RenderView.VIEW_WIDTH * 0.915f - paint.measureText(Utils.getTimeString(scores.get(FieldSize.LARGE))), translation + paint.getTextSize() * 9, paint);
+            if (margin > 0 && margin < RenderView.VIEW_HEIGHT + paint.getTextSize() * 2) {
+                canvas.drawText(entry.getKey().getVisibleName(), RenderView.VIEW_WIDTH * 0.085f, margin, paint);
+                canvas.drawText(Utils.getTimeString(entry.getValue()), RenderView.VIEW_WIDTH * 0.915f - paint.measureText(Utils.getTimeString(entry.getValue())), margin, paint);
+            }
+
+            marginMultiplier += 2;
+        }
 
         scoresLock.unlock();
     }
@@ -71,23 +74,53 @@ public class ListBestTimesEntry extends ListEntry {
         scoresLock.unlock();
 
         if (uid.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-            scores.put(FieldSize.SMALL, DataManager.getBestTime(FieldSize.SMALL));
-            scores.put(FieldSize.MEDIUM, DataManager.getBestTime(FieldSize.MEDIUM));
-            scores.put(FieldSize.LARGE, DataManager.getBestTime(FieldSize.LARGE));
+            boolean smallAdded = false, mediumAdded = false, largeAdded = false;
+
+            for (Map.Entry<String, ?> entry : DataManager.getPreferences().getAll().entrySet()) {
+                FieldSize size = FieldSize.fromString(entry.getKey());
+
+                if (FieldSize.SMALL.equals(size)) smallAdded = true;
+                if (FieldSize.MEDIUM.equals(size)) mediumAdded = true;
+                if (FieldSize.LARGE.equals(size)) largeAdded = true;
+
+                if (size != null)
+                    scores.put(size, (Integer) entry.getValue());
+            }
+
+            if (!smallAdded) scores.put(FieldSize.SMALL, -1);
+            if (!mediumAdded) scores.put(FieldSize.MEDIUM, -1);
+            if (!largeAdded) scores.put(FieldSize.LARGE, -1);
         } else {
-            fetchScore(FieldSize.SMALL);
-            fetchScore(FieldSize.MEDIUM);
-            fetchScore(FieldSize.LARGE);
+            getScores();
         }
     }
 
-    private void fetchScore(final FieldSize size) {
-        FirebaseDatabase.getInstance().getReference("users").child(uid).child("scores").child(size.toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void getScores() {
+        FirebaseDatabase.getInstance().getReference("users").child(uid).child("scores").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     scoresLock.lock();
-                    scores.put(size, ((Number) dataSnapshot.getValue()).intValue());
+
+                    boolean smallAdded = false, mediumAdded = false, largeAdded = false;
+
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        if (data.exists()) {
+                            FieldSize size = FieldSize.fromString(data.getKey());
+
+                            if (FieldSize.SMALL.equals(size)) smallAdded = true;
+                            if (FieldSize.MEDIUM.equals(size)) mediumAdded = true;
+                            if (FieldSize.LARGE.equals(size)) largeAdded = true;
+
+                            if (size != null)
+                                scores.put(size, ((Number) data.getValue()).intValue());
+                        }
+                    }
+
+                    if (!smallAdded) scores.put(FieldSize.SMALL, -1);
+                    if (!mediumAdded) scores.put(FieldSize.MEDIUM, -1);
+                    if (!largeAdded) scores.put(FieldSize.LARGE, -1);
+
                     scoresLock.unlock();
                 }
             }
@@ -99,6 +132,6 @@ public class ListBestTimesEntry extends ListEntry {
 
     @Override
     public float getHeight() {
-        return RenderView.VIEW_WIDTH * 0.04f * 11;
+        return RenderView.VIEW_WIDTH * 0.04f * (5 + scores.size() * 2);
     }
 }

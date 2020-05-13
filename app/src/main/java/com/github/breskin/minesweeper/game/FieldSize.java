@@ -1,11 +1,13 @@
 package com.github.breskin.minesweeper.game;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.github.breskin.minesweeper.DataManager;
 
-public class FieldSize {
+public class FieldSize implements Comparable {
 
     public static final FieldSize SMALL = new FieldSize(10, 16, 25);
     public static final FieldSize MEDIUM = new FieldSize(14, 20, 40);
@@ -49,9 +51,50 @@ public class FieldSize {
         return this.toString();
     }
 
+
+    @Override
+    public int compareTo(Object o) {
+        if (o instanceof FieldSize) {
+            FieldSize other = (FieldSize) o;
+
+            if (this.equals(SMALL)) return -1;
+            if (other.equals(SMALL)) return 1;
+
+            if (this.equals(MEDIUM) && !other.equals(SMALL)) return -1;
+            if (other.equals(MEDIUM) && !this.equals(SMALL)) return 1;
+
+            if (this.equals(LARGE) && !other.equals(SMALL) && !other.equals(MEDIUM)) return -1;
+            if (other.equals(LARGE) && !this.equals(SMALL) && !this.equals(MEDIUM)) return 1;
+
+            return this.getValue() - other.getValue();
+        }
+
+        return -1;
+    }
+
+    private int getValue() {
+        return width * height * minesCount;
+    }
+
     @NonNull
     @Override
     public String toString() {
         return width + "x" + height + "x" + minesCount;
+    }
+
+    public static FieldSize fromString(String s) {
+        if (s == null) return null;
+
+        String[] data = s.split("x");
+
+        try {
+            if (data.length == 3) {
+                return new FieldSize(Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2]));
+            }
+        } catch (Exception e) {
+            Log.d("FieldSize", "Wrong argument.");
+        }
+
+        return null;
     }
 }
