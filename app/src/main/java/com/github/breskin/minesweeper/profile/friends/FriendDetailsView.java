@@ -13,6 +13,7 @@ import com.github.breskin.minesweeper.generic.View;
 import com.github.breskin.minesweeper.profile.ListBestTimesEntry;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class FriendDetailsView extends View {
 
@@ -23,6 +24,8 @@ public class FriendDetailsView extends View {
 
     private ArrayList<ListEntry> listEntries;
     private ListRenderer listRenderer;
+
+    private long lastUpdate;
 
     public FriendDetailsView(final RenderView renderView) {
         super(renderView);
@@ -45,6 +48,11 @@ public class FriendDetailsView extends View {
 
         listRenderer.setMarginTop(RenderView.VIEW_WIDTH * 0.325f + offset);
         listRenderer.update();
+
+        if (Calendar.getInstance().getTimeInMillis() - lastUpdate > 3000) {
+            friend.updateStatus();
+            lastUpdate = Calendar.getInstance().getTimeInMillis();
+        }
     }
 
     @Override
@@ -63,7 +71,7 @@ public class FriendDetailsView extends View {
     public void setFriend(Friend friend) {
         this.friend = friend;
 
-        ((FriendNameEntry)listEntries.get(0)).setName(friend.getDisplayName());
+        ((FriendNameEntry)listEntries.get(0)).setFriend(friend);
         ((ListBestTimesEntry)listEntries.get(1)).setUser(friend.getUid());
     }
 

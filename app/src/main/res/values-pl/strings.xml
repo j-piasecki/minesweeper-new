@@ -30,17 +30,17 @@
     <string name="settings_view_sign_in">Zaloguj się</string>
     <string name="settings_view_dark_theme">Ciemny motyw</string>
     <string name="home_community">Społeczność</string>
-    <string name="invite_friend_dialog_input_hint">E-mail lub identyfikator...</string>
+    <string name="invite_friend_dialog_input_hint">E-mail lub identyfikator…</string>
     <string name="invite_friend_dialog_name">Dodaj znajomego</string>
     <string name="invite_friend_dialog_accept_button">Dodaj</string>
     <string name="friends_view_header">Znajomi</string>
     <string name="invite_friend_view_header">Zaproszenia</string>
     <string name="invite_friend_send_invite_button">Dodaj znajomego</string>
-    <string name="list_renderer_empty_message">Lista jest pusta...</string>
+    <string name="list_renderer_empty_message">Lista jest pusta…</string>
     <string name="message_email_does_not_exist">Żadne konto nie jest powiązane z tym adresem.</string>
     <string name="message_friend_list_full">Twoja lista znajomych jest pełna.</string>
     <string name="profile_view_header">Profil</string>
-    <string name="change_name_input_hint">Nowa nazwa...</string>
+    <string name="change_name_input_hint">Nowa nazwa…</string>
     <string name="change_name_dialog_name">Zmień nazwę</string>
     <string name="dialog_ok_button">OK</string>
     <string name="message_copied_to_clipboard">Skopiowano!</string>
@@ -50,4 +50,7 @@
     <string name="message_already_friends">Już jesteście znajomymi</string>
     <string name="message_no_user_with_uid">Nie ma użytkownika z takim id</string>
     <string name="message_wrong_friend_format">Wpisz poprawny email lub uid</string>
+    <string name="friend_state_unknown">Nieaktywny</string>
+    <string name="friend_state_menu">W menu</string>
+    <string name="friend_state_in_game">W grze: %1s</string>
 </resources>

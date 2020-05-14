@@ -65,7 +65,7 @@ public class FriendListEntry extends ListEntry {
         paint.setTextSize(getHeight() * 0.3f);
         paint.setColor(Theme.getColor(Theme.ColorType.ListEntryText));
 
-        canvas.drawText(displayName, RenderView.VIEW_WIDTH * 0.085f, translation + (getHeight() - paint.getTextSize()) * 0.45f + paint.getTextSize(), paint);
+        canvas.drawText(displayName, RenderView.VIEW_WIDTH * 0.055f, translation + (getHeight() - paint.getTextSize()) * 0.35f + paint.getTextSize(), paint);
 
         deleteButton.render(canvas);
     }
@@ -76,12 +76,15 @@ public class FriendListEntry extends ListEntry {
         else
             paint.setColor(Theme.getColor(Theme.ColorType.FriendListEntryInactive));
 
-        float indicatorSize = RenderView.VIEW_WIDTH * 0.008f;
+        float indicatorSize = RenderView.VIEW_WIDTH * 0.007f;
         canvas.save();
-        canvas.translate(RenderView.VIEW_WIDTH * 0.0425f, translation + getHeight() * 0.5f);
+        canvas.translate(RenderView.VIEW_WIDTH * 0.1f, translation + getHeight() * 0.7f);
         canvas.rotate(45);
         canvas.drawRect(-indicatorSize, -indicatorSize, indicatorSize, indicatorSize, paint);
         canvas.restore();
+
+        paint.setTextSize(getHeight() * 0.15f);
+        canvas.drawText(friend.getStateText(), RenderView.VIEW_WIDTH * 0.125f, translation + getHeight() * 0.7f + paint.getTextSize() * 0.35f, paint);
     }
 
     @Override

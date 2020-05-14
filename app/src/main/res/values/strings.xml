@@ -29,17 +29,17 @@
     <string name="hub_second_life_available">You can use a second life (%1$d left)</string>
     <string name="settings_view_dark_theme">Dark theme</string>
     <string name="home_community">Community</string>
-    <string name="invite_friend_dialog_input_hint">E-mail or user id...</string>
+    <string name="invite_friend_dialog_input_hint">E-mail or user id…</string>
     <string name="invite_friend_dialog_name">Add friend</string>
     <string name="invite_friend_dialog_accept_button">Add</string>
     <string name="friends_view_header">Friends</string>
     <string name="invite_friend_view_header">Invites</string>
     <string name="invite_friend_send_invite_button">Add friend</string>
-    <string name="list_renderer_empty_message">The list is empty...</string>
+    <string name="list_renderer_empty_message">The list is empty…</string>
     <string name="message_email_does_not_exist">No account linked to that email.</string>
     <string name="message_friend_list_full">Your friend list is full.</string>
     <string name="profile_view_header">Profile</string>
-    <string name="change_name_input_hint">New name...</string>
+    <string name="change_name_input_hint">New name…</string>
     <string name="change_name_dialog_name">Change name</string>
     <string name="dialog_ok_button">OK</string>
     <string name="message_copied_to_clipboard">Copied!</string>
@@ -49,4 +49,7 @@
     <string name="message_already_friends">You are already friends</string>
     <string name="message_no_user_with_uid">There is no user with that id</string>
     <string name="message_wrong_friend_format">Type correct email or uid</string>
+    <string name="friend_state_unknown">Inactive</string>
+    <string name="friend_state_menu">In menu</string>
+    <string name="friend_state_in_game">In game: %1s</string>
 </resources>

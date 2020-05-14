@@ -26,6 +26,7 @@ import com.github.breskin.minesweeper.profile.friends.FriendManager;
 import com.github.breskin.minesweeper.profile.friends.FriendsRequestsView;
 import com.github.breskin.minesweeper.profile.friends.FriendsView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
@@ -123,7 +124,15 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
 
     private void updateAccount() {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("active").setValue(Calendar.getInstance().getTimeInMillis());
+            DatabaseReference activeRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("active");
+            activeRef.child("t").setValue(Calendar.getInstance().getTimeInMillis());
+
+            if (currentView == ViewType.Game) {
+                activeRef.child("s").setValue("g:" + gameView.getGameLogic().getMinefield().getFieldSize().toString());
+            } else {
+                activeRef.child("s").setValue("m");
+            }
+
 
             friendStatusUpdateCounter++;
 

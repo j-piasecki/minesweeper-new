@@ -137,7 +137,7 @@ public class FriendsView extends View {
         listEntries.sort(new Comparator<ListEntry>() {
             @Override
             public int compare(ListEntry o1, ListEntry o2) {
-                return (int)Math.signum(((FriendListEntry)o1).getFriend().getLastSeen() - ((FriendListEntry)o2).getFriend().getLastSeen());
+                return (int)Math.signum(((FriendListEntry)o2).getFriend().getLastSeen() - ((FriendListEntry)o1).getFriend().getLastSeen());
             }
         });
     }
