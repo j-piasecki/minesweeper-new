@@ -10,4 +10,6 @@ public interface GameListener {
 
     void onFieldRevealed(Square square);
     void onFieldFlaggedChange(Square square);
+
+    void applyChanges();
 }

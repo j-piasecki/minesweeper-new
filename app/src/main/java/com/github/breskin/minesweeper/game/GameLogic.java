@@ -41,6 +41,9 @@ public class GameLogic {
         camera.update();
         minefield.update(this);
 
+        if (gameListener != null)
+            gameListener.applyChanges();
+
         if (!isGameFinished() && minefield.isGameWon()) {
             onGameWon();
         }

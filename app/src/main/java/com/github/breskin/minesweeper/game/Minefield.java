@@ -77,8 +77,7 @@ public class Minefield {
         if (logic.isGamePaused() || x < 0 || y < 0 || x >= fieldSize.getWidth() || y >= fieldSize.getHeight()) return;
 
         if (!minesPlaced) {
-            placeMines(x, y);
-            logic.onGameStarted();
+            startGame(logic, x, y);
         }
 
         if (field[x][y].getType() == Square.TYPE_MINE && !field[x][y].isFlagged() && !field[x][y].isRevealed()) {
@@ -97,6 +96,11 @@ public class Minefield {
         } else {
             field[x][y].reveal(logic);
         }
+    }
+
+    public void startGame(GameLogic logic, int x, int y) {
+        placeMines(x, y);
+        logic.onGameStarted();
     }
 
     public boolean flag(GameLogic logic, int x, int y) {
