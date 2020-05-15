@@ -73,7 +73,7 @@ public class FieldSize implements Comparable {
     }
 
     private int getValue() {
-        return width * height * minesCount;
+        return minesCount + height * 1000 + width * 100000;
     }
 
     @NonNull

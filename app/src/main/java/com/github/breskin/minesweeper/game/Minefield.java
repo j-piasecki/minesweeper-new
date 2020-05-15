@@ -65,7 +65,12 @@ public class Minefield {
     }
 
     public void reveal(GameLogic logic, int x, int y) {
+        if (logic.isGamePaused() || x < 0 || y < 0 || x >= fieldSize.getWidth() || y >= fieldSize.getHeight()) return;
+
         reveal(logic, x, y, true);
+
+        if (logic.getGameListener() != null)
+            logic.getGameListener().onFieldRevealed(getSquare(x, y));
     }
 
     public void reveal(GameLogic logic, int x, int y, boolean userGenerated) {
@@ -106,6 +111,10 @@ public class Minefield {
                 logic.increaseFlaggedMines();
             else
                 logic.decreaseFlaggedMines();
+
+            if (logic.getGameListener() != null)
+                logic.getGameListener().onFieldFlaggedChange(square);
+
             return true;
         }
 

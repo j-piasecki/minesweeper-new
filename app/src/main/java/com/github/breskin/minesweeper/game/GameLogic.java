@@ -13,6 +13,8 @@ public class GameLogic {
     private GameLostCallback gameLostCallback;
     private GameWonCallback gameWonCallback;
 
+    private GameListener gameListener;
+
     private Camera camera;
     private Minefield minefield;
 
@@ -88,6 +90,9 @@ public class GameLogic {
 
         if (gameLostCallback != null)
             gameLostCallback.onGameLost();
+
+        if (gameListener != null)
+            gameListener.onGameLost();
     }
 
     public void onGameWon() {
@@ -105,6 +110,9 @@ public class GameLogic {
 
         if (gameWonCallback != null)
             gameWonCallback.onGameWon();
+
+        if (gameListener != null)
+            gameListener.onGameWon();
     }
 
     public void onGameStarted() {
@@ -114,6 +122,9 @@ public class GameLogic {
 
         if (gameStartedCallback != null)
             gameStartedCallback.onGameStarted();
+
+        if (gameListener != null)
+            gameListener.onGameStarted();
     }
 
     public void useSecondLife() {
@@ -121,6 +132,9 @@ public class GameLogic {
         secondLifeUsed = true;
 
         DataManager.onSecondLifeUsed();
+
+        if (gameListener != null)
+            gameListener.onSecondLiveUsed();
     }
 
     public ParticleSystem getParticleSystem() {
@@ -182,6 +196,15 @@ public class GameLogic {
 
     public RenderView getRenderView() {
         return renderView;
+    }
+
+    public void setGameListener(GameListener gameListener) {
+        this.gameListener = gameListener;
+        this.gameListener.setLogic(this);
+    }
+
+    GameListener getGameListener() {
+        return gameListener;
     }
 
     public void setGameStartedCallback(GameStartedCallback gameStartedCallback) {

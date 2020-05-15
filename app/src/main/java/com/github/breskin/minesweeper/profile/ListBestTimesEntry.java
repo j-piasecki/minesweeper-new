@@ -99,11 +99,10 @@ public class ListBestTimesEntry extends ListEntry {
         FirebaseDatabase.getInstance().getReference("users").child(uid).child("scores").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                scoresLock.lock();
+                boolean smallAdded = false, mediumAdded = false, largeAdded = false;
+
                 if (dataSnapshot.exists()) {
-                    scoresLock.lock();
-
-                    boolean smallAdded = false, mediumAdded = false, largeAdded = false;
-
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         if (data.exists()) {
                             FieldSize size = FieldSize.fromString(data.getKey());
@@ -116,13 +115,13 @@ public class ListBestTimesEntry extends ListEntry {
                                 scores.put(size, ((Number) data.getValue()).intValue());
                         }
                     }
-
-                    if (!smallAdded) scores.put(FieldSize.SMALL, -1);
-                    if (!mediumAdded) scores.put(FieldSize.MEDIUM, -1);
-                    if (!largeAdded) scores.put(FieldSize.LARGE, -1);
-
-                    scoresLock.unlock();
                 }
+
+                if (!smallAdded) scores.put(FieldSize.SMALL, -1);
+                if (!mediumAdded) scores.put(FieldSize.MEDIUM, -1);
+                if (!largeAdded) scores.put(FieldSize.LARGE, -1);
+
+                scoresLock.unlock();
             }
 
             @Override
