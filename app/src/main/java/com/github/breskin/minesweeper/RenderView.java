@@ -19,6 +19,7 @@ import com.github.breskin.minesweeper.home.CustomFieldView;
 import com.github.breskin.minesweeper.home.HomeView;
 import com.github.breskin.minesweeper.home.SettingsView;
 import com.github.breskin.minesweeper.particles.ParticleSystem;
+import com.github.breskin.minesweeper.popups.PopupManager;
 import com.github.breskin.minesweeper.profile.ProfileView;
 import com.github.breskin.minesweeper.profile.UserProfile;
 import com.github.breskin.minesweeper.profile.friends.FriendDetailsView;
@@ -46,6 +47,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
 
     private Transition transition;
     private ParticleSystem particleSystem;
+    private PopupManager popupManager;
 
     private HomeView homeView;
     private GameView gameView;
@@ -70,6 +72,7 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
         currentView = ViewType.None;
 
         particleSystem = new ParticleSystem();
+        popupManager = new PopupManager();
 
         homeView = new HomeView(this);
         gameView = new GameView(this);
@@ -115,6 +118,9 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
         particleSystem.update(gameView.getGameLogic());
         particleSystem.render(gameView.getGameLogic(), canvas);
 
+        popupManager.update();
+        popupManager.render(canvas);
+
         if (transition != null) {
             transition.update();
 
@@ -148,6 +154,10 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
         return particleSystem;
     }
 
+    public PopupManager getPopupManager() {
+        return popupManager;
+    }
+
     public GameView getGameView() {
         return gameView;
     }
@@ -157,6 +167,8 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
     }
 
     public void themeChanged() {
+        popupManager.onThemeChanged();
+
         homeView.onThemeChanged();
         gameView.onThemeChanged();
         customFieldView.onThemeChanged();
@@ -170,6 +182,8 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
     @Override
     public boolean onTouchEvent(MotionEvent event)  {
         if (transition != null && !transition.passTouchEvents()) return true;
+
+        if (popupManager.onTouchEvent(event)) return true;
 
         switch (currentView) {
             case Home: if (homeView.onTouchEvent(event)) return true; break;

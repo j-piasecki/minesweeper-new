@@ -135,6 +135,11 @@ public class ListRenderer {
         return false;
     }
 
+    public void onThemeChanged() {
+        for (ListEntry entry : source)
+            entry.onThemeChanged();
+    }
+
     public void refresh() {
         for (ListEntry entry : source)
             entry.refresh();

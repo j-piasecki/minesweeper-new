@@ -89,6 +89,13 @@ public class ProfileView extends View {
     }
 
     @Override
+    public void onThemeChanged() {
+        friendsButton.setIcon(renderView.getContext(), R.drawable.ic_friends);
+
+        listRenderer.onThemeChanged();
+    }
+
+    @Override
     public void open() {
         super.open();
 

@@ -84,6 +84,10 @@ public class ListEntry {
 
     }
 
+    public void onThemeChanged() {
+
+    }
+
     public boolean isVisible() {
         if (translation > RenderView.VIEW_HEIGHT || translation < 0)
             return false;

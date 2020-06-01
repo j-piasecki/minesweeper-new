@@ -60,6 +60,11 @@ public class ListNameEntry extends ListEntry {
     }
 
     @Override
+    public void onThemeChanged() {
+        editButton.setIcon(RenderView.CONTEXT, R.drawable.ic_edit);
+    }
+
+    @Override
     public float getHeight() {
         return RenderView.VIEW_WIDTH * 0.2f;
     }
