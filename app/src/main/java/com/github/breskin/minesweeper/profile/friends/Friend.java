@@ -21,6 +21,8 @@ public class Friend {
     private State state;
     private FieldSize currentField;
 
+    private boolean removed = false;
+
     public Friend(String name, String uid) {
         this.displayName = name;
         this.uid = uid;
@@ -112,6 +114,14 @@ public class Friend {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
+    }
+
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    public void setRemoved() {
+        removed = true;
     }
 
     public enum State {

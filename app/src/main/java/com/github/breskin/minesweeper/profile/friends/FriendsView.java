@@ -61,15 +61,6 @@ public class FriendsView extends View {
         requestsButton.update();
         requestsButton.setPosition(new PointF(RenderView.VIEW_WIDTH - requestsButton.getSize().x - RenderView.SIZE * 0.025f, RenderView.SIZE * 0.15f + offset));
 
-        for (int i = 0; i < listEntries.size(); i++) {
-            FriendListEntry friendEntry = (FriendListEntry)listEntries.get(i);
-
-            if (friendEntry.isDeleted()) {
-                listEntries.remove(i);
-                i--;
-            }
-        }
-
         listRenderer.setMarginTop(RenderView.VIEW_WIDTH * 0.325f + offset);
         listRenderer.update();
 
@@ -127,8 +118,10 @@ public class FriendsView extends View {
 
         FriendManager.getFriendsLock().lock();
         for (Friend friend : FriendManager.getFriends()) {
-            friend.updateStatus();
-            listEntries.add(new FriendListEntry(friend, renderView));
+            if (!friend.isRemoved()) {
+                friend.updateStatus();
+                listEntries.add(new FriendListEntry(friend, renderView));
+            }
         }
         FriendManager.getFriendsLock().unlock();
 

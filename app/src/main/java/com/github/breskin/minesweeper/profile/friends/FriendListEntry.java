@@ -18,23 +18,11 @@ public class FriendListEntry extends ListEntry {
     private RenderView renderView;
     private Friend friend;
 
-    private ImageButton deleteButton;
     private String displayName;
-
-    private boolean deleted = false;
 
     public FriendListEntry(final Friend friend, RenderView renderView) {
         this.renderView = renderView;
         this.friend = friend;
-
-        deleteButton = new ImageButton(RenderView.CONTEXT, R.drawable.ic_delete);
-        deleteButton.setCallback(new Button.ClickCallback() {
-            @Override
-            public void onClick() {
-                FriendManager.removeFriend(friend);
-                deleted = true;
-            }
-        });
 
         displayName = friend.getDisplayName();
 
@@ -51,9 +39,6 @@ public class FriendListEntry extends ListEntry {
     @Override
     public void update(float translation) {
         super.update(translation);
-
-        deleteButton.setPosition(new PointF(RenderView.VIEW_WIDTH * 0.975f - deleteButton.getSize().x, translation + (getHeight() - deleteButton.getSize().y) * 0.5f));
-        deleteButton.update();
     }
 
     @Override
@@ -66,8 +51,6 @@ public class FriendListEntry extends ListEntry {
         paint.setColor(Theme.getColor(Theme.ColorType.ListEntryText));
 
         canvas.drawText(displayName, RenderView.VIEW_WIDTH * 0.055f, translation + (getHeight() - paint.getTextSize()) * 0.35f + paint.getTextSize(), paint);
-
-        deleteButton.render(canvas);
     }
 
     private void drawActiveIndicator(Canvas canvas) {
@@ -98,22 +81,11 @@ public class FriendListEntry extends ListEntry {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (deleteButton.onTouchEvent(event)) return true;
-
-        return super.onTouchEvent(event);
-    }
-
-    @Override
     public float getHeight() {
         return RenderView.VIEW_WIDTH * 0.2f;
     }
 
     public Friend getFriend() {
         return friend;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
     }
 }

@@ -53,4 +53,7 @@
     <string name="friend_state_unknown">Nieaktywny</string>
     <string name="friend_state_menu">W menu</string>
     <string name="friend_state_in_game">W grze: %1s</string>
+    <string name="dialog_yes_button">Tak</string>
+    <string name="dialog_no_button">Nie</string>
+    <string name="dialog_delete_friend_confirmation">Czy na pewno chcesz usunąć %s z listy znajomych?</string>
 </resources>

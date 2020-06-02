@@ -52,4 +52,7 @@
     <string name="friend_state_unknown">Inactive</string>
     <string name="friend_state_menu">In menu</string>
     <string name="friend_state_in_game">In game: %1s</string>
+    <string name="dialog_yes_button">Yes</string>
+    <string name="dialog_no_button">No</string>
+    <string name="dialog_delete_friend_confirmation">Are you sure you want to remove %s from your friend list?</string>
 </resources>

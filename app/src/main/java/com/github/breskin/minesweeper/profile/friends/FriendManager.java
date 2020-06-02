@@ -272,6 +272,8 @@ public class FriendManager {
     public static void removeFriend(final Friend friend) {
         final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        friend.setRemoved();
+
         FirebaseDatabase.getInstance().getReference("users").child(friend.getUid()).child("friends").child("toremove").child(uid).setValue(UserProfile.getName(), new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {

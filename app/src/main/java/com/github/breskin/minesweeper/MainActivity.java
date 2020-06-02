@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.github.breskin.minesweeper.profile.UserProfile;
+import com.github.breskin.minesweeper.profile.friends.Friend;
 import com.github.breskin.minesweeper.profile.friends.FriendManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -142,6 +143,23 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        builder.create().show();
+    }
+
+    public void showFriendDeletionConfirmationUI(final Friend friend) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(getString(R.string.dialog_delete_friend_confirmation, friend.getDisplayName()));
+        builder.setCancelable(true);
+        builder.setPositiveButton(getString(R.string.dialog_yes_button), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FriendManager.removeFriend(friend);
+
+                renderView.onBackPressed();
+            }
+        }).setNegativeButton(getString(R.string.dialog_no_button), null);
 
         builder.create().show();
     }
