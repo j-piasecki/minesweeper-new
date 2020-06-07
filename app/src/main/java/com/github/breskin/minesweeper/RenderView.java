@@ -64,8 +64,8 @@ public class RenderView extends SurfaceView implements SurfaceHolder.Callback, R
     public RenderView(Context context) {
         super(context);
         DataManager.load(context);
-        FriendManager.load(context);
         UserProfile.load(context);
+        FriendManager.load(context);
 
         CONTEXT = context;
 

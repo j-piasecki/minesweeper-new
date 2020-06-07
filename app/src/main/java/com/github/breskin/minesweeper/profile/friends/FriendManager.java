@@ -67,7 +67,7 @@ public class FriendManager {
     }
 
     public static void setupRequestsListener() {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uid = UserProfile.getUid();
 
         if (requestsListener != null)
             FirebaseDatabase.getInstance().getReference("users").child(uid).child("friends").child("requests").removeEventListener(requestsListener);
@@ -96,7 +96,7 @@ public class FriendManager {
     }
 
     public static void setupFriendsChangeListener() {
-        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final String uid = UserProfile.getUid();
 
         if (friendAddedListener != null)
             FirebaseDatabase.getInstance().getReference("users").child(uid).child("friends").child("toadd").removeEventListener(friendAddedListener);
@@ -173,7 +173,7 @@ public class FriendManager {
     }
 
     public static void removeListeners() {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uid = UserProfile.getUid();
 
         if (requestsListener != null)
             FirebaseDatabase.getInstance().getReference("users").child(uid).child("friends").child("requests").removeEventListener(requestsListener);
@@ -193,7 +193,7 @@ public class FriendManager {
     }
 
     public static void acceptInvite(final Friend friend) {
-        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final String uid = UserProfile.getUid();
 
         FirebaseDatabase.getInstance().getReference("users").child(uid).child("friends").child("list").child(friend.getUid()).setValue(friend.getDisplayName());
         FirebaseDatabase.getInstance().getReference("users").child(friend.getUid()).child("friends").child("toadd").child(uid).setValue(UserProfile.getName(), new DatabaseReference.CompletionListener() {
@@ -215,7 +215,7 @@ public class FriendManager {
     }
 
     public static void declineInvite(Friend friend) {
-        FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("friends").child("requests").child(friend.getUid()).removeValue();
+        FirebaseDatabase.getInstance().getReference("users").child(UserProfile.getUid()).child("friends").child("requests").child(friend.getUid()).removeValue();
 
         requestsLock.lock();
         friendRequests.remove(friend);
@@ -242,7 +242,7 @@ public class FriendManager {
     }
 
     public static void sendInviteByUid(String uid) {
-        String currentUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String currentUID = UserProfile.getUid();
 
         if (uid.equals(currentUID))
             return;
@@ -270,7 +270,7 @@ public class FriendManager {
     }
 
     public static void removeFriend(final Friend friend) {
-        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final String uid = UserProfile.getUid();
 
         friend.setRemoved();
 
@@ -319,7 +319,7 @@ public class FriendManager {
     }
 
     public static void syncFriendsWithCloud() {
-        FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("friends").child("list").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("users").child(UserProfile.getUid()).child("friends").child("list").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 friendsLock.lock();

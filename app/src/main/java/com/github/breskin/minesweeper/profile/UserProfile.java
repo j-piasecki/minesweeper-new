@@ -15,6 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 public class UserProfile {
 
     private static String name;
+    private static String uid;
 
     public static void load(Context context) {
         if (FirebaseAuth.getInstance().getCurrentUser() == null)
@@ -23,12 +24,17 @@ public class UserProfile {
         String mail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
         name = DataManager.getPreferences().getString("user-name", mail.substring(0, mail.indexOf("@")));
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         syncWithCloud();
     }
 
     public static String getName() {
         return name;
+    }
+
+    public static String getUid() {
+        return uid;
     }
 
     public static void syncWithCloud() {

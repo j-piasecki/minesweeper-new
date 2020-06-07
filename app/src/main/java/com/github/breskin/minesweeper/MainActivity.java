@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+                UserProfile.load(this);
+
                 DataManager.syncDataWithCloud();
                 FriendManager.syncFriendsWithCloud();
                 FriendManager.setupRequestsListener();
