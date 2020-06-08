@@ -174,6 +174,8 @@ public class FriendManager {
 
     public static void removeListeners() {
         String uid = UserProfile.getUid();
+        if (uid == null)
+            return;
 
         if (requestsListener != null)
             FirebaseDatabase.getInstance().getReference("users").child(uid).child("friends").child("requests").removeEventListener(requestsListener);
